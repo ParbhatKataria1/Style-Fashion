@@ -1,3 +1,15 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@600&family=Poppins:wght@300&family=Roboto:wght@500&display=swap');
+
+.HeaderFont{
+  font-style: 'Alkatra', cursive;
+}
+
+.AppFont{
+  font-family: 'Poppins', sans-serif;
+}
+
+
 .App {
   text-align: center;
 }
