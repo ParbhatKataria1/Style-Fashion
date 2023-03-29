@@ -24,29 +24,22 @@ import {
 } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
+import { NavLink } from "react-router-dom";
 
 const LinkItems = [
-  { name: "Home", icon: FiHome, link: "/dashHome" },
+  { name: "Home", icon: FiHome, link: "/dashboard" },
   { name: "TrackOrder", icon: FiTrendingUp, link: "/trackOrder" },
   { name: "ManageProduct", icon: FiStar, link: "/manageProduct" },
   { name: "AddProduct", icon: FiCompass, link: "/addProduct" },
   { name: "Ordered", icon: FiCompass, link: "/ordered" },
 ];
 
-export default function AdminSidePage({ children }) {
+export default function AdminSidePage({ children, page }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const [num, setnum] = useState(1);
-
-  function changePage(value) {
-    console.log(value);
-    setnum(value);
-  }
-  console.log(changePage, "main");
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       <SidebarContent
-        changePage={changePage}
+        // changePage={changePage}
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
       />
@@ -63,15 +56,19 @@ export default function AdminSidePage({ children }) {
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
-      {/* mobilenav */}
-      <MobileNav display={{ base: "flex", md: "none" }} onOpen={onOpen} />
-      <Box justifyContent="center" ml={{ base: 0, md: 60 }} p="4"></Box>
+      <MobileNav
+        page={page}
+        display={{ base: "flex", md: "none" }}
+        onOpen={onOpen}
+      />
+      <Box bg="white" justifyContent="center" ml={{ base: 0, md: 60 }} p="4">
+        {children}
+      </Box>
     </Box>
   );
 }
 
-const SidebarContent = ({ changePage, onClose, ...rest }) => {
-  console.log(changePage, "sidebar is not a fu");
+const SidebarContent = ({ onClose, ...rest }) => {
   return (
     <Box
       bg={useColorModeValue("white", "gray.900")}
@@ -89,23 +86,27 @@ const SidebarContent = ({ changePage, onClose, ...rest }) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <Link to="/dashHome">
-          <NavItem key={link.name} changePage={changePage} icon={link.icon}>
+        <NavLink to={link.link}>
+          <NavItem
+            key={link.name}
+            link={link.link}
+            // changePage={changePage}
+            icon={link.icon}
+          >
             {link.name}
           </NavItem>
-        </Link>
+        </NavLink>
       ))}
     </Box>
   );
 };
 
-const NavItem = ({ changePage, num, icon, children, ...rest }) => {
-  console.log(changePage, "navitem");
+const NavItem = ({ link, num, icon, children, ...rest }) => {
   return (
-    <Link
-      onClick={() => {
-        changePage(num);
-      }}
+    <Box
+      // onClick={() => {
+      //   changePage(num);
+      // }}
       style={{ textDecoration: "none" }}
       _focus={{ boxShadow: "none" }}
     >
@@ -134,10 +135,10 @@ const NavItem = ({ changePage, num, icon, children, ...rest }) => {
         )}
         {children}
       </Flex>
-    </Link>
+    </Box>
   );
 };
-const MobileNav = ({ onOpen, ...rest }) => {
+const MobileNav = ({ page, onOpen, ...rest }) => {
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -158,7 +159,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
       />
 
       <Text fontSize="2xl" ml="8" fontWeight="bold">
-        Logo
+        {page}
       </Text>
     </Flex>
   );
