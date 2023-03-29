@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import DashBoard from "../Pages/DashBoard";
-import Home from "../Pages/Home";
+import {Home} from "../Pages/Home";
 
 const AllRoutes = () => {
   return (
