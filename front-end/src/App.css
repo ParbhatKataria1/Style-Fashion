@@ -22,6 +22,22 @@ font-weight: 700;
 	position: relative;
 	display: inline-block;
 }
+.grid-navbar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* default to 4 columns */
+  gap: 10px;
+}
+
+.grid-item {
+  background-color: lightgray;
+  padding: 10px;
+}
 
 .profile-pic:hover .edit {
 	display: block;
@@ -45,7 +61,7 @@ font-weight: 700;
   transition: all 0.3s;
 }
 .edit :hover{
-  
+
 }
 .image-wrapper {
   position: relative;

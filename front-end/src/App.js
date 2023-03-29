@@ -8,7 +8,7 @@ function App() {
     <div className="App AppFont">
       <Navbar/>
       <AllRoutes/>
-      <Footer/>
+      {/* <Footer/> */}
     </div>
   );
 }
