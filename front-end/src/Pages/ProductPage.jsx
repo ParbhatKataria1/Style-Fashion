@@ -10,12 +10,12 @@ const ProductCard = ({img,imgOnHover,title,salePrice,regularPrice}) =>{
     const handleWishlistClick = () => {
         setIsWishlisted(!isWishlisted);
       };
-    return <VStack m={'0.5rem'}>
+    return <VStack m={'0.5rem'} boxShadow= 'rgba(0, 0, 0, 0.04) 0px 3px 5px' p={'0.5rem'}>
     <Link href="#">
-      <div class="image-wrapper profile-pic">
+      <div className="image-wrapper profile-pic">
         <img src={img} className="image" alt="normal" height={'280px '}/>
         <img src={imgOnHover} className="image-hover" alt="hover"  />
-        <div class="edit">
+        <div className="edit">
         <Tooltip label='Add to Wishlist' placement='left' borderRadius={'5px'}>
             <IconButton 
                 onClick={handleWishlistClick} 

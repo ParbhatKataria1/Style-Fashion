@@ -1,7 +1,7 @@
 import React from 'react'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { artistCollabs, shopMens, shopWomens, varsityJackets } from '../homePagedb';
+import { artistCollabs, shopMens, shopWomens, varsityJackets } from '../db';
 import { Box , Container, IconButton, Stack, Text, HStack, Link, Image, SimpleGrid } from '@chakra-ui/react';
 import { ProductCard } from './ProductPage';
 import { BiRightArrowAlt } from "react-icons/bi";
@@ -124,7 +124,7 @@ const Home = () =>{
             <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
                 {
                     varsityJackets.map((el)=>{
-                        return <ProductCard key={el.title} {...el} />
+                        return <ProductCard key={(Math.random()*1000)+el.title} {...el} />
                     })
                 }
             </SimpleGrid>
@@ -137,7 +137,7 @@ const Home = () =>{
             <SimpleGrid columns={{ base: 2, sm: 3, md: 4 }} spacing={8}>
                 {
                     artistCollabs.map((el)=>{
-                        return <ProductCard key={el.title} {...el} />
+                        return <ProductCard key={(Math.random()*1000)+el.title} {...el} />
                     })
                 }
             </SimpleGrid>
