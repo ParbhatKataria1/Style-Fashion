@@ -5,6 +5,7 @@ import {
   Container,
   Flex,
   Heading,
+  HStack,
   Image,
   Input,
   Stack,
@@ -18,52 +19,84 @@ import {
   useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
-import DrawerExample from "../Components/Hamb";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import Carousel from "../Components/Carousel";
+import CartSlider from "../Components/CartSlider";
 import "../ProductDetails..css";
-
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const ProductDetails = () => {
-  const [size, setSize] = useState("");
-  const [color,setColor] = useState(false);
+  // const {id} = useParams();
 
-  const handleSizeChange = (e) => {
-    setSize(e.target.value);
-    console.log(size);
+  const [size, setSize] = useState("S");
+  const [quantity, setQuantity] = useState(1);
+  const [product, setProduuct] = useState([]);
+
+  const getData = async () => {
+    try {
+      console.log("fist");
+      let data = await axios.get(
+        `https://vast-raincoat-lamb.cyclic.app/men`,
+        {
+          headers: {
+            Authorization:
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI1NDVmZTg5NWFiZjk3MWRlOTM0NTUiLCJpYXQiOjE2ODAxNjQzNTB9.-Qy074dktaJOSQFB787WY2K6AeRIU4Heu2Adk9t2Oeg",
+          },
+        }
+      );
+      console.log(data.data);
+    } catch (error) {
+      console.log("there is an error in fetching data");
+    }
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // console.log(product)
+
+  const handleSizeClick = (val) => {
+    setSize(val);
+  };
+
+  const handleQuantity = (val) => {
+    setQuantity((p) => p + val);
+  };
+
+  const handleClick = async()=>{
+    // try {
+    //   await axios.post("https://vast-raincoat-lamb.cyclic.app/cart/add",product,{
+    //     headers: {
+    //       Authorization:
+    //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI1NDVmZTg5NWFiZjk3MWRlOTM0NTUiLCJpYXQiOjE2ODAxNjQzNTB9.-Qy074dktaJOSQFB787WY2K6AeRIU4Heu2Adk9t2Oeg",
+    //     },
+    //   })
+    //   // console.log(product);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    
+  }
 
   return (
     <div>
-      <Container maxW={"7xl"} border="1px solid red">
-        <DrawerExample/>
+      <Container maxW={"7xl"} border="0px solid red" mt={"20px"}>
         <Flex w={"100%"}>
-          <Box
-            className="Multiple_Images"
-            h={{ base: "100%", sm: "300px", lg: "650px" }}
-            border="1px solid black"
-            w={"10%"}
-          ></Box>
-
           <Box
             className="Image"
             h={{ base: "100%", sm: "300px", lg: "650px" }}
-            border="1px solid black"
-            w={"40%"}
+            border="0px solid black"
+            w={"38.1%"}
           >
-            <Image
-              src="https://cdn.shopify.com/s/files/1/0677/1464/6315/products/ritual3.jpg?v=1679580399&width=600"
-              alt={"product image"}
-              fit={"cover"}
-              align={"center"}
-              w={"100%"}
-              h={{ base: "100%", sm: "400px", lg: "100%" }}
-            />
+            <Carousel />
           </Box>
 
           <Box
             className="Details"
             h={{ base: "100%", sm: "300px", lg: "650px" }}
-            border="1px solid black"
+            border="0px solid black"
             w={"50%"}
           >
             <Stack textAlign={"left"} spacing={{ base: 6, md: 10 }} ml="25px">
@@ -99,78 +132,24 @@ const ProductDetails = () => {
                 <Text fontSize={"md"} fontWeight={"500"}>
                   Size: {size}
                 </Text>
-                
-                <Flex border={"0px solid red"} justifyContent="space-between" maxW={"sm"} alignItems="center">
-                  <label>
-                    <Input
-                      height={"30px"}
-                      w="30px"
-                      border={"1px solid black"}
-                      bgColor={"white"}
-                      margin="auto"
-                      alignItems={"center"}
-                      color="black"
-                      type="checkbox"
-                      value="S"
-                      checked={size === "S"}
-                      onChange={handleSizeChange}
-                      
-                    />
-                    S
-                  </label>
-                  <label>
-                    <Input
-                      height={"30px"}
-                      w="30px"
-                      border={"1px solid black"}
-                      bgColor={"white"}
-                      margin="auto"
-                      alignItems={"center"}
-                      color="white"
-                      type="checkbox"
-                      value="M"
-                      checked={size === "M"}
-                      onChange={handleSizeChange}
-                    />
-                    M
-                  </label>
-                  <label>
-                    <Input
-                      height={"30px"}
-                      w="30px"
-                      border={"1px solid black"}
-                      bgColor={"white"}
-                      margin="auto"
-                      alignItems={"center"}
-                      color="white"
-                      type="checkbox"
-                      value="L"
-                      checked={size === "L"}
-                      onChange={handleSizeChange}
-                    />
-                    L
-                  </label>
-                  <label>
-                    <Input
-                      height={"30px"}
-                      w="30px"
-                      border={"1px solid black"}
-                      bgColor={"white"}
-                      margin="auto"
-                      alignItems={"center"}
-                      color="white"
-                      type="checkbox"
-                      value="XL"
-                      checked={size === "XL"}
-                      onChange={handleSizeChange}
-                    />
-                    XL
-                  </label>
+
+                <Flex
+                  border={"0px solid red"}
+                  justifyContent="flex-start"
+                  gap={3}
+                  maxW={"sm"}
+                  alignItems="center"
+                >
+                  <Button onClick={() => handleSizeClick("S")}>S</Button>
+                  <Button onClick={() => handleSizeClick("M")}>M</Button>
+                  <Button onClick={() => handleSizeClick("L")}>L</Button>
+                  <Button onClick={() => handleSizeClick("XL")}>XL</Button>
                 </Flex>
 
                 <Text fontSize={"md"} fontWeight={"500"}>
                   Color: Black
                 </Text>
+
                 <Flex
                   height={"40px"}
                   w="40px"
@@ -188,16 +167,36 @@ const ProductDetails = () => {
                   ></Box>
                 </Flex>
               </Stack>
+              <Text>Quantity</Text>
+              <Flex gap={2}>
+                <Button
+                  isDisabled={quantity == 1}
+                  onClick={() => handleQuantity(-1)}
+                >
+                  -
+                </Button>
+                <Button>{quantity}</Button>
+                <Button
+                  isDisabled={quantity == 10}
+                  onClick={() => handleQuantity(1)}
+                >
+                  +
+                </Button>
+                <Box onClick={handleClick} w={"7xl"} border="0px solid red" mt={-10}>
+                <CartSlider/>
+                </Box>
+               
+              </Flex>
+              {/* Add to cart button */}
 
               <Button
-                // onClick={handleAddToCart}
                 rounded={"none"}
                 w={"full"}
                 mt={8}
                 size={"lg"}
                 py={"7"}
-                bg={useColorModeValue("white", "gray.50")}
-                color={useColorModeValue("gray.900", "gray.900")}
+                bg={"black"}
+                color={"white"}
                 border="1px solid black"
                 textTransform={"uppercase"}
                 _hover={{
@@ -207,7 +206,7 @@ const ProductDetails = () => {
                   color: "white",
                 }}
               >
-                ADD TO CART
+                BUY IT NOW
               </Button>
             </Stack>
           </Box>

@@ -1,7 +1,7 @@
 import React from 'react'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { artistCollabs, shopMens, shopWomens, varsityJackets } from '../db';
+import { artistCollabs, shopMens, shopWomens, varsityJackets } from '../homePagedb';
 import { Box , Container, IconButton, Stack, Text, HStack, Link, Image, SimpleGrid } from '@chakra-ui/react';
 import { ProductCard } from './ProductPage';
 import { BiRightArrowAlt } from "react-icons/bi";
