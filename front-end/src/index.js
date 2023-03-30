@@ -9,7 +9,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import {Provider} from 'react-redux';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  <>
     <ChakraProvider>
       <Auth0Provider
         domain="dev-xtr2nsfklsrd66w8.us.auth0.com"
@@ -26,7 +26,7 @@ root.render(
         </Provider>
       </Auth0Provider>
     </ChakraProvider>
-  </React.StrictMode>
+  </>
 );
 
 // If you want to start measuring performance in your app, pass a function
