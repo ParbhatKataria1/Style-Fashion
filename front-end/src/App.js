@@ -5,7 +5,7 @@ import Footer from './Pages/Footer';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App AppFont">
       <Navbar/>
       <AllRoutes/>
       <Footer/>
