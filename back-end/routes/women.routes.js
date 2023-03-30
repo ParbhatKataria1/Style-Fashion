@@ -1,5 +1,5 @@
 const express = require('express');
-const {  getPosts } = require('../controller/women.controller');
+const {  getPosts, addPost, updateData, deleteData, getPostsItem } = require('../controller/women.controller');
 const women = express.Router();
 
 const { verifyUser } = require('../middleware/posts.middleware');
@@ -12,6 +12,7 @@ women.post('/add', addPost )
 women.get('/', getPosts )
 
 // women.get('/top', getTopData )
+women.get('/:_id', getPostsItem)
 
 women.patch('/update/:_id', updateData )
 
