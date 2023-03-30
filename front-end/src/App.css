@@ -1,27 +1,37 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@600&family=Poppins:wght@300&family=Roboto:wght@500&display=swap');
-
-.HeaderFont{
-  font-style: 'Alkatra', cursive;
-}
-
-.AppFont{
-  font-family: 'Poppins', sans-serif;
-}
-
-
 .App {
   /* text-align: center; */
 }
-.shopCard_menwomen{
-margin:3rem 0.8rem;
-/* border:1px solid; */
-font-weight: 700;
+
+.shopCard_menwomen {
+  margin: 3rem 0.8rem;
+  /* border:1px solid; */
+  font-weight: 700;
 }
+
+.shopCard_menwomen:hover {
+  padding: 1rem;
+  transition: all 0.3s;
+  border-radius: 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+/* .shopCard_menwomen{
+  width: 80%;
+  margin:3rem 0.8rem;
+  border:1px solid;
+  font-weight: 700;
+}
+.shopCard_menwomen:hover{
+  border:1px solid blue;
+  width:70%;
+  padding:1rem; 
+  transition: all 0.3s; 
+}*/
 .profile-pic {
-	position: relative;
-	display: inline-block;
+  position: relative;
+  display: inline-block;
 }
+
 .grid-navbar {
   display: flex;
   justify-content: center;
@@ -30,7 +40,8 @@ font-weight: 700;
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* default to 4 columns */
+  grid-template-columns: repeat(4, 1fr);
+  /* default to 4 columns */
   gap: 10px;
 }
 
@@ -40,32 +51,28 @@ font-weight: 700;
 }
 
 .profile-pic:hover .edit {
-	display: block;
-	padding-right: 8px;
+  display: block;
+  padding-right: 8px;
   margin: 1rem;
   transition: ease 0.3s;
 }
 
 .edit {
-	padding-top: 7px;	
-	padding-right: 4px;
+  padding-top: 7px;
+  padding-right: 4px;
   margin: 0px;
-	position: absolute;
-	right: 0;
-	top: 0;
-	display: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: none;
 }
 
-.shopCard_menwomen:hover{
-  padding: 1rem;
-  transition: all 0.3s;
-}
-.edit :hover{
+.edit :hover {}
 
-}
 .image-wrapper {
   position: relative;
 }
+
 .image-hover {
   position: absolute;
   top: 0;
@@ -73,6 +80,7 @@ font-weight: 700;
   opacity: 0;
   transition: opacity 1s ease-out;
 }
+
 .image-hover:hover {
   opacity: 1;
   transition: ease-in-out 1s;
