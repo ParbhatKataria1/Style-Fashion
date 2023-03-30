@@ -63,7 +63,7 @@ const Home = () =>{
                 {
                     shopWomens.map((el)=>{
                         return <div className='shopCard_menwomen'>
-                            <Link href='#'>
+                            <Link href='/womensAllCloth'>
                             <img src={el.img} alt={el.title} />
                             <HStack justifyContent={'space-between'} px={1.5} py={1}>
                             <Text>{el.title}</Text>
@@ -102,7 +102,7 @@ const Home = () =>{
                 {
                     shopMens.map((el)=>{
                         return <div className='shopCard_menwomen'>
-                            <Link href="#">
+                            <Link href="/mensAllCloth">
                             <img src={el.img} alt={el.title} />
                             <HStack justifyContent={'space-between'} px={1.5} py={1}>
                             <Text>{el.title}</Text>
