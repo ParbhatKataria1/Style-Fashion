@@ -1,9 +1,9 @@
-import { Box, Button, Container, HStack, SimpleGrid, Stack, Text, Tooltip } from "@chakra-ui/react"
-import { useState } from "react"
-import { artistCollabs } from "../homePagedb"
-import { ProductCard } from "./ProductPage"
-import FilterDrawer from "../Components/FilterationDrawer"
-
+import { Box, Button, Container, HStack, SimpleGrid, Stack, Text, Tooltip } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import { artistCollabs } from "../homePagedb";
+import { ProductCard } from "./ProductPage";
+import FilterDrawer from "../Components/FilterationDrawer";
+import axios from 'axios';
 const WomensProductPage = () => {
     const [num, setNum] = useState(0);
     const [women, setwomens] = useState([]);
@@ -23,7 +23,7 @@ const WomensProductPage = () => {
     }
 
     useEffect(() => {
-        getMenData();
+        getWomenData();
     }, []);
 
 
