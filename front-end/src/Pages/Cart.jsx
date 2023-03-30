@@ -141,13 +141,13 @@ const Cart = () => {
   const [cartData, setcartdata] = useState([]);
 
   async function getdata() {
-    let data = await axios.get("https://vast-raincoat-lamb.cyclic.app/men", {
+    let data = await axios.get("https://vast-raincoat-lamb.cyclic.app/cart", {
       headers: {
         Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAxNjQzMjh9.HxbaR7TJuAHUlSYsAmOhxqryMwRYZSTnxn3_SrF_A7Q",
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI1NDVmZTg5NWFiZjk3MWRlOTM0NTUiLCJpYXQiOjE2ODAxOTU1MjN9.FhjXqCaiiXGa7oeVEXm8ABi-VdNdVCmFPY1j0nsnqPQ",
       },
     });
-    console.log(data.data);
+    console.log(data.data, 'thiangid');
   }
 
   useEffect(() => {
@@ -157,8 +157,8 @@ const Cart = () => {
     <>
       <Box pt={"20px"} w="95%" m="auto">
         <Flex justifyContent={"space-between"}>
-          <Box>
-            <Box p={"10px"} mt="30px">
+          <Box  w={"70%"}>
+            <Box p={"10px"} mt="20px" >
               <Flex
                 justifyContent={"space-between"}
                 borderTop={"1px solid lightgray"}
