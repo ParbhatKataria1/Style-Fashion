@@ -10,9 +10,10 @@ import {
   Tooltip,
   Text,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsStar, BsStarFill, BsStarHalf } from "react-icons/bs";
 import { FiShoppingCart } from "react-icons/fi";
+import axios from "axios";
 
 const data = {
   isNew: true,
@@ -63,6 +64,31 @@ function ProductAddToCart({
   orderdate,
 }) {
   const [hover, sethover] = useState(false);
+  const [orders, setorders] = useState([]);
+
+  async function getdata() {
+    try {
+      let data = await axios.get(
+        "https://vast-raincoat-lamb.cyclic.app/order",
+        {
+          headers: {
+            Authorization:
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0ODgxZDg3MWRiODU3OTRhMDRkM2IiLCJpYXQiOjE2ODAxODU4Mjh9.ZStaoEyCnTJ89Et2eNzqKNnAFKNYaqp85IIyMgMPhwE",
+          },
+        }
+      );
+      console.log(data.data);
+      setorders(data.data);
+    } catch (error) {
+      console.log("error in fetching the data");
+    }
+  }
+  console.log("1");
+
+  useEffect(() => {
+    getdata();
+  }, []);
+
   return (
     <Flex
       w="100%"
