@@ -4,12 +4,12 @@ import { artistCollabs } from "../homePagedb"
 import { ProductCard } from "./ProductPage"
 import FilterDrawer from "../Components/FilterationDrawer"
 
-const MensProductPage = ()=>{
+const WomensProductPage = ()=>{
     const [num,setNum]=useState(0);
 
     return <Box>
         <Text align='center' fontSize={'43px'} margin={'2rem 0.5rem'}>
-            MEN ALL COTHING
+            WOMEN ALL COTHING
         </Text>
         <Box maxWidth={'8xl'} margin='auto'>
             <HStack justifyContent={'space-between'} gap={'1rem'} pr={'2rem'} border={'0px solid'}>
@@ -48,4 +48,4 @@ const MensProductPage = ()=>{
     </Box>
 }
 
-export {MensProductPage}
+export {WomensProductPage}
