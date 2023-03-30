@@ -67,7 +67,7 @@ const ProductDetails = () => {
         {
           headers: {
             Authorization:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI1NDVmZTg5NWFiZjk3MWRlOTM0NTUiLCJpYXQiOjE2ODAxOTU1MjN9.FhjXqCaiiXGa7oeVEXm8ABi-VdNdVCmFPY1j0nsnqPQ",
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0ODgxZDg3MWRiODU3OTRhMDRkM2IiLCJpYXQiOjE2ODAxODU4Mjh9.ZStaoEyCnTJ89Et2eNzqKNnAFKNYaqp85IIyMgMPhwE",
           },
         }
       );
@@ -95,33 +95,31 @@ const ProductDetails = () => {
   };
 
   const handleClick = async () => {
+    let { brand, images, price, title, type } = product[0];
     let cartData = {
-      ...product[0],
-      quantity:"qty",
-      size:"size",
-      color:"size"
+      brand,
+      images,
+      price,
+      title,
+      type,
+      qty: quantity,
+      sizes: size,
+      color,
     };
-    console.log(cartData, 'cartdata');
+    // console.log(cartData, "cartdata");
 
     try {
-      let crt = {"title": "Brack this is me Cotton Bralettes",
-      "price": "633",
-      "brand": "koko",
-      "images": [
-        "https://cdn.shopify.com/s/files/1/0677/1464/6315/products/koovs-3234.jpg?v=1671078617&width=600",
-        "https://cdn.shopify.com/s/files/1/0677/1464/6315/products/koovs-3287.jpg?v=1677136742&width=600",
-        "https://cdn.shopify.com/s/files/1/0677/1464/6315/products/koovs-3272.jpg?v=1677136742&width=600"
-      ],
-      "color": "blue",
-      "type": "men",}
-
-      let data = await axios.post("https://vast-raincoat-lamb.cyclic.app/cart/add",crt,{
-        headers: {
-          Authorization:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI1NDVmZTg5NWFiZjk3MWRlOTM0NTUiLCJpYXQiOjE2ODAxOTU1MjN9.FhjXqCaiiXGa7oeVEXm8ABi-VdNdVCmFPY1j0nsnqPQ",
-        },
-      })
-      console.log(data.data)
+      let data = await axios.post(
+        "https://vast-raincoat-lamb.cyclic.app/cart/add",
+        cartData,
+        {
+          headers: {
+            Authorization:
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0ODgxZDg3MWRiODU3OTRhMDRkM2IiLCJpYXQiOjE2ODAxODU4Mjh9.ZStaoEyCnTJ89Et2eNzqKNnAFKNYaqp85IIyMgMPhwE",
+          },
+        }
+      );
+      console.log(data.data);
     } catch (error) {
       console.log(error);
     }
@@ -204,7 +202,7 @@ const ProductDetails = () => {
 
                       <Text fontSize={"md"} fontWeight={"500"}>
                         Color: {color}
-                        <Select onChange={(e)=>setColor(e.target.value)}>
+                        <Select onChange={(e) => setColor(e.target.value)}>
                           {el.color.map((ele) => {
                             return <option value={ele}>{ele}</option>;
                           })}

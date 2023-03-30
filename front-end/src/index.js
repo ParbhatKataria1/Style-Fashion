@@ -18,12 +18,12 @@ root.render(
           redirect_uri: window.location.origin
         }}
       >
-        <Provider>
+        {/* <Provider> */}
           <BrowserRouter>
 
             <App />
           </BrowserRouter>
-        </Provider>
+        {/* </Provider> */}
       </Auth0Provider>
     </ChakraProvider>
   </>
