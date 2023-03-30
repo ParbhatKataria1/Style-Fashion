@@ -7,15 +7,13 @@ const { verifyUser } = require('../middleware/posts.middleware');
 
 men.use(verifyUser)
 
-// men.post('/add', addPost )
+men.post('/add', addPost )
 
 men.get('/', getPosts )
 
-// men.get('/top', getTopData )
+men.patch('/update/:_id', updateData )
 
-// men.patch('/update/:_id', updateData )
-
-// men.delete('/delete/:_id', deleteData )
+men.delete('/delete/:_id', deleteData )
 
 
 module.exports = {men}

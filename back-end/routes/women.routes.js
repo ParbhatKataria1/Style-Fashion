@@ -7,15 +7,15 @@ const { verifyUser } = require('../middleware/posts.middleware');
 
 women.use(verifyUser)
 
-// women.post('/add', addPost )
+women.post('/add', addPost )
 
 women.get('/', getPosts )
 
 // women.get('/top', getTopData )
 
-// women.patch('/update/:_id', updateData )
+women.patch('/update/:_id', updateData )
 
-// women.delete('/delete/:_id', deleteData )
+women.delete('/delete/:_id', deleteData )
 
 
 module.exports = {women}

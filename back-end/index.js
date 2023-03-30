@@ -7,6 +7,9 @@ const { order } = require('./routes/order.routes');
 const { women } = require('./routes/women.routes');
 const app = express();
 require('dotenv').config();
+const cors = require('cors')
+ 
+app.use(cors())
 
 app.use(express.json());
 
@@ -34,9 +37,15 @@ app.listen(process.env.port, async(req, res)=>{
 //     color:Array,
 //     type:String
 function con(){
+    let auth={
+        "first_name":"parbhat",
+        "last_name":"kataria",
+        "email":"parbhatkataria628@gmail.com",
+    }
    let item =  {
         "title":'Branded Elastic 3 Pack Organic Cotton Bralettes',
         "price":1290,
+        "brand":"Koov",
         "size":['xs','s','m','l' ],
         "color":['white', 'blue', 'red','yellow'],
         "type":'men',
