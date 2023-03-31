@@ -161,6 +161,7 @@ const updateQty = async(id,qty)=>{
     await axios.patch(`https://vast-raincoat-lamb.cyclic.app/cart/update/${id}`,qty,{
       headers: {
         Authorization:
+<<<<<<< HEAD
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAyNTM2Nzh9.Fr5YNhCxJWUQ2T-9GJw_hu7vX_QOzClnlET0leH2NZ0",
       },
     })
@@ -168,6 +169,12 @@ const updateQty = async(id,qty)=>{
     console.log("update fun",id,qty);
   } catch (error) {
     console.log("error in update qty");
+=======
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0ODgxZDg3MWRiODU3OTRhMDRkM2IiLCJpYXQiOjE2ODAxODU4Mjh9.ZStaoEyCnTJ89Et2eNzqKNnAFKNYaqp85IIyMgMPhwE",
+      },
+    });
+    console.log(data.data, "thiangid");
+>>>>>>> 39c06aafacb97000571ea9dc56f5bfede26475a8
   }
 }
 
@@ -183,7 +190,11 @@ const updateQty = async(id,qty)=>{
         <Flex justifyContent={"space-between"}>
           <Box w={"70%"}>
             <Box p={"10px"} mt="20px">
+<<<<<<< HEAD
               {/* <Flex
+=======
+              <Flex
+>>>>>>> 39c06aafacb97000571ea9dc56f5bfede26475a8
                 justifyContent={"space-between"}
                 borderTop={"1px solid lightgray"}
                 borderBottom={"1px solid lightgray"}

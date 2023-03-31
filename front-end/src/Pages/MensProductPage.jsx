@@ -1,37 +1,42 @@
-import { Button, Container, SimpleGrid, Text, Tooltip ,Drawer,Input,Box,HStack,Stack} from "@chakra-ui/react"
-import { useState, useEffect, useRef } from "react";
-import { BsDash } from 'react-icons/bs';
-import {useSearchParams} from 'react-router-dom'
-import { artistCollabs } from "../homePagedb"
-import { ProductCard } from "./ProductPage"
-// import FilterDrawer from "../Components/FilterationDrawer"
+import { Button, Container, SimpleGrid, Text, Tooltip ,Box,HStack,Stack, Image} from "@chakra-ui/react"
+import { useState, useEffect } from "react";
+import { ProductCard } from "./ProductPage";
+import FilterDrawer from "../Components/FilterationDrawer"
 import axios from "axios";
-import FilterDrawer from "../Components/FilterationDrawer";
+import {useDispatch, useSelector} from 'react-redux';
+import { getMensProduct } from "../Redux/ProductReducer.js/action";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 const MensProductPage = () => {
     const [num, setNum] = useState(0);
-    const [mens, setmens] = useState([]);
-    async function getMenData() {
-        try {
-            let data = await axios.get("https://vast-raincoat-lamb.cyclic.app/men", {
-                headers: {
-                    Authorization:
-                        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAxNjQzMjh9.HxbaR7TJuAHUlSYsAmOhxqryMwRYZSTnxn3_SrF_A7Q",
-                },
-            });
-            console.log(data.data);
-            setmens(data.data);
-        } catch (error) {
-            console.log("error in fetching the data");
+    const dispatch = useDispatch();
+    const [searchParams] = useSearchParams();
+    const location = useLocation();
+
+    const allParamsObj = {
+        params:{
+            type : searchParams.getAll("type"),
+            brand : searchParams.getAll("brand"),
+            size : searchParams.getAll("size"),
         }
     }
 
-    useEffect(() => {
-        getMenData();
-    }, []);
+    // console.log(allParamsObj);
 
-    console.log(mens);
-    console.log("num", num);
+    const mensProduct = useSelector((store)=>{
+        return store.productReducer.mensProduct;
+    });
+    
+    const loading = useSelector((store)=>{
+        // console.log("MENS PRODUCT",store.productReducer.isLoading);
+        return store.productReducer.isLoading;
+    });
+
+    useEffect(()=>{
+        dispatch(getMensProduct(allParamsObj))
+    },[location.search]);
+
+
     return <Box>
         <Text align='center' fontSize={'43px'} margin={'2rem 0.5rem'}>
             MEN ALL COTHING
@@ -65,10 +70,14 @@ const MensProductPage = () => {
                 }}
                     spacing={8}
                     className="grid-container" >
-                    {
-                        mens.map((el) => {
-                            return <ProductCard key={(Math.random() * 1000) + el.title} {...el} />
-                        })
+                    {   
+                        loading ? (
+                            <Image src="https://media2.giphy.com/media/SbR06CH9zLmJeuI30y/200w.webp?cid=ecf05e47fnp61f56gwapnolgiwyyhkpxyc75d37gco1doz5d&rid=200w.webp&ct=s" alt="loading" margin={'auto'}/>
+                        ):(
+                            mensProduct.map((el) => {
+                                return <ProductCard key={(Math.random() * 1000) + el.title} {...el} />
+                            })
+                        )
                     }
                 </SimpleGrid>
             </Container>
@@ -76,4 +85,8 @@ const MensProductPage = () => {
     </Box>
 }
 
+<<<<<<< HEAD
 export  {MensProductPage};
+=======
+export {MensProductPage}
+>>>>>>> 39c06aafacb97000571ea9dc56f5bfede26475a8
