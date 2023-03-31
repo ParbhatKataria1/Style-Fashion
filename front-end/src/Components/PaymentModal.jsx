@@ -26,12 +26,33 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import axios from "axios";
 
 const PaymentModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [mobile, setMobile] = useState("");
   console.log(mobile);
+
+  const [text,setText] = useState("");
+
+  const handleChange=(e)=>{
+    const { name, value } = e.target;
+    setText({ ...text, [name]: value });
+  }
+
+  const handleClick = async (e) => {
+    let data = await axios.post("https://vast-raincoat-lamb.cyclic.app/cart/add", text,{
+      headers: {
+        Authorization:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAyNTM2Nzh9.Fr5YNhCxJWUQ2T-9GJw_hu7vX_QOzClnlET0leH2NZ0",
+      },
+    });
+    setText("");
+    console.log(data);
+  };
+
+ console.log(text);
   return (
     <>
       <Button
@@ -54,7 +75,7 @@ const PaymentModal = () => {
         BUY IT NOW
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} size={"4xl"}>
+      <Modal isOpen={isOpen} onClose={onClose} size={"4xl"} autoFocus={false} >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
@@ -107,16 +128,21 @@ const PaymentModal = () => {
                       </Box>
                     </TabPanel>
                     <TabPanel>
-                      <Input placeholder="Pincode" />
-                      <HStack>
-                        <Input placeholder="City" />
-                        <Input placeholder="State" />
+                      <Box border={"0px solid red"} w="70%" m="auto"  lineHeight={"60px"} textAlign={"center"}>
+                      <Input placeholder="Full Name" type="text" name="full_name" onChange={handleChange} />
+                      <HStack >
+                        <Input isDisabled={text.full_name == ""} placeholder="City" type="text" name="city" onChange={handleChange} />
+                        <Input placeholder="State" type="text" name="state" onChange={handleChange}/>
                       </HStack>
-                      <HStack>
-                        <Input placeholder="Full Name" />
-                        <Input placeholder="Email Address" />
+                      <HStack mt={3}>
+                        
+                        <Input placeholder="Pincode" type="number" name="pincode" onChange={handleChange}/>
+                        <Input placeholder="Email Address" type="email" name="email" onChange={handleChange}/>
                       </HStack>
-                      <Input placeholder="Full Address" />
+                      <Input placeholder="Full Address" type="text" name="address" onChange={handleChange}/>
+                      <Button size={"lg"} onClick={handleClick}>Submit</Button>
+                      </Box>
+                     
                     </TabPanel>
                     <TabPanel>jyy</TabPanel>
                   </TabPanels>

@@ -141,25 +141,49 @@ const Cart = () => {
   const [cartData, setcartdata] = useState([]);
 
   async function getdata() {
-    let data = await axios.get("https://vast-raincoat-lamb.cyclic.app/cart", {
+    try {
+      let data = await axios.get("https://vast-raincoat-lamb.cyclic.app/cart", {
+        headers: {
+          Authorization:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAyNTM2Nzh9.Fr5YNhCxJWUQ2T-9GJw_hu7vX_QOzClnlET0leH2NZ0",
+        },
+      });
+      setcartdata(data.data);
+    } catch (error) {
+      console.log("error in fetching cart data");
+    }
+  }
+console.log((cartData));
+
+
+const updateQty = async(id,qty)=>{
+  try {
+    await axios.patch(`https://vast-raincoat-lamb.cyclic.app/cart/update/${id}`,qty,{
       headers: {
         Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI1NDVmZTg5NWFiZjk3MWRlOTM0NTUiLCJpYXQiOjE2ODAxOTU1MjN9.FhjXqCaiiXGa7oeVEXm8ABi-VdNdVCmFPY1j0nsnqPQ",
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAyNTM2Nzh9.Fr5YNhCxJWUQ2T-9GJw_hu7vX_QOzClnlET0leH2NZ0",
       },
-    });
-    console.log(data.data, 'thiangid');
+    })
+    getdata();
+    console.log("update fun",id,qty);
+  } catch (error) {
+    console.log("error in update qty");
   }
+}
+
+
 
   useEffect(() => {
     getdata();
   }, []);
+
   return (
     <>
       <Box pt={"20px"} w="95%" m="auto">
         <Flex justifyContent={"space-between"}>
-          <Box  w={"70%"}>
-            <Box p={"10px"} mt="20px" >
-              <Flex
+          <Box w={"70%"}>
+            <Box p={"10px"} mt="20px">
+              {/* <Flex
                 justifyContent={"space-between"}
                 borderTop={"1px solid lightgray"}
                 borderBottom={"1px solid lightgray"}
@@ -183,14 +207,14 @@ const Cart = () => {
                   <Text>Total Price</Text>
                 </Box>
                 <Box></Box>
-              </Flex>
-              {/* {cartData?.cartData.map((item) => {
+              </Flex> */}
+              {cartData?.map((item) => {
                 return (
                   <Box key={item.id}>
-                    <CartItem cartItem={item} handleDelete={handleDelete} />
+                    <CartItem cartItem={item} updateQty={updateQty}/>
                   </Box>
                 );
-              })} */}
+              })}
             </Box>
           </Box>
           <PaymentOption
@@ -204,22 +228,20 @@ const Cart = () => {
 
 export default Cart;
 
-const CartItem = ({ cartItem, handleDelete }) => {
+const CartItem = ({ cartItem, updateQty }) => {
   // console.log(cartItem)
-  // console.log('cartItem')
-  const [item, setitem] = useState({ ...cartItem, qty: 1 });
-  function changeTheData(qty) {
-    let newdata = {
-      ...cartItem,
-      qty: +qty,
-    };
-    delete newdata.id;
-    // dispatch(updateCartData(cartItem.id, newdata)).then(() => {
-    //   // console.log('gdafdagda')
-    //   setitem(newdata);
-    // });
+  
+
+const [qty,setQty] = useState(cartItem.qty)
+  const changeTheData = (e)=>{
+    setQty(e.target.value);
+    updateQty(cartItem._id,qty);
   }
-  // console.log(cartItem, 'comone');
+console.log((qty));
+
+
+
+
   return (
     <Box mb={"10px"} border="1px solid lightgray" borderRadius={"5px"}>
       <Flex
@@ -245,8 +267,8 @@ const CartItem = ({ cartItem, handleDelete }) => {
             <Image
               h={"100%"}
               objectFit="cover"
-              //   src={cartItem.image.furl}
-              //   alt={cartItem.title}
+                src={cartItem.images[0]}
+                alt={cartItem.title}
             ></Image>
           </Flex>
         </Box>
@@ -257,25 +279,23 @@ const CartItem = ({ cartItem, handleDelete }) => {
           orientation="vertical"
         />
         <Box mr="40px" w={"20%"}>
-          <Text fontWeight={500}>{/* {cartItem.title} */}</Text>
+          <Text fontWeight={500}>{cartItem.title}</Text>
           <Text>
             style:
             {/* {cartItem.productdetails.styleno} */}
           </Text>
-          <Text>Color : BLUE MOTIF</Text>
-          <Text>Size Set of 4</Text>
+          <Text>Color : {cartItem.color}</Text>
+          <Text>Size :{cartItem.sizes}</Text>
         </Box>
         <Box mr="60px">
           {/* <Text>Item Price</Text> */}
-          <Text>${/* {cartItem.price} */}</Text>
+          <Text>${cartItem.price}</Text>
         </Box>
         <Box mr="30px">
           {/* <Text>Quanitity</Text> */}
           <Select
-            placeholder={cartItem.qty}
-            // onChange={(e) => {
-            //   changeTheData(e.target.value);
-            // }}
+            placeholder={qty}
+            onChange={changeTheData}
           >
             <option value="1">1</option>
             <option value="2">2</option>
@@ -302,7 +322,7 @@ const CartItem = ({ cartItem, handleDelete }) => {
 
         <Box mr="70px">
           {/* <Text>Total Price</Text> */}
-          <Text>${/* {parseInt(item.price) * +item.qty} */}</Text>
+          <Text>${parseInt(cartItem.price) * +cartItem.qty}</Text>
         </Box>
         <Box
           cursor={"pointer"}
