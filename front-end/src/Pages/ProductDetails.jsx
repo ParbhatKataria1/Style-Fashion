@@ -68,7 +68,7 @@ const ProductDetails = () => {
         {
           headers: {
             Authorization:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI1NDVmZTg5NWFiZjk3MWRlOTM0NTUiLCJpYXQiOjE2ODAxOTU1MjN9.FhjXqCaiiXGa7oeVEXm8ABi-VdNdVCmFPY1j0nsnqPQ",
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0ODgxZDg3MWRiODU3OTRhMDRkM2IiLCJpYXQiOjE2ODAxODU4Mjh9.ZStaoEyCnTJ89Et2eNzqKNnAFKNYaqp85IIyMgMPhwE",
           },
         }
       );
@@ -96,7 +96,9 @@ const ProductDetails = () => {
   };
 
   const handleClick = async () => {
+    let { brand, images, price, title, type } = product[0];
     let cartData = {
+
       ...product[0],
       quantity: "qty",
       size: "size",
@@ -125,6 +127,27 @@ const ProductDetails = () => {
           headers: {
             Authorization:
               "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI1NDVmZTg5NWFiZjk3MWRlOTM0NTUiLCJpYXQiOjE2ODAxOTU1MjN9.FhjXqCaiiXGa7oeVEXm8ABi-VdNdVCmFPY1j0nsnqPQ",
+
+      brand,
+      images,
+      price,
+      title,
+      type,
+      qty: quantity,
+      sizes: size,
+      color,
+    };
+    // console.log(cartData, "cartdata");
+
+    try {
+      let data = await axios.post(
+        "https://vast-raincoat-lamb.cyclic.app/cart/add",
+        cartData,
+        {
+          headers: {
+            Authorization:
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0ODgxZDg3MWRiODU3OTRhMDRkM2IiLCJpYXQiOjE2ODAxODU4Mjh9.ZStaoEyCnTJ89Et2eNzqKNnAFKNYaqp85IIyMgMPhwE",
+
           },
         }
       );
