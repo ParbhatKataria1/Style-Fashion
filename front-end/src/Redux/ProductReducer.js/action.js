@@ -15,15 +15,30 @@ export const womensAllProductRequest = (payload) =>{
     return {type:WOMENS_ALL_PRODUCT_SUCCESS,payload}
 }
 
-export const getMensProduct = async(dispatch) =>{
+export const getMensProduct = (allParamsObj) => (dispatch) =>{
     dispatch(productRequest());
-   await axios.get("https://vast-raincoat-lamb.cyclic.app/men",{
+    axios.get("https://vast-raincoat-lamb.cyclic.app/men",{
+        params:allParamsObj.params,
         headers: {
             Authorization:
                 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAxNjQzMjh9.HxbaR7TJuAHUlSYsAmOhxqryMwRYZSTnxn3_SrF_A7Q",
         },
     }).then((res)=>{
-        dispatch(mensAllProductRequest(res))
+        console.log(res.data,"from action .js")
+        dispatch(mensAllProductRequest(res.data))
+    }).catch(()=>{
+        dispatch(productFailure());
+    })
+}
+export const getWomensProduct = (dispatch) =>{
+    dispatch(productRequest());
+    axios.get("https://vast-raincoat-lamb.cyclic.app/women",{
+        headers: {
+            Authorization:
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAxNjQzMjh9.HxbaR7TJuAHUlSYsAmOhxqryMwRYZSTnxn3_SrF_A7Q",
+        },
+    }).then((res)=>{
+        dispatch(womensAllProductRequest(res))
     }).catch(()=>{
         dispatch(productFailure());
     })

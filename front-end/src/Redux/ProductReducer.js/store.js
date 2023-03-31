@@ -6,4 +6,4 @@ const rootReducer =combineReducers({
     productReducer
 })
 
-export const store = legacy_createStore(rootReducer, applyMiddleware(thunk))
+export const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
