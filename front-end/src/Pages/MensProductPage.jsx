@@ -75,3 +75,5 @@ const MensProductPage = () => {
         </Box>
     </Box>
 }
+
+export  {MensProductPage};
