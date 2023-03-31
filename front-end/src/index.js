@@ -18,11 +18,15 @@ root.render(
         authorizationParams={{
           redirect_uri: window.location.origin
         }}>
+        }}
+      >
+        {/* <Provider> */}
           <BrowserRouter>
             <Provider store={store}>
              <App />
             </Provider>
           </BrowserRouter>
+        {/* </Provider> */}
       </Auth0Provider>
     </ChakraProvider>
   </>

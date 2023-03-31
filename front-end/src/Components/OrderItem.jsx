@@ -9,6 +9,9 @@ import {
   chakra,
   Tooltip,
   Text,
+  FormControl,
+  FormLabel,
+  Switch,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { BsStar, BsStarFill, BsStarHalf } from "react-icons/bs";
@@ -62,32 +65,12 @@ function ProductAddToCart({
   brand,
   status,
   orderdate,
+  id,
+  toggleStatus,
 }) {
   const [hover, sethover] = useState(false);
   const [orders, setorders] = useState([]);
-
-  async function getdata() {
-    try {
-      let data = await axios.get(
-        "https://vast-raincoat-lamb.cyclic.app/order",
-        {
-          headers: {
-            Authorization:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0ODgxZDg3MWRiODU3OTRhMDRkM2IiLCJpYXQiOjE2ODAxODU4Mjh9.ZStaoEyCnTJ89Et2eNzqKNnAFKNYaqp85IIyMgMPhwE",
-          },
-        }
-      );
-      console.log(data.data);
-      setorders(data.data);
-    } catch (error) {
-      console.log("error in fetching the data");
-    }
-  }
-  console.log("1");
-
-  useEffect(() => {
-    getdata();
-  }, []);
+  console.log("img", status);
 
   return (
     <Flex
@@ -126,18 +109,25 @@ function ProductAddToCart({
             - 50%
           </Box>
         )}
-        <Box h="370px"></Box>
-        <div border={"1px solid red"} class="image-wrapper profile-pic">
+        {/* <Box h="370px"></Box> */}
+        <Flex
+          border={"1px solid red"}
+          position="relative"
+          class="image-wrapper profile-pic"
+        >
           {
             <Image
+              textAlign={"center"}
               border={"1px solid red"}
               top="0px"
-              position={"absolute"}
+              // position={"absolute"}
               h="370px"
               w="100%"
               objectFit={"cover"}
               transition="opacity 0.5s ease-in-out"
-              src={img}
+              src={
+                "https://cdn.shopify.com/s/files/1/0677/1464/6315/products/koovs-3234.jpg?v=1671078617&width=600"
+              }
               className="image"
               opacity={hover ? "0" : "1"}
               alt="normal"
@@ -155,7 +145,7 @@ function ProductAddToCart({
             opacity={hover ? "1" : "0"}
             alt="normal"
           />
-        </div>
+        </Flex>
 
         <Box p="6">
           <Box
@@ -181,19 +171,31 @@ function ProductAddToCart({
           </Flex>
           <Box mt="15px" textAlign={"left"}>
             <Text>OrderDate - {orderdate}</Text>
-            <Text
+            <Flex
               d="inline"
-              bg="red.500"
+              bg={!status ? "red.500" : "green.500"}
               mt="10px"
               w="150px"
-              textAlign={"center"}
+              justifyContent={"space-between"}
               color={"white"}
               fontSize="13px"
-              p="3px 5px"
-              borderRadius={"50px"}
+              borderRadius={"10px"}
+              p="8px"
             >
-              Status - {status}
-            </Text>
+              {status ? "Delivered" : "Pending"}
+              <Box
+                onClick={() => {
+                  toggleStatus(id, status);
+                }}
+              >
+                <Switch
+                  ml="10px"
+                  size="md"
+                  isDisabled={status}
+                  id="email-alerts"
+                />
+              </Box>
+            </Flex>
           </Box>
 
           <Flex justifyContent="space-between" alignContent="center">

@@ -1,6 +1,6 @@
 import { Button, Container, SimpleGrid, Text, Tooltip ,Drawer,Input,Box,HStack,Stack, Image} from "@chakra-ui/react"
 import { useState, useEffect } from "react";
-import { ProductCard } from "./ProductPage"
+import { ProductCard } from "./ProductPage";
 import FilterDrawer from "../Components/FilterationDrawer"
 import axios from "axios";
 import {useDispatch, useSelector} from 'react-redux';

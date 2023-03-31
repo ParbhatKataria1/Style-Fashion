@@ -45,6 +45,17 @@ const getPosts = async(req, res)=>{
     }
 }
 
+const getPostsItem = async(req, res)=>{
+    let {_id} = req.params;
+    try {
+       let data = await PostModel.find({_id});
+       res.status(200).send(data);
+       }
+     catch (error) {
+        res.status(400).send({"msg":"not able to get the data"})
+    }
+}
+
 // const getTopData = async(req, res)=>{
 //     let {page} = req.query;
 //     console.log(page)
@@ -93,7 +104,7 @@ const deleteData = async(req, res)=>{
     }
 }
 
-module.exports = {getPosts}
+module.exports = {getPosts, getPostsItem, deleteData, updateData, addPost}
 
 
 
