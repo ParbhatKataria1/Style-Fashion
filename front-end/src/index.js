@@ -7,6 +7,8 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { BrowserRouter } from "react-router-dom";
 import { Auth0Provider } from "@auth0/auth0-react";
 import {Provider} from 'react-redux';
+import { store } from './Redux/ProductReducer.js/store';
+// import 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <>
@@ -18,12 +20,12 @@ root.render(
           redirect_uri: window.location.origin
         }}
       >
-        {/* <Provider> */}
+        <Provider store={store}>
           <BrowserRouter>
 
             <App />
           </BrowserRouter>
-        {/* </Provider> */}
+        </Provider>
       </Auth0Provider>
     </ChakraProvider>
   </>
