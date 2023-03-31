@@ -34,7 +34,7 @@ export default function FilterDrawer() {
   const [priceRange, setPriceRange] = useState([0,22995]);
 
   const [searchParams,setSearchParams] = useSearchParams();
-  console.log(searchParams,"search params from filter page");
+  // console.log(searchParams,"search params from filter page");
   const initialStateBrand =  searchParams.getAll("brand");
   const initialStateType =  searchParams.getAll("type");
   const initialStateSize =  searchParams.getAll("size");
@@ -131,15 +131,15 @@ export default function FilterDrawer() {
                   </AccordionButton>
                   <AccordionPanel pb={4}>
                       <CheckboxGroup value={selectedTypes} onChange={handleTypeChange}>
-                          <Checkbox value="bags">Bags</Checkbox><br/>
-                          <Checkbox value="boots">Boots</Checkbox><br/>
-                          <Checkbox value="pants">Pants</Checkbox><br/>
-                          <Checkbox value="hats">Hats</Checkbox><br/>
-                          <Checkbox value="hoodies">Hoodies</Checkbox><br/>
-                          <Checkbox value="shirts">Shirts</Checkbox><br/>
-                          <Checkbox value="shorts">Shorts</Checkbox><br/>
-                          <Checkbox value="t-shirts">T-Shirts</Checkbox><br/>
-                          <Checkbox value="snadals">Sandals</Checkbox><br/>
+                          <Checkbox value="bags" checked={selectedTypes.includes("bags")}>Bags</Checkbox><br/>
+                          <Checkbox value="boots" checked={selectedTypes.includes("boots")}>Boots</Checkbox><br/>
+                          <Checkbox value="pants" checked={selectedTypes.includes("pants")}>Pants</Checkbox><br/>
+                          <Checkbox value="hats" checked={selectedTypes.includes("hats")}>Hats</Checkbox><br/>
+                          <Checkbox value="hoodies" checked={selectedTypes.includes("hoodies")}>Hoodies</Checkbox><br/>
+                          <Checkbox value="shirts" checked={selectedTypes.includes("shirts")}>Shirts</Checkbox><br/>
+                          <Checkbox value="shorts" checked={selectedTypes.includes("shorts")}>Shorts</Checkbox><br/>
+                          <Checkbox value="t-shirts" checked={selectedTypes.includes("t-shirts")}>T-Shirts</Checkbox><br/>
+                          <Checkbox value="sandals" checked={selectedTypes.includes("sandals")}>Sandals</Checkbox><br/>
                       </CheckboxGroup>
                   </AccordionPanel>
               </AccordionItem>
@@ -153,10 +153,10 @@ export default function FilterDrawer() {
                   </AccordionButton>
                   <AccordionPanel pb={4}>
                       <CheckboxGroup value={selectedSize} onChange={handleSizeChange}>
-                      <Checkbox value="S">S</Checkbox><br/>
-                      <Checkbox value="M">M</Checkbox><br/>
-                      <Checkbox value="L">L</Checkbox><br/>
-                      <Checkbox value="XL">XL</Checkbox><br/>
+                      <Checkbox value="XS" checked={selectedSize.includes("XS")}>XS</Checkbox><br/>
+                      <Checkbox value="S" checked={selectedSize.includes("S")}>S</Checkbox><br/>
+                      <Checkbox value="M" checked={selectedSize.includes("M")}>M</Checkbox><br/>
+                      <Checkbox value="L" checked={selectedSize.includes("L")}>L</Checkbox><br/>
                       </CheckboxGroup>
                   </AccordionPanel>
               </AccordionItem>
@@ -169,10 +169,10 @@ export default function FilterDrawer() {
                   </AccordionButton>
                   <AccordionPanel pb={4}>
                       <CheckboxGroup value={selectedBrand} onChange={handleBrandChange}>
-                          <Checkbox value="Koovs">Koovs</Checkbox><br/>
-                          <Checkbox value="Nike">Nike</Checkbox><br/>
-                          <Checkbox value="5ive">5ive</Checkbox><br/>
-                          <Checkbox value="TheCoutourclub">The Coutour club</Checkbox><br/>
+                          <Checkbox value="Koovs" checked={selectedBrand.includes("Koovs")}>Koovs</Checkbox><br/>
+                          <Checkbox value="Nike" checked={selectedBrand.includes("Nike")}>Nike</Checkbox><br/>
+                          <Checkbox value="5ive" checked={selectedBrand.includes("5ive")}>5ive</Checkbox><br/>
+                          <Checkbox value="TheCoutourclub" checked={selectedBrand.includes("TheCoutourclub")}>The Coutour club</Checkbox><br/>
                       </CheckboxGroup>
                   </AccordionPanel>
               </AccordionItem>

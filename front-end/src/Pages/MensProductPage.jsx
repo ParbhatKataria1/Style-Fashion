@@ -1,26 +1,40 @@
-import { Button, Container, SimpleGrid, Text, Tooltip ,Drawer,Input,Box,HStack,Stack, Image} from "@chakra-ui/react"
+import { Button, Container, SimpleGrid, Text, Tooltip ,Box,HStack,Stack, Image} from "@chakra-ui/react"
 import { useState, useEffect } from "react";
 import { ProductCard } from "./ProductPage";
 import FilterDrawer from "../Components/FilterationDrawer"
 import axios from "axios";
 import {useDispatch, useSelector} from 'react-redux';
 import { getMensProduct } from "../Redux/ProductReducer.js/action";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 const MensProductPage = () => {
     const [num, setNum] = useState(0);
     const dispatch = useDispatch();
+    const [searchParams] = useSearchParams();
+    const location = useLocation();
+
+    const allParamsObj = {
+        params:{
+            type : searchParams.getAll("type"),
+            brand : searchParams.getAll("brand"),
+            size : searchParams.getAll("size"),
+        }
+    }
+
+    // console.log(allParamsObj);
+
     const mensProduct = useSelector((store)=>{
         return store.productReducer.mensProduct;
     });
     
     const loading = useSelector((store)=>{
-        console.log("MENS PRODUCT",store.productReducer.isLoading);
+        // console.log("MENS PRODUCT",store.productReducer.isLoading);
         return store.productReducer.isLoading;
     });
 
     useEffect(()=>{
-        dispatch(getMensProduct)
-    },[]);
+        dispatch(getMensProduct(allParamsObj))
+    },[location.search]);
 
 
     return <Box>
