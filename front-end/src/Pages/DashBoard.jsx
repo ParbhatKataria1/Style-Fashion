@@ -1,8 +1,8 @@
-// import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import AdminSidePage from "../Components/AdminSidePage";
 import axios from "axios";
-// import labels from "labels";
+import labels from "labels";
 
 const DashBoard = () => {
   return <AdminSidePage children={<Content />} />;
@@ -112,7 +112,7 @@ const Content = () => {
     for (let key in womenobj) {
       let val1 = menobj[key] ? menobj[key] : 0;
       let val2 = womenobj[key] ? womenobj[key] : 0;
-      if (val1 == 0) parentArr.push([key, val1, val2]);
+      if (val1 === 0) parentArr.push([key, val1, val2]);
     }
   }
   console.log(parentArr, "thisis par");

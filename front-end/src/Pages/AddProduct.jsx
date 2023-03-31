@@ -10,7 +10,6 @@ import {
     Heading,
     Box,
 } from "@chakra-ui/react";
-// import axios from "axios";
 
 
 const AddProducts = () => {
@@ -23,9 +22,6 @@ const AddProducts = () => {
     const [type, setType] = useState("Mens");
 
 
-    // const [post, setPost] = useState({});
-
-
     const product = {
         title,
         price,
@@ -36,9 +32,9 @@ const AddProducts = () => {
         type
     };
 
-        const handleSubmit = (e) => {
-            e.preventDefault();
-            if(type == "men"){
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (type === "men") {
             fetch("https://vast-raincoat-lamb.cyclic.app/men/", {
                 method: "POST",
                 headers: {
@@ -53,8 +49,8 @@ const AddProducts = () => {
                 })
                 .catch(err => console.log(err.message))
         }
-    else if(type == "women"){
-        fetch("https://vast-raincoat-lamb.cyclic.app/women/", {
+        else if (type === "women") {
+            fetch("https://vast-raincoat-lamb.cyclic.app/women/", {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
@@ -69,11 +65,10 @@ const AddProducts = () => {
                 .catch(err => console.log(err.message))
         }
     }
-    
 
 
     return (
-        <Box style={{marginLeft:"120px",width:"1000px"}}>
+        <Box style={{ marginLeft: "120px", width: "1000px" }}>
             <Heading fontWeight={"thiner"} as="h2" size="xl" mb={"30px"}>
                 Add products
             </Heading>
