@@ -2,7 +2,7 @@ import { MENS_ALL_PRODUCT_SUCCESS, PRODUCT_FAILURE, PRODUCT_REQUEST, WOMENS_ALL_
 
 const initialState = {
     isLoading:false,
-    mensproducts:[],
+    mensProduct:[],
     womensProducts:[],
     isError:false
 }

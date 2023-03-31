@@ -8,7 +8,10 @@ import { BrowserRouter } from "react-router-dom";
 import { Auth0Provider } from "@auth0/auth0-react";
 import {Provider} from 'react-redux';
 import { store } from './Redux/ProductReducer.js/store';
+<<<<<<< HEAD
 // import 
+=======
+>>>>>>> 39c06aafacb97000571ea9dc56f5bfede26475a8
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <>
@@ -18,12 +21,14 @@ root.render(
         clientId="sl3rV7phfia6e8uEGyQAngcChsH7GPRz"
         authorizationParams={{
           redirect_uri: window.location.origin
+        }}>
         }}
       >
         <Provider store={store}>
           <BrowserRouter>
-
-            <App />
+            <Provider store={store}>
+             <App />
+            </Provider>
           </BrowserRouter>
         </Provider>
       </Auth0Provider>
