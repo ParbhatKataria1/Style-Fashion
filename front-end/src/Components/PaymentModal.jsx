@@ -27,6 +27,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import axios from "axios";
+import {useEffect} from "react";
 
 const PaymentModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -34,25 +35,90 @@ const PaymentModal = () => {
   const [mobile, setMobile] = useState("");
   console.log(mobile);
 
-  const [text,setText] = useState("");
+  const [text, setText] = useState("");
 
-  const handleChange=(e)=>{
+  const today = new Date();
+  const options = {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  };
+  const dateFormatted = today.toLocaleString("en-US", options);
+  const dateFinal = dateFormatted.toString();
+
+  // console.log(dateFinal);
+
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setText({ ...text, [name]: value });
-  }
-
-  const handleClick = async (e) => {
-    let data = await axios.post("https://vast-raincoat-lamb.cyclic.app/cart/add", text,{
-      headers: {
-        Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAyNTM2Nzh9.Fr5YNhCxJWUQ2T-9GJw_hu7vX_QOzClnlET0leH2NZ0",
-      },
-    });
-    setText("");
-    console.log(data);
+    setText({ ...text, [name]: value, date: dateFinal });
   };
 
- console.log(text);
+  // ----------- get request for cart data ------- //
+  const [cartData, setcartdata] = useState([]);
+
+  const getdata= async()=> {
+    try {
+      let data = await axios.get("https://vast-raincoat-lamb.cyclic.app/cart", {
+        headers: {
+          Authorization:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI2YTNjMTQxMWI4ZTYxMGVhMzJmNTciLCJpYXQiOjE2ODAyODkwNzl9.mgQQ4nvjKKLtspr0V2ORDqpYztzyKGjJA65L4HBlbKU",
+        },
+      });
+      setcartdata(data.data);
+    } catch (error) {
+      console.log("error in fetching cart data");
+    }
+  }
+  console.log(cartData,"pmodel cart");
+
+  useEffect(()=>{
+getdata()
+  },[])
+
+
+//-------------adding cartdata and address-----------------//
+ 
+
+
+
+
+  const handleClick = async (e) => {
+
+    const newData = cartData.map(e=>{
+      return {
+        ...e,
+        ...text
+      }
+    })
+    console.log(newData,"newData")
+    for(let i=0;i<newData.length;i++){
+      let data = await axios.post(
+        "https://vast-raincoat-lamb.cyclic.app/order/add",
+        newData[i],
+        {
+          headers: {
+            Authorization:
+           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI2YTNjMTQxMWI4ZTYxMGVhMzJmNTciLCJpYXQiOjE2ODAyODkwNzl9.mgQQ4nvjKKLtspr0V2ORDqpYztzyKGjJA65L4HBlbKU",
+          },
+        }
+      );
+      console.log(data.data, "sent data")
+    }
+    // setText("");
+    await axios.delete(`https://vast-raincoat-lamb.cyclic.app/cart`,{
+      headers: {
+        Authorization:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI2YTNjMTQxMWI4ZTYxMGVhMzJmNTciLCJpYXQiOjE2ODAyODkwNzl9.mgQQ4nvjKKLtspr0V2ORDqpYztzyKGjJA65L4HBlbKU",
+      },
+    })
+   
+
+    
+    // console.log(data);
+  };
+
+  console.log(text);
   return (
     <>
       <Button
@@ -75,7 +141,7 @@ const PaymentModal = () => {
         BUY IT NOW
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} size={"4xl"} autoFocus={false} >
+      <Modal isOpen={isOpen} onClose={onClose} size={"4xl"} autoFocus={false}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
@@ -128,23 +194,50 @@ const PaymentModal = () => {
                       </Box>
                     </TabPanel>
                     <TabPanel>
-                      <Box border={"0px solid red"} w="70%" m="auto"  lineHeight={"60px"} textAlign={"center"}>
-                      <Input placeholder="Full Name" type="text" name="full_name" onChange={handleChange} />
-                      <HStack >
-                        <Input isDisabled={text.full_name == ""} placeholder="City" type="text" name="city" onChange={handleChange} />
-                        <Input placeholder="State" type="text" name="state" onChange={handleChange}/>
-                      </HStack>
-                      <HStack mt={3}>
-                        
-                        <Input placeholder="Pincode" type="number" name="pincode" onChange={handleChange}/>
-                        <Input placeholder="Email Address" type="email" name="email" onChange={handleChange}/>
-                      </HStack>
-                      <Input placeholder="Full Address" type="text" name="address" onChange={handleChange}/>
-                      <Button size={"lg"} onClick={handleClick}>Submit</Button>
+                      <Box
+                        border={"0px solid red"}
+                        w="70%"
+                        m="auto"
+                        lineHeight={"60px"}
+                        textAlign={"center"}
+                      >
+                        {/* <Input placeholder="Full Name" type="text" name="full_name" onChange={handleChange} /> */}
+                        <HStack>
+                          <Input
+                            isDisabled={text.full_name == ""}
+                            placeholder="City"
+                            type="text"
+                            name="city"
+                            onChange={handleChange}
+                          />
+                          <Input
+                            placeholder="State"
+                            type="text"
+                            name="state"
+                            onChange={handleChange}
+                          />
+                        </HStack>
+                        <HStack mt={3}>
+                          <Input
+                            placeholder="Pincode"
+                            type="number"
+                            name="pincode"
+                            onChange={handleChange}
+                          />
+                          {/* <Input placeholder="Email Address" type="email" name="email" onChange={handleChange}/> */}
+                        </HStack>
+                        <Input
+                          placeholder="Full Address"
+                          type="text"
+                          name="address"
+                          onChange={handleChange}
+                        />
+                        <Button size={"lg"} onClick={handleClick}>
+                          Submit
+                        </Button>
                       </Box>
-                     
                     </TabPanel>
-                    <TabPanel>jyy</TabPanel>
+                    <TabPanel></TabPanel>
                   </TabPanels>
                 </Tabs>
               </Box>

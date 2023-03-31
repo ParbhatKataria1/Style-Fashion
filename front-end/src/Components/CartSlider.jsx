@@ -23,6 +23,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import {Link} from "react-router-dom";
 
 const CartSlider = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -34,7 +35,7 @@ const CartSlider = () => {
     let data = await axios.get("https://vast-raincoat-lamb.cyclic.app/cart", {
       headers: {
         Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAyNTM2Nzh9.Fr5YNhCxJWUQ2T-9GJw_hu7vX_QOzClnlET0leH2NZ0",
+        process.env.TOKEN,
       },
     });
     setcartdata(data.data);
@@ -44,9 +45,11 @@ const CartSlider = () => {
     getdata();
   }, []);
   console.log(cartData);
-
+  const { qty, price } = cartData;
   return (
     <>
+    
+    
       <Button
         ref={btnRef}
         onClick={onOpen}
@@ -68,6 +71,7 @@ const CartSlider = () => {
       >
         ADD TO CART
       </Button>
+  
       <Drawer
         isOpen={isOpen}
         placement="right"
@@ -106,17 +110,18 @@ const CartSlider = () => {
                 cartData.map((el) => {
                   return (
                     <Box key={el.id}>
-                    <SideCartItem
-                      image={el.images[0]}
-                      title={el.title}
-                      quantity={el.qty}
-                      price={el.price}
-                      size={el.sizes}
-                      color={el.color}
-                    />
+                      <SideCartItem
+                        image={el.images[0]}
+                        title={el.title}
+                        quantity={el.qty}
+                        price={el.price}
+                        size={el.sizes}
+                        color={el.color}
+                        getdata={getdata}
+                      />
                     </Box>
                   );
-                })} 
+                })}
             </Box>
             <Flex mt={5} justifyContent="space-between">
               <VStack>
@@ -127,9 +132,11 @@ const CartSlider = () => {
               </VStack>
               <VStack>
                 <Text>FREE</Text>
-                <Text fontWeight={500}>Rs. 32,960.00</Text>
+                <Text fontWeight={500}> {qty * price}</Text>
               </VStack>
             </Flex>
+            <Link to="/cart">
+            
             <Button
               rounded={"none"}
               w={"full"}
@@ -144,16 +151,9 @@ const CartSlider = () => {
                 transform: "translateY(1px)",
               }}
             >
-              Place Order
-            </Button>
-            <Text
-              _hover={{ cursor: "pointer" }}
-              textAlign={"center"}
-              mt={5}
-              textDecoration="underline"
-            >
               View Cart
-            </Text>
+            </Button>
+            </Link>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -163,30 +163,60 @@ const CartSlider = () => {
 
 export default CartSlider;
 
-function SideCartItem({ id,image, title, quantity, price, size, color }) {
-   const [qty, setQty] = useState(quantity);
+function SideCartItem({
+  id,
+  image,
+  title,
+  quantity,
+  price,
+  size,
+  color,
+  getData,
+}) {
+  const [qty, setQty] = useState(quantity);
 
   const handleQuantity = (val) => {
     setQty((p) => p + val);
   };
 
-  const updateqty =async ()=>{
-try {
-  await axios.patch(`https://vast-raincoat-lamb.cyclic.app/cart/update/${id}`,qty, {
-    headers: {
-      Authorization:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAyNTM2Nzh9.Fr5YNhCxJWUQ2T-9GJw_hu7vX_QOzClnlET0leH2NZ0",
+  const updateqty = async () => {
+    try {
+      await axios.patch(
+        `https://vast-raincoat-lamb.cyclic.app/cart/update/${id}`,
+        qty,
+        {
+          headers: {
+            Authorization:
+            process.env.TOKEN,
+          },
+        }
+      );
+      getData();
+    } catch (error) {
+      console.log("error in update qty");
     }
-  })
-} catch (error) {
-  console.log("error in update qty");
-}
-  }
+  };
 
-  useEffect(()=>{
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(
+        `https://vast-raincoat-lamb.cyclic.app/cart/delete/${id}`,
+        {
+          headers: {
+            Authorization:
+            process.env.TOKEN,
+          },
+        }
+      );
+      getData();
+    } catch (error) {
+      console.log("error in delete");
+    }
+  };
+
+  useEffect(() => {
     updateqty();
-    
-  },[qty])
+  }, [qty]);
 
   return (
     <Flex gap={2} width={"100%"} border="0px solid black" h={"150px"}>
@@ -204,7 +234,7 @@ try {
         <HStack>
           <Heading fontSize={14}>Color:</Heading>
           <Text fontWeight={500} fontSize={12}>
-           {color}
+            {color}
           </Text>
         </HStack>
         <Text fontWeight={400} fontSize={16}>
@@ -228,7 +258,12 @@ try {
             +
           </Button>
 
-          <Text fontSize={15} cursor="pointer" textDecoration={"underline"}>
+          <Text
+            onClick={handleDelete}
+            fontSize={15}
+            cursor="pointer"
+            textDecoration={"underline"}
+          >
             Remove
           </Text>
         </HStack>

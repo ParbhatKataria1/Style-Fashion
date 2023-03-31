@@ -15,6 +15,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import axios from "axios";
+import PaymentModal from "../Components/PaymentModal";
 
 import React, { useEffect, useState } from "react";
 
@@ -26,10 +27,16 @@ let init = {
   tax: 0,
 };
 
-const PaymentOption = ({ tem }) => {
+const PaymentOption = ({ cartData }) => {
   const subtotal = 30;
   const tax = 44;
-  const totalPrice = 0;
+  let totalPrice = 0;
+  console.log(cartData,"payment")
+  cartData.forEach((el)=>{
+    return totalPrice =totalPrice + el.qty*el.price;
+  })
+  console.log(totalPrice)
+
   return (
     <>
       <Box w={"25%"}>
@@ -40,7 +47,7 @@ const PaymentOption = ({ tem }) => {
           <Flex direction="column">
             <Flex mb={"12px"} justifyContent={"space-between"}>
               <Text>SubTotal</Text>
-              <Text>${subtotal}</Text>
+              <Text>{subtotal}</Text>
             </Flex>
             <Divider mb={"12px"} />
             <Flex mb={"12px"} justifyContent={"space-between"}>
@@ -58,7 +65,7 @@ const PaymentOption = ({ tem }) => {
               <Text>${totalPrice}</Text>
             </Flex>
             <Divider mb={"12px"} />
-            <Button
+            {/* <Button
               borderRadius="0px"
               fontWeight="normal"
               mb={"20px"}
@@ -73,8 +80,10 @@ const PaymentOption = ({ tem }) => {
               //   onClick={submit}
             >
               PROCEED TO CHECKOUT{" "}
-            </Button>
+            </Button> */}
+            <PaymentModal/>
             <Button
+            mt={2}
               borderRadius="5px"
               fontWeight="normal"
               mb={"20px"}
@@ -144,8 +153,8 @@ const Cart = () => {
     try {
       let data = await axios.get("https://vast-raincoat-lamb.cyclic.app/cart", {
         headers: {
-          Authorization:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAyNTM2Nzh9.Fr5YNhCxJWUQ2T-9GJw_hu7vX_QOzClnlET0leH2NZ0",
+          Authorization:process.env.TOKEN
+            ,
         },
       });
       setcartdata(data.data);
@@ -153,7 +162,7 @@ const Cart = () => {
       console.log("error in fetching cart data");
     }
   }
-console.log((cartData));
+console.log(cartData,"cart data");
 
 
 const updateQty = async(id,qty)=>{
@@ -161,13 +170,28 @@ const updateQty = async(id,qty)=>{
     await axios.patch(`https://vast-raincoat-lamb.cyclic.app/cart/update/${id}`,qty,{
       headers: {
         Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAyNTM2Nzh9.Fr5YNhCxJWUQ2T-9GJw_hu7vX_QOzClnlET0leH2NZ0",
+        process.env.TOKEN,
       },
     })
     getdata();
     console.log("update fun",id,qty);
   } catch (error) {
     console.log("error in update qty");
+  }
+}
+
+const handleDelete = async(id)=>{
+  try {
+    await axios.delete(`https://vast-raincoat-lamb.cyclic.app/cart/delete/${id}`,{
+      headers: {
+        Authorization:
+        process.env.TOKEN,
+      },
+    })
+    getdata();
+    
+  } catch (error) {
+    console.log("error in delete");
   }
 }
 
@@ -211,14 +235,14 @@ const updateQty = async(id,qty)=>{
               {cartData?.map((item) => {
                 return (
                   <Box key={item.id}>
-                    <CartItem cartItem={item} updateQty={updateQty}/>
+                    <CartItem cartItem={item} updateQty={updateQty} handleDelete={handleDelete}/>
                   </Box>
                 );
               })}
             </Box>
           </Box>
           <PaymentOption
-          //    cartData={cartData}
+             cartData={cartData}
           />
         </Flex>
       </Box>
@@ -228,7 +252,7 @@ const updateQty = async(id,qty)=>{
 
 export default Cart;
 
-const CartItem = ({ cartItem, updateQty }) => {
+const CartItem = ({ cartItem, updateQty,handleDelete }) => {
   // console.log(cartItem)
   
 
@@ -238,6 +262,7 @@ const [qty,setQty] = useState(cartItem.qty)
     updateQty(cartItem._id,qty);
   }
 console.log((qty));
+
 
 
 
@@ -326,7 +351,7 @@ console.log((qty));
         </Box>
         <Box
           cursor={"pointer"}
-          //   onClick={() => handleDelete(cartItem.id)}
+           onClick={() => handleDelete(cartItem._id)}
           w="5%"
         >
           <svg

@@ -32,6 +32,8 @@ import { shopMens } from "../homePagedb";
 import { Link } from "react-router-dom";
 import { BiRightArrowAlt } from "react-icons/bi";
 
+const token = process.env.TOKEN;
+
 const ProductDetails = () => {
   const responsive = {
     superLargeDesktop: {
@@ -67,8 +69,7 @@ const ProductDetails = () => {
         `https://vast-raincoat-lamb.cyclic.app/men/6426bc39288ec9a23983d27b`,
         {
           headers: {
-            Authorization:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAyNTM2Nzh9.Fr5YNhCxJWUQ2T-9GJw_hu7vX_QOzClnlET0leH2NZ0",
+            Authorization:token,
           },
         }
       );
@@ -116,7 +117,7 @@ const ProductDetails = () => {
         {
           headers: {
             Authorization:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAyNTM2Nzh9.Fr5YNhCxJWUQ2T-9GJw_hu7vX_QOzClnlET0leH2NZ0",
+            process.env.TOKEN,
           },
         }
       );

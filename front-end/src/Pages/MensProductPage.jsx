@@ -85,8 +85,4 @@ const MensProductPage = () => {
     </Box>
 }
 
-<<<<<<< HEAD
 export  {MensProductPage};
-=======
-export {MensProductPage}
->>>>>>> 39c06aafacb97000571ea9dc56f5bfede26475a8
