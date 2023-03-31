@@ -1,6 +1,5 @@
 import { Box, Button, Container, HStack, SimpleGrid, Stack, Text, Tooltip } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import { artistCollabs } from "../homePagedb";
 import { ProductCard } from "./ProductPage";
 import FilterDrawer from "../Components/FilterationDrawer";
 import axios from 'axios';
