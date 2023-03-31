@@ -18,13 +18,15 @@ import {
 import { useState } from "react";
 import { BsHeart } from "react-icons/bs";
 import { Tooltip } from "@chakra-ui/react";
-
+import axios from 'axios';
 const ProductCard = ({
   img,
   brand,
   imgOnHover,
   title,
   salePrice,
+  type,
+  id,
   regularPrice,
 }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -33,6 +35,29 @@ const ProductCard = ({
   const handleWishlistClick = () => {
     setIsWishlisted(!isWishlisted);
   };
+
+  const handleDelete = () =>{
+    console.log("deleting")
+    if(type==="men"){
+      axios.delete(`https://vast-raincoat-lamb.cyclic.app/men/delete/${id}`)
+      .then((res)=>{
+        console.log(res);
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
+    }
+    else if(type==="women"){
+      axios.delete(`https://vast-raincoat-lamb.cyclic.app/women/delete/${id}`)
+      .then((res)=>{
+        console.log(res);
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
+    }
+  }
+
   return (
     <>
       <Card
@@ -116,7 +141,7 @@ const ProductCard = ({
             </Text>
             <Divider />
             <Flex mt="20px">
-              <Button size="sm">Delete</Button>
+              <Button size="sm" onClick={handleDelete}>Delete</Button>
               <Button ml="10px" size="sm">
                 Update
               </Button>
