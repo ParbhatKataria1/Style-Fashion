@@ -1,14 +1,12 @@
 import './App.css';
 import Navbar from './Components/Navbar';
 import AllRoutes from './Components/AllRoutes';
-import DashBoard from './Pages/DashBoard';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App AppFont">
       <Navbar/>
       <AllRoutes/>
-      <DashBoard/>
     </div>
   );
 }

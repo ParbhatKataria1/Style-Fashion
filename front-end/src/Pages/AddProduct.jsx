@@ -38,7 +38,8 @@ const AddProducts = () => {
 
         const handleSubmit = (e) => {
             e.preventDefault();
-            fetch("https://busy-puce-duckling-tie.cyclic.app/posts/add", {
+            if(type == "men"){
+            fetch("https://vast-raincoat-lamb.cyclic.app/men/", {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
@@ -52,6 +53,22 @@ const AddProducts = () => {
                 })
                 .catch(err => console.log(err.message))
         }
+    else if(type == "women"){
+        fetch("https://vast-raincoat-lamb.cyclic.app/women/", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI1OTE2ZWJmODY5NWUwMTgxODBiMWIiLCJpYXQiOjE2ODAxOTI4Mjl9.EdEOpRxiFT2fuOQ2XA8sLgus8Lm_uffNBSGmsClLslc"
+                },
+                body: JSON.stringify(product)
+            }).then(res => res.json())
+                .then(res => {
+                    console.log(res);
+                    alert(res.msg)
+                })
+                .catch(err => console.log(err.message))
+        }
+    }
     
 
 
