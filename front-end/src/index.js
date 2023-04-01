@@ -1,21 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { ChakraProvider } from '@chakra-ui/react'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import { Auth0Provider } from "@auth0/auth0-react";
-import {Provider} from 'react-redux';
-import { store } from './Redux/ProductReducer.js/store';
-<<<<<<< HEAD
-<<<<<<< HEAD
-// import 
-=======
->>>>>>> 39c06aafacb97000571ea9dc56f5bfede26475a8
-=======
->>>>>>> 05712b9a649aeb067a3896a81ef677336bcceb2a
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import { Provider } from "react-redux";
+import { store } from "./Redux/ProductReducer.js/store";
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <>
     <ChakraProvider>
@@ -23,14 +16,13 @@ root.render(
         domain="dev-xtr2nsfklsrd66w8.us.auth0.com"
         clientId="sl3rV7phfia6e8uEGyQAngcChsH7GPRz"
         authorizationParams={{
-          redirect_uri: window.location.origin
-        }}>
+          redirect_uri: window.location.origin,
         }}
       >
         <Provider store={store}>
           <BrowserRouter>
             <Provider store={store}>
-             <App />
+              <App />
             </Provider>
           </BrowserRouter>
         </Provider>
