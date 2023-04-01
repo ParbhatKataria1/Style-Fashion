@@ -110,7 +110,7 @@ const MensProductPage = () => {
             <Container as={Stack} maxW={'full'} py={10} gap={'0rem'}>
 
                 <SimpleGrid columns={{
-                    base: `${num > 2 || num === 0 ? 1 : num}`,
+                    base: `${num >=2 || num === 0 ? 1 : num}`,
                     sm: `${num > 3 || num === 0 ? 3 : num}`,
                     md: `${num > 1 || num !== 0 ? num : 4}`
                 }}
