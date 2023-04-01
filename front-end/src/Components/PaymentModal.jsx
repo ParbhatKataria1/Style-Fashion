@@ -12,6 +12,8 @@ import {
 } from "@chakra-ui/modal";
 import {
   Box,
+  Divider,
+  Flex,
   HStack,
   Heading,
   Input,
@@ -27,7 +29,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import axios from "axios";
-import {useEffect} from "react";
+import { useEffect } from "react";
 
 const PaymentModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -57,64 +59,56 @@ const PaymentModal = () => {
   // ----------- get request for cart data ------- //
   const [cartData, setcartdata] = useState([]);
 
-  const getdata= async()=> {
+  const getdata = async () => {
     try {
       let data = await axios.get("https://vast-raincoat-lamb.cyclic.app/cart", {
         headers: {
           Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI2YTNjMTQxMWI4ZTYxMGVhMzJmNTciLCJpYXQiOjE2ODAyODkwNzl9.mgQQ4nvjKKLtspr0V2ORDqpYztzyKGjJA65L4HBlbKU",
+          process.env.REACT_APP_TOKEN,
         },
       });
       setcartdata(data.data);
     } catch (error) {
       console.log("error in fetching cart data");
     }
-  }
-  console.log(cartData,"pmodel cart");
+  };
+  console.log(cartData, "pmodel cart");
 
-  useEffect(()=>{
-getdata()
-  },[])
+  useEffect(() => {
+    getdata();
+  }, []);
 
-
-//-------------adding cartdata and address-----------------//
- 
-
-
-
+  //-------------adding cartdata and address-----------------//
 
   const handleClick = async (e) => {
-
-    const newData = cartData.map(e=>{
+    const newData = cartData.map((e) => {
       return {
         ...e,
-        ...text
-      }
-    })
-    console.log(newData,"newData")
-    for(let i=0;i<newData.length;i++){
+        ...text,
+      };
+    });
+    console.log(newData, "newData");
+    for (let i = 0; i < newData.length; i++) {
       let data = await axios.post(
         "https://vast-raincoat-lamb.cyclic.app/order/add",
         newData[i],
         {
           headers: {
             Authorization:
-           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI2YTNjMTQxMWI4ZTYxMGVhMzJmNTciLCJpYXQiOjE2ODAyODkwNzl9.mgQQ4nvjKKLtspr0V2ORDqpYztzyKGjJA65L4HBlbKU",
+            process.env.REACT_APP_TOKEN,
           },
         }
       );
-      console.log(data.data, "sent data")
+      console.log(data.data, "sent data");
     }
     // setText("");
-    await axios.delete(`https://vast-raincoat-lamb.cyclic.app/cart`,{
+    await axios.delete(`https://vast-raincoat-lamb.cyclic.app/cart`, {
       headers: {
         Authorization:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI2YTNjMTQxMWI4ZTYxMGVhMzJmNTciLCJpYXQiOjE2ODAyODkwNzl9.mgQQ4nvjKKLtspr0V2ORDqpYztzyKGjJA65L4HBlbKU",
+        process.env.REACT_APP_TOKEN,
       },
-    })
-   
+    });
 
-    
     // console.log(data);
   };
 
@@ -149,7 +143,7 @@ getdata()
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <SimpleGrid>
+            <Flex>
               <Box>
                 <Tabs m="auto">
                   <TabList
@@ -179,15 +173,33 @@ getdata()
                           Enter Mobile Number
                         </Text>
                         <InputGroup w={"70%"} m={"auto"}>
-                          <InputLeftAddon children="+91" />
+                          <InputLeftAddon
+                            children="+91"
+                            border="2px solid gray"
+                          />
                           <Input
+                            border="2px solid gray"
                             type="tel"
                             value={mobile}
                             fontSize={"xl"}
                             onChange={(e) => setMobile(e.target.value)}
                           />
                         </InputGroup>
-                        <Button isDisabled={mobile.length < 10} size={"lg"}>
+                        <Button
+                          isDisabled={mobile.length < 10}
+                          w={"xs"}
+                          size={"lg"}
+                          py={"7"}
+                          bg={"black"}
+                          color={"white"}
+                          border="0px solid black"
+                          _hover={{
+                            transform: "translateY(2px)",
+                            boxShadow: "lg",
+                            bg: "black",
+                            color: "white",
+                          }}
+                        >
                           Continue
                           <ArrowForwardIcon />{" "}
                         </Button>
@@ -201,19 +213,27 @@ getdata()
                         lineHeight={"60px"}
                         textAlign={"center"}
                       >
-                        {/* <Input placeholder="Full Name" type="text" name="full_name" onChange={handleChange} /> */}
+                        <Text
+                          fontSize="2xl"
+                          fontWeight={500}
+                          textAlign={"left"}
+                        >
+                          Add New Address
+                        </Text>
                         <HStack>
                           <Input
                             isDisabled={text.full_name == ""}
                             placeholder="City"
                             type="text"
                             name="city"
+                            border="2px solid gray"
                             onChange={handleChange}
                           />
                           <Input
                             placeholder="State"
                             type="text"
                             name="state"
+                            border="2px solid gray"
                             onChange={handleChange}
                           />
                         </HStack>
@@ -222,6 +242,7 @@ getdata()
                             placeholder="Pincode"
                             type="number"
                             name="pincode"
+                            border="2px solid gray"
                             onChange={handleChange}
                           />
                           {/* <Input placeholder="Email Address" type="email" name="email" onChange={handleChange}/> */}
@@ -230,9 +251,24 @@ getdata()
                           placeholder="Full Address"
                           type="text"
                           name="address"
+                          border="2px solid gray"
                           onChange={handleChange}
                         />
-                        <Button size={"lg"} onClick={handleClick}>
+                        <Button
+                          w={"xs"}
+                          size={"lg"}
+                          py={"7"}
+                          bg={"black"}
+                          color={"white"}
+                          border="0px solid black"
+                          _hover={{
+                            transform: "translateY(2px)",
+                            boxShadow: "lg",
+                            bg: "black",
+                            color: "white",
+                          }}
+                          onClick={handleClick}
+                        >
                           Submit
                         </Button>
                       </Box>
@@ -241,12 +277,57 @@ getdata()
                   </TabPanels>
                 </Tabs>
               </Box>
-              <Box></Box>
-            </SimpleGrid>
+              <Box w={"30%"}>
+                <Heading mb={"20px"} fontSize="18px" fontWeight={500}>
+                  Order Summary
+                </Heading>
+                <Box
+                  boxShadow={"rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"}
+                  borderRadius="5px"
+                  p={"15px"}
+                >
+                  <Flex direction="column">
+                    <Flex mb={"12px"} justifyContent={"space-between"}>
+                      <Text>SubTotal</Text>
+                      <Text></Text>
+                    </Flex>
+                    <Divider mb={"12px"} border={"1px solid grey"} />
+                    <Flex mb={"12px"} justifyContent={"space-between"}>
+                      <Text>Shipping</Text>
+                      <Text>TBD</Text>
+                    </Flex>
+                    <Divider mb={"12px"} border={"1px solid grey"} />
+                    <Flex mb={"12px"} justifyContent={"space-between"}>
+                      <Text>Estimated Tax</Text>
+                      <Text></Text>
+                    </Flex>
+                    <Divider mb={"12px"} border={"1px solid grey"} />
+                    <Flex mb={"12px"} justifyContent={"space-between"}>
+                      <Text>Total</Text>
+                      <Text></Text>
+                    </Flex>
+                    <Divider mb={"12px"} border={"1px solid grey"} />
+                  </Flex>
+                </Box>
+              </Box>
+            </Flex>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={onClose}
+              bg={"black"}
+              color={"white"}
+              border="0px solid black"
+              _hover={{
+                transform: "translateY(2px)",
+                boxShadow: "lg",
+                bg: "black",
+                color: "white",
+              }}
+            >
               Close
             </Button>
           </ModalFooter>
