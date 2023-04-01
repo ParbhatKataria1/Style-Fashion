@@ -159,7 +159,6 @@ const MensProductPage = () => {
 }
 
 
-}
 
 export { MensProductPage }
 
