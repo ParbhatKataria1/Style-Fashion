@@ -10,7 +10,7 @@ import { WomensProductPage } from "../Pages/WomensProductPage";
 import ManageProduct from "../Pages/ManageProduct";
 import ProductDetails from "../Pages/ProductDetails";
 import TrackOrder from "../Pages/TrackOrder";
-import Payment from "./Payment";
+import Payment from "../Components/Payment";
 
 
 const AllRoutes = () => {

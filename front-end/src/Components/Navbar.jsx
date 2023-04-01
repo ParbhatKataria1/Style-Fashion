@@ -35,6 +35,7 @@ import "react-multi-carousel/lib/styles.css";
 // google
 
 import { useAuth0 } from "@auth0/auth0-react";
+import axios from "axios";
 
 const Navbar = () => {
   const { user, loginWithRedirect, isAuthenticated, logout } = useAuth0();
@@ -48,7 +49,10 @@ const Navbar = () => {
   const womenRef = useRef(null);
   const btnRef = React.useRef();
 
+  const [searchData,setSearchData]=useState([])
+
   function handleClickOutside(event) {
+    
     if (searchRef.current && !searchRef.current.contains(event.target)) {
       console.log("Clicked outside container");
       // Handle the click outside the container here
@@ -93,6 +97,24 @@ const Navbar = () => {
     };
   }, []);
   console.log(user, "this");
+  
+  // https://vast-raincoat-lamb.cyclic.app/men?title=ravi
+  
+const handleChange = (e) => {
+    // document.querySelector("#searchBox").style.display="block"
+axios.get(`https://vast-raincoat-lamb.cyclic.app/men?title${e.target.value}`,{
+  headers:{
+    Authorization:`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAzNDA4NTV9.R4pvDG4y_6mMweYjUCpaHLJ8n3JDc5TnUB0d8aSPNKI`
+}
+}).then((res)=>{
+  console.log(res.data)
+  setSearchData(res.data)
+})
+.catch((err)=>{
+  console.log(err)
+})
+};
+
   return (
     <Box borderBottom="2px solid black">
       {/* <Button onClick={toggleColorMode}></Button> */}
@@ -310,7 +332,7 @@ const Navbar = () => {
               </Flex>
               <Flex w={{ base: "100%", md: "40%" }}>
                 <InputGroup>
-                  <Input type="text" placeholder="Search" />
+                  <Input onInput={handleChange} type="text" placeholder="Search" />
                   <InputRightElement
                     pointerEvents="none"
                     children={<BsSearch color="gray.300" />}

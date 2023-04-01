@@ -83,19 +83,19 @@ const MensProductPage = () => {
             </Container>
         </Box>
     </Box>
-<<<<<<< HEAD
+
 }
 
 export  {MensProductPage};
-=======
-
-}
 
 
 
-  );
-};
 
-export { MensProductPage };
 
->>>>>>> be73ced75ec55ac4fafe5d98f5f275ef3c27cc44
+
+  
+
+
+
+
+
