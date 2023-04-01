@@ -6,16 +6,65 @@ import {
   Text,
   Grid,
   GridItem,
+  Button,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AdminSidePage from "../Components/AdminSidePage";
 import { ProductCard } from "../Components/ProductItemAdmin";
+import axios from "axios";
+import { useSearchParams } from "react-router-dom";
+import { easeOut } from "framer-motion";
 
 const ManageProduct = () => {
   return <AdminSidePage children={<Content />} page="DashBoard" />;
 };
 
 const Content = () => {
+  const [category, setcategory] = useState("men");
+  const [data, setdata] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams({});
+  const [reload, setreload] = useState(false);
+  const [page, setpage] = useState(1);
+  const qpage = searchParams.get("page");
+  console.log(searchParams, "search", page);
+  console.log(reload, qpage, "reload");
+  async function getData() {
+    try {
+      let data = await axios.get(
+        `https://vast-raincoat-lamb.cyclic.app/${category}`,
+        {
+          params: {
+            page: qpage == undefined ? 1 : qpage,
+          },
+          headers: {
+            Authorization:
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAzNDA4NTV9.R4pvDG4y_6mMweYjUCpaHLJ8n3JDc5TnUB0d8aSPNKI",
+          },
+        }
+      );
+      console.log(data.data, "data");
+      setdata(data.data);
+    } catch (error) {
+      console.log("error in fetching the data");
+    }
+  }
+
+  function changePage(e) {
+    let temp = typeof e != "number" ? Number(e.target.innerText) : e;
+    // console.log(e.target.innerText);
+    // router.query.page = temp;
+    setSearchParams({
+      page: temp,
+    });
+    // router.push(router);
+    // console.log(router.query, 'dagdafda')
+    setpage(temp);
+  }
+
+  useEffect(() => {
+    getData();
+  }, [category, page, reload, page]);
+
   return (
     <Box>
       <Box w="100%" bg="white" m="auto">
@@ -53,23 +102,75 @@ const Content = () => {
             lg: "repeat(2, 1fr)",
           }}
         >
-          {Array(15)
-            .fill(0)
-            .map((el) => {
+          {data.map((el) => {
+            return (
+              <GridItem>
+                <ProductCard
+                  img={el.images[0]}
+                  imgOnHover={el.images[1]}
+                  title={el.title}
+                  salePrice={el.price}
+                  regularPrice={Math.floor(el.price * 1.2)}
+                  brand={el.brand}
+                  type={el.type}
+                  id={el._id}
+                  size={el.size}
+                  category={el.category}
+                  color={el.color}
+                  images={el.images}
+                  setreload={setreload}
+                />
+              </GridItem>
+            );
+          })}
+        </Grid>
+      </Box>
+      <Box>
+        <Flex
+          alignItems={"center"}
+          w={"98%"}
+          justifyContent={"center"}
+          m={"auto"}
+        >
+          {
+            <Button
+              isDisabled={page !== 1 ? false : true}
+              className="prevBtn"
+              data-testid="prevBtn"
+              onClick={() => changePage(page - 1)}
+            >
+              Prev
+            </Button>
+          }
+
+          {/* render the buttons here, directly. Ensure, each button has the "data-testid='btn'" prop. Add the className, activeBtn, if the current button is the activePage*/}
+
+          {Array(4)
+            .fill(-1)
+            .map((el, ind) => {
               return (
-                <GridItem>
-                  <ProductCard
-                    img="https://cdn.shopify.com/s/files/1/0677/1464/6315/products/koovs-4536.jpg?v=1677145377&width=360"
-                    imgOnHover="https://cdn.shopify.com/s/files/1/0677/1464/6315/products/KOOVS_20OCT22-0735-7.jpg?v=1677062022&width=360"
-                    title="24Hr Couture Graphic T-Shirt"
-                    salePrice="1200"
-                    regularPrice="1300"
-                    brand="THE COUTURE CLUB"
-                  />
-                </GridItem>
+                <Button
+                  isDisabled={ind + 1 == page ? true : false}
+                  m="9px"
+                  onClick={changePage}
+                  key={ind + 1}
+                >
+                  {ind + 1}
+                </Button>
               );
             })}
-        </Grid>
+
+          {
+            <Button
+              isDisabled={page != 4 ? false : true}
+              className="nextBtn"
+              data-testid="nextBtn"
+              onClick={() => changePage(page + 1)}
+            >
+              Next
+            </Button>
+          }
+        </Flex>
       </Box>
     </Box>
   );

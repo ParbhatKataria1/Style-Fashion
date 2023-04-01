@@ -12,6 +12,7 @@ cart.post('/add', addPost )
 cart.get('/', getPosts )
 
 // cart.get('/top', getTopData )
+cart.get('/')
 
 cart.patch('/update/:_id', updateData )
 

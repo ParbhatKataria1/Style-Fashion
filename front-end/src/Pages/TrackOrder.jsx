@@ -22,27 +22,28 @@ const Content = () => {
 
   async function toggleStatus(id, status) {
     console.log(id, "dga");
-    let data = await axios.post(
-      `https://vast-raincoat-lamb.cyclic.app/order/update/${id}`,
+    let data = await axios.patch(
+      `https://vast-raincoat-lamb.cyclic.app/allorder/update/${id}`,
       { status: !status },
       {
         headers: {
           Authorization:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0ODgxZDg3MWRiODU3OTRhMDRkM2IiLCJpYXQiOjE2ODAxODU4Mjh9.ZStaoEyCnTJ89Et2eNzqKNnAFKNYaqp85IIyMgMPhwE",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI2YTNjMTQxMWI4ZTYxMGVhMzJmNTciLCJpYXQiOjE2ODAyNjcwMzB9.vBtu-FuZY6dLvnhM_moYg82aT8qiBZFKBysscF9ISUQ",
         },
       }
     );
+
     getOrderData();
   }
 
   async function getOrderData() {
     try {
       let data = await axios.get(
-        "https://vast-raincoat-lamb.cyclic.app/order",
+        "https://vast-raincoat-lamb.cyclic.app/allorder",
         {
           headers: {
             Authorization:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0ODgxZDg3MWRiODU3OTRhMDRkM2IiLCJpYXQiOjE2ODAxODU4Mjh9.ZStaoEyCnTJ89Et2eNzqKNnAFKNYaqp85IIyMgMPhwE",
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI2YTNjMTQxMWI4ZTYxMGVhMzJmNTciLCJpYXQiOjE2ODAyNjcwMzB9.vBtu-FuZY6dLvnhM_moYg82aT8qiBZFKBysscF9ISUQ",
           },
         }
       );
@@ -107,6 +108,7 @@ const Content = () => {
                     status={el.status}
                     orderdate={el.date}
                     id={el._id}
+                    type={el.type}
                     toggleStatus={toggleStatus}
                   />
                 </GridItem>
