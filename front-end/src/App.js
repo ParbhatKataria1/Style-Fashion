@@ -5,16 +5,17 @@ import AllRoutes from './Components/AllRoutes';
 
 
 import Footer from './Pages/Footer';
+import AddProducts from './Pages/AddProduct';
 
 
 function App() {
   return (
     <div className="App AppFont">
-      <Navbar/>
-      <AllRoutes/>
+      {/* <Navbar/> */}
+      {/* <AllRoutes/> */}
+      <AddProducts/>
 
-
-      <Footer/>
+      {/* <Footer/> */}
 
     </div>
   );

@@ -14,7 +14,7 @@ import {
 
 const AddProducts = () => {
     const [title, setTitle] = useState("");
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState(null);
     const [brand, setBrand] = useState("");
     const [size, setSize] = useState([]);
     const [images1, setImages1] = useState([]);
@@ -33,10 +33,9 @@ const AddProducts = () => {
         category
     };
 
-    console.log(product);
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (type === "men") {
+        if (type === "Mens") {
             fetch("https://vast-raincoat-lamb.cyclic.app/men/", {
                 method: "POST",
                 headers: {
@@ -51,7 +50,7 @@ const AddProducts = () => {
                 })
                 .catch(err => console.log(err.message))
         }
-        else if (type === "women") {
+        else if (type === "Womens") {
             fetch("https://vast-raincoat-lamb.cyclic.app/women/", {
                 method: "POST",
                 headers: {
@@ -68,37 +67,6 @@ const AddProducts = () => {
         }
     }
 
-
-    // const handleSubmit = async(e) => {
-    //     e.preventDefault();
-    //     try {
-    //         let response;
-    //         if (type === "Mens") {
-    //             response = await axios.post(
-    //                 "https://vast-raincoat-lamb.cyclic.app/men/",
-    //                 product
-    //             );
-    //             console.log(response)
-    //         } else if (type === "Womens") {
-    //             response = await axios.post(
-    //                 "https://vast-raincoat-lamb.cyclic.app/women/",
-    //                 product
-    //             );
-    //             console.log(response)
-    //         }
-
-    //         setTitle("");
-    //         setPrice(null);
-    //         setBrand("");
-    //         setSize([]);
-    //         setCategory("");
-    //         setImages1([]);
-    //         setColor([]);
-    //         setCategory("");
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
 
 
     return (
@@ -129,7 +97,6 @@ const AddProducts = () => {
                             />
                         </FormControl>
 
-                        
                         <FormControl mt={4}>
                             <FormLabel>Brand</FormLabel>
                             <Input
@@ -157,24 +124,10 @@ const AddProducts = () => {
                             <FormLabel>Image 1</FormLabel>
                             <Input
                                 type="url"
-                                value={images1[0] || []}
+                                value={images1[0]}
                                 onChange={(event) => setImages1([event.target.value])}
                                 isRequired
                             />
-                        </FormControl>
-
-                        <FormControl>
-                            <FormLabel>Color</FormLabel>
-                            <Select
-                                multiple={false}
-                                value={color || []}
-                                onChange={(event) => setColor([event.target.value])}
-                            >
-                                <option value="white">white</option>
-                                <option value="blue">blue</option>
-                                <option value="red">red</option>
-                                <option value="yellow">yellow</option>
-                            </Select>
                         </FormControl>
 
                         {/* <FormControl>
@@ -197,18 +150,31 @@ const AddProducts = () => {
                             />
                         </FormControl> */}
 
+                        <FormControl>
+                            <FormLabel>Color</FormLabel>
+                            <Select
+                                multiple={false}
+                                value={color}
+                                onChange={(event) => setColor([event.target.value])}
+                            >
+                                <option value="white">white</option>
+                                <option value="blue">blue</option>
+                                <option value="red">red</option>
+                                <option value="yellow">yellow</option>
+                            </Select>
+                        </FormControl>
+
                         <FormControl mt={4}>
                             <FormLabel>type</FormLabel>
                             <Select
                                 multiple={false}
-                                value={type || []}
+                                value={type}
                                 onChange={(event) => setType(event.target.value)}
                             >
                                 <option value="Mens">Men</option>
                                 <option value="Womens">Women</option>
                             </Select>
                         </FormControl>
-
 
                         <FormControl mt={4}>
                             <FormLabel>Category</FormLabel>
