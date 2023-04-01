@@ -6,6 +6,7 @@ import {
   Text,
   Grid,
   GridItem,
+  Button,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import AdminSidePage from "../Components/AdminSidePage";
@@ -22,16 +23,19 @@ const Content = () => {
   const [category, setcategory] = useState("men");
   const [data, setdata] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams({});
-  const page = searchParams.get("page");
+  const [reload, setreload] = useState(false);
+  const [page, setpage] = useState(1);
+  const qpage = searchParams.get("page");
   console.log(searchParams, "search", page);
-
+  console.log(reload, qpage, "reload");
   async function getData() {
     try {
       let data = await axios.get(
-        `https://vast-raincoat-lamb.cyclic.app/${category}?${
-          page == undefined ? 1 : page
-        }`,
+        `https://vast-raincoat-lamb.cyclic.app/${category}`,
         {
+          params: {
+            page: qpage == undefined ? 1 : qpage,
+          },
           headers: {
             Authorization:
               "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAzNDA4NTV9.R4pvDG4y_6mMweYjUCpaHLJ8n3JDc5TnUB0d8aSPNKI",
@@ -45,9 +49,21 @@ const Content = () => {
     }
   }
 
+  function changePage(e) {
+    let temp = typeof e != "number" ? Number(e.target.innerText) : e;
+    // console.log(e.target.innerText);
+    // router.query.page = temp;
+    setSearchParams({
+      page: temp,
+    });
+    // router.push(router);
+    // console.log(router.query, 'dagdafda')
+    setpage(temp);
+  }
+
   useEffect(() => {
     getData();
-  }, [category, page]);
+  }, [category, page, reload, page]);
 
   return (
     <Box>
@@ -91,7 +107,7 @@ const Content = () => {
               <GridItem>
                 <ProductCard
                   img={el.images[0]}
-                  imgOnHover={el.images[3]}
+                  imgOnHover={el.images[1]}
                   title={el.title}
                   salePrice={el.price}
                   regularPrice={Math.floor(el.price * 1.2)}
@@ -102,11 +118,59 @@ const Content = () => {
                   category={el.category}
                   color={el.color}
                   images={el.images}
+                  setreload={setreload}
                 />
               </GridItem>
             );
           })}
         </Grid>
+      </Box>
+      <Box>
+        <Flex
+          alignItems={"center"}
+          w={"98%"}
+          justifyContent={"center"}
+          m={"auto"}
+        >
+          {
+            <Button
+              isDisabled={page !== 1 ? false : true}
+              className="prevBtn"
+              data-testid="prevBtn"
+              onClick={() => changePage(page - 1)}
+            >
+              Prev
+            </Button>
+          }
+
+          {/* render the buttons here, directly. Ensure, each button has the "data-testid='btn'" prop. Add the className, activeBtn, if the current button is the activePage*/}
+
+          {Array(4)
+            .fill(-1)
+            .map((el, ind) => {
+              return (
+                <Button
+                  isDisabled={ind + 1 == page ? true : false}
+                  m="9px"
+                  onClick={changePage}
+                  key={ind + 1}
+                >
+                  {ind + 1}
+                </Button>
+              );
+            })}
+
+          {
+            <Button
+              isDisabled={page != 4 ? false : true}
+              className="nextBtn"
+              data-testid="nextBtn"
+              onClick={() => changePage(page + 1)}
+            >
+              Next
+            </Button>
+          }
+        </Flex>
       </Box>
     </Box>
   );

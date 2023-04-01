@@ -27,13 +27,14 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsHeart } from "react-icons/bs";
 import { Tooltip } from "@chakra-ui/react";
 import axios from "axios";
 const ProductCard = ({
   img,
   brand,
+  setreload,
   imgOnHover,
   title,
   salePrice,
@@ -55,28 +56,23 @@ const ProductCard = ({
 
   const handleDelete = () => {
     console.log("deleting");
-    if (type === "men") {
-      axios
-        .delete(`https://vast-raincoat-lamb.cyclic.app/men/delete/${id}`)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else if (type === "women") {
-      axios
-        .delete(`https://vast-raincoat-lamb.cyclic.app/women/delete/${id}`)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
+    setreload((prev) => !prev);
 
-  function updateData(el) {}
+    axios
+      .delete(`https://vast-raincoat-lamb.cyclic.app/${type}/delete/${id}`, {
+        headers: {
+          Authorization:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAzNDA4NTV9.R4pvDG4y_6mMweYjUCpaHLJ8n3JDc5TnUB0d8aSPNKI",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setreload((prev) => !prev);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <>
@@ -91,6 +87,7 @@ const ProductCard = ({
         category={category}
         id={id}
         isOpen={isOpen}
+        setreload={setreload}
         onOpen={onOpen}
         onClose={onClose}
       />
@@ -114,7 +111,7 @@ const ProductCard = ({
           borderRadius={"50px"}
           top="10px"
           left="10px"
-          zIndex={10}
+          zIndex="10"
         >
           - 50%
         </Box>
@@ -211,6 +208,7 @@ function BasicUsage({
   isOpen,
   onOpen,
   onClose,
+  setreload,
 }) {
   return (
     <>
@@ -225,6 +223,7 @@ function BasicUsage({
               title1={title}
               price1={price}
               type1={type}
+              setreload={setreload}
               color1={color}
               images={images}
               category1={category}
@@ -244,6 +243,7 @@ const AddProducts = ({
   price1,
   type1,
   color1,
+  setreload,
   size1,
   images,
   category1,
@@ -259,6 +259,7 @@ const AddProducts = ({
   const [category, setcategory] = useState(category1);
   const [brand, setBrand] = useState(brand1);
   const [type, setType] = useState(type1);
+  // console.log(images1, images2, images3, "this is the image");
 
   // function
   const handleSubmit = async (e) => {
@@ -274,6 +275,7 @@ const AddProducts = ({
     };
     console.log(id);
     e.preventDefault();
+    setreload((prev) => !prev);
     try {
       await axios.patch(
         `https://vast-raincoat-lamb.cyclic.app/${type}/update/${id}`,

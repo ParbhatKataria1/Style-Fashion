@@ -105,7 +105,7 @@ const Navbar = () => {
           position={"fixed"}
           bg="white"
           top="0px"
-          zIndex={"10"}
+          zIndex={"50"}
           h={{ base: "130px", md: "90px" }}
           left="50%"
           w="100%"
