@@ -11,6 +11,7 @@ import { WomensProductPage } from "../Pages/WomensProductPage";
 import ManageProduct from "../Pages/ManageProduct";
 import ProductDetails from "../Pages/ProductDetails";
 import TrackOrder from "../Pages/TrackOrder";
+import Payment from "./Payment";
 
 
 const AllRoutes = () => {
@@ -23,6 +24,9 @@ const AllRoutes = () => {
         <Route path="/womensAllCloth" element={ <WomensProductPage/> }/>
         <Route path="/manageProduct" element={<ManageProduct />} />
         <Route path="/trackOrder" element={<TrackOrder />} />
+        {/* <h1 >Welcome to Koovs Payment Interegation</h1>
+          <Payment /> */}
+          <Route path='/help' element={<Payment/>}/>
 
         <Route path="/productDetails" element={<ProductDetails/>} />
 
