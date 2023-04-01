@@ -22,61 +22,61 @@ import {
     HStack,
     Checkbox,
     CheckboxGroup,
-    Stack
   } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
 import { BsDash } from 'react-icons/bs';
-import {useSearchParams} from 'react-router-dom'
+import {useSearchParams} from 'react-router-dom';
 
-export default function FilterDrawer() {
+export default function FilterMensProduct({page}) {
+
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef();
-  const [priceRange, setPriceRange] = useState([0,22995]);
+  const [priceRange, setPriceRange] = useState([0,5000]);
 
   const [searchParams,setSearchParams] = useSearchParams();
-  // console.log(searchParams,"search params from filter page");
-  const initialStateBrand =  searchParams.getAll("brand");
-  const initialStateType =  searchParams.getAll("type");
-  const initialStateSize =  searchParams.getAll("size");
 
-  const [selectedTypes, setSelectedTypes] = useState(initialStateType||[]);
-  const [selectedSize, setSelectedSize] = useState(initialStateSize||[]);
+  const initialStateBrand =  searchParams.getAll("brand");
+  const initialStateCategory =  searchParams.getAll("category");
+  const initialStateMax =  searchParams.getAll("max");
+  const initialStateMin =  searchParams.getAll("min");
+
+  const [selectedCategory, setSelectedCategory] = useState(initialStateCategory||[]);
   const [selectedBrand, setSelectedBrand] = useState(initialStateBrand||[]);
+  const [selectedMax, setSelectedMax] = useState(initialStateMax||Number);
+  const [selectedMin, setSelectedMin] = useState(initialStateMin||Number);
   
   const handlePriceRangeChange = (newRange) => {
     setPriceRange(newRange);
+    setSelectedMax(priceRange[1])
+    setSelectedMin(priceRange[0])
   };
-
- const handleTypeChange = (e) => {
-    setSelectedTypes([...e]);
+  
+  const handleCategoryChange = (e) => {
+    setSelectedCategory([...e]);
   };
-  // console.log(selectedTypes, 'this type')
-
- const handleSizeChange = (e) => {
-  setSelectedSize([...e]);
+  
+  const handleBrandChange = (e) => {
+    setSelectedBrand([...e]);
   };
-  // console.log(selectedSize,"this size");
-
- const handleBrandChange = (e) => {
-  setSelectedBrand([...e]);
-  };
-  // console.log(selectedBrand,"this brand")
-
+  
   useEffect(()=>{
       let params ={
           brand:selectedBrand,
-          type:selectedTypes,
-          size:selectedSize
+          category:selectedCategory,
+          max:selectedMax,
+          min:selectedMin,
+          page:page
       }
 
       setSearchParams(params);
 
-  },[selectedBrand,selectedSize,selectedTypes])
+  },[selectedBrand,selectedCategory,selectedMax,selectedMin,page])
+
 
 
   return (
     <>
-      <Button ref={btnRef} colorScheme='blackAlpha' onClick={onOpen}>
+      <Button ref={btnRef} onClick={onOpen}>
         Filter
       </Button>
       <Drawer
@@ -103,21 +103,21 @@ export default function FilterDrawer() {
                   <AccordionPanel pb={4}>
                   <RangeSlider
                       aria-label={['min', 'max']}
-                      defaultValue={[0, 22995.00]}
+                      defaultValue={[selectedMin||0,selectedMax||5000]}
                       min={0}
-                      max={22995.00}
+                      max={5000}
                       step={1}
                       onChange={handlePriceRangeChange}>
                       <RangeSliderTrack>
                       <RangeSliderFilledTrack />
                       </RangeSliderTrack>
-                      <RangeSliderThumb index={0} />
+                      <RangeSliderThumb index={0}/>
                       <RangeSliderThumb index={1} />
                   </RangeSlider>
                   <HStack>
-                      <Input type='text' value={`${priceRange[0]}.00`} disabled color={'blackAlpha.900'}/> 
+                      <Input type='text' value={selectedMin} disabled color={'blackAlpha.900'}/> 
                       <BsDash/>
-                      <Input type='text' value={`${priceRange[1]}.00`} disabled/> 
+                      <Input type='text' value={selectedMin} disabled/> 
                   </HStack>
                   </AccordionPanel>
               </AccordionItem>
@@ -125,41 +125,23 @@ export default function FilterDrawer() {
               <AccordionItem>
                   <AccordionButton>
                       <Box as="span" flex='1' textAlign='left' fontWeight={600}>
-                      Product Type   
+                      Product Category   
                       </Box>
                       <AccordionIcon />
                   </AccordionButton>
                   <AccordionPanel pb={4}>
-                      <CheckboxGroup value={selectedTypes} onChange={handleTypeChange}>
-                          <Checkbox value="bags" checked={selectedTypes.includes("bags")}>Bags</Checkbox><br/>
-                          <Checkbox value="boots" checked={selectedTypes.includes("boots")}>Boots</Checkbox><br/>
-                          <Checkbox value="pants" checked={selectedTypes.includes("pants")}>Pants</Checkbox><br/>
-                          <Checkbox value="hats" checked={selectedTypes.includes("hats")}>Hats</Checkbox><br/>
-                          <Checkbox value="hoodies" checked={selectedTypes.includes("hoodies")}>Hoodies</Checkbox><br/>
-                          <Checkbox value="shirts" checked={selectedTypes.includes("shirts")}>Shirts</Checkbox><br/>
-                          <Checkbox value="shorts" checked={selectedTypes.includes("shorts")}>Shorts</Checkbox><br/>
-                          <Checkbox value="t-shirts" checked={selectedTypes.includes("t-shirts")}>T-Shirts</Checkbox><br/>
-                          <Checkbox value="sandals" checked={selectedTypes.includes("sandals")}>Sandals</Checkbox><br/>
+                      <CheckboxGroup value={selectedCategory} onChange={handleCategoryChange}>
+                          <Checkbox value="jeans">Jeans</Checkbox><br/>
+                          <Checkbox value="track pants" >Track Pants</Checkbox><br/>
+                          <Checkbox value="pants" >Pants</Checkbox><br/>
+                          <Checkbox value="shirt" >Shirts</Checkbox><br/>
+                          <Checkbox value="t-shirt" >T-Shirts</Checkbox><br/>
+                          <Checkbox value="hoodies" >Hoodies</Checkbox><br/>
                       </CheckboxGroup>
                   </AccordionPanel>
               </AccordionItem>
 
-              <AccordionItem>
-                  <AccordionButton>
-                      <Box as="span" flex='1' textAlign='left' fontWeight={600}>
-                      Size
-                      </Box>
-                      <AccordionIcon />
-                  </AccordionButton>
-                  <AccordionPanel pb={4}>
-                      <CheckboxGroup value={selectedSize} onChange={handleSizeChange}>
-                      <Checkbox value="XS" checked={selectedSize.includes("XS")}>XS</Checkbox><br/>
-                      <Checkbox value="S" checked={selectedSize.includes("S")}>S</Checkbox><br/>
-                      <Checkbox value="M" checked={selectedSize.includes("M")}>M</Checkbox><br/>
-                      <Checkbox value="L" checked={selectedSize.includes("L")}>L</Checkbox><br/>
-                      </CheckboxGroup>
-                  </AccordionPanel>
-              </AccordionItem>
+             
               <AccordionItem>
                   <AccordionButton>
                       <Box as="span" flex='1' textAlign='left' fontWeight={600}>
