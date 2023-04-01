@@ -35,17 +35,19 @@ const AddProducts = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(product);
         if (type === "Mens") {
             fetch("https://vast-raincoat-lamb.cyclic.app/men/", {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
-                    "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI3ZDEzOTQzNDdkY2NmZWIyOTM3MDIiLCJpYXQiOjE2ODAzMzEwNjZ9.jg7dbMb6XaX77DMBSDgHILKzTtkgk4UjSN_Kb2cmsnQ"
+                    "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI3ZDEzOTQzNDdkY2NmZWIyOTM3MDIiLCJpYXQiOjE2ODAzNDQ1OTN9.DFuJQIGx9ghUIFyKUz3hikJyffdDB3SA9JLlOzXP2HY"
                 },
                 body: JSON.stringify(product)
             }).then(res => res.json())
                 .then(res => {
                     console.log(res);
+                    
                     alert(res.msg)
                 })
                 .catch(err => console.log(err.message))
@@ -55,7 +57,7 @@ const AddProducts = () => {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
-                    "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI3ZDEzOTQzNDdkY2NmZWIyOTM3MDIiLCJpYXQiOjE2ODAzMzEwNjZ9.jg7dbMb6XaX77DMBSDgHILKzTtkgk4UjSN_Kb2cmsnQ"
+                    "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI3ZDEzOTQzNDdkY2NmZWIyOTM3MDIiLCJpYXQiOjE2ODAzNDQ1OTN9.DFuJQIGx9ghUIFyKUz3hikJyffdDB3SA9JLlOzXP2HY"
                 },
                 body: JSON.stringify(product)
             }).then(res => res.json())
@@ -92,7 +94,7 @@ const AddProducts = () => {
                             <Input
                                 type="text"
                                 value={price}
-                                onChange={(event) => setPrice(event.target.value)}
+                                onChange={(event) => setPrice(+event.target.value)}
                                 required
                             />
                         </FormControl>
