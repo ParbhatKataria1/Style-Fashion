@@ -10,6 +10,7 @@ import { WomensProductPage } from "../Pages/WomensProductPage";
 import ManageProduct from "../Pages/ManageProduct";
 import ProductDetails from "../Pages/ProductDetails";
 import TrackOrder from "../Pages/TrackOrder";
+import Payment from "./Payment";
 
 
 const AllRoutes = () => {
@@ -24,7 +25,7 @@ const AllRoutes = () => {
         <Route path="/trackOrder" element={<TrackOrder />} />
 
         <Route path="/productDetails" element={<ProductDetails/>} />
-
+        <Route path="/help" element={<Payment/>} />
         <Route path="/cart" element={<Cart />} />
       </Routes>
     </div>
