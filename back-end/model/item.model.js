@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 // schema for men and women item
 const postSchema = mongoose.Schema({
     title : String,
-    price : String,
+    price : Number,
     brand : String,
     sizes : Array, // [xs, s, m, l]
     images:Array,
