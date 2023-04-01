@@ -18,8 +18,7 @@ root.render(
         authorizationParams={{
           redirect_uri: window.location.origin
         }}>
-        }}
-      >
+       
         {/* <Provider> */}
           <BrowserRouter>
             <Provider store={store}>

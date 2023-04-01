@@ -3,7 +3,7 @@ import { useState } from "react";
 import { BsHeart } from "react-icons/bs";
 import { Tooltip } from '@chakra-ui/react';
 
-const ProductCard = ({ images,img,imgOnHover, price, title, salePrice, regularPrice }) => {
+const ProductCard = ({ images,img,imgOnHover,brand, price, title, salePrice, regularPrice }) => {
 
   const [isWishlisted, setIsWishlisted] = useState(false);
 
@@ -32,13 +32,15 @@ const ProductCard = ({ images,img,imgOnHover, price, title, salePrice, regularPr
         </div>
       </div>
 
-      <Text fontSize={'10px'} color={'grey'} mt={2}>KOOVS</Text>
+      <Text fontSize={'12px'} color={'grey'} mt={2}>
+        {brand?brand:"KOOVS"}
+        </Text>
       <Text fontSize={'14.5px'} mt={2} fontWeight={600}>{title}</Text>
 
       <HStack mt={2} fontSize={'14px'}>
-        <Text>{salePrice ? salePrice : price}</Text>
+        <Text>{salePrice ? salePrice : `Rs.${price}`}</Text>
         {
-          regularPrice ? (<Text textDecoration={'line-through'}>{regularPrice}</Text>) : (<></>)
+          regularPrice ? (<Text textDecoration={'line-through'}>Rs.{regularPrice}</Text>) : (<></>)
         }
       </HStack>
     </Link>
