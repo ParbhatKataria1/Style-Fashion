@@ -35,7 +35,7 @@ const CartSlider = () => {
     let data = await axios.get("https://vast-raincoat-lamb.cyclic.app/cart", {
       headers: {
         Authorization:
-        process.env.TOKEN,
+        process.env.REACT_APP_TOKEN,
       },
     });
     setcartdata(data.data);
@@ -118,6 +118,7 @@ const CartSlider = () => {
                         size={el.sizes}
                         color={el.color}
                         getdata={getdata}
+    
                       />
                     </Box>
                   );
@@ -171,7 +172,7 @@ function SideCartItem({
   price,
   size,
   color,
-  getData,
+  getData
 }) {
   const [qty, setQty] = useState(quantity);
 
@@ -187,7 +188,7 @@ function SideCartItem({
         {
           headers: {
             Authorization:
-            process.env.TOKEN,
+            process.env.REACT_APP_TOKEN,
           },
         }
       );
@@ -204,7 +205,7 @@ function SideCartItem({
         {
           headers: {
             Authorization:
-            process.env.TOKEN,
+            process.env.REACT_APP_TOKEN,
           },
         }
       );

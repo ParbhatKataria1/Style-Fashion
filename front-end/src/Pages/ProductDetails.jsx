@@ -66,10 +66,10 @@ const ProductDetails = () => {
   const getData = async () => {
     try {
       let data = await axios.get(
-        `https://vast-raincoat-lamb.cyclic.app/men/6426bc39288ec9a23983d27b`,
+        `https://vast-raincoat-lamb.cyclic.app/men/6426bc39288ec9a23983d27d`,
         {
           headers: {
-            Authorization:token,
+            Authorization:process.env.REACT_APP_TOKEN,
           },
         }
       );
@@ -117,11 +117,13 @@ const ProductDetails = () => {
         {
           headers: {
             Authorization:
-            process.env.TOKEN,
+
+            process.env.REACT_APP_TOKEN,
+
           },
         }
       );
-      console.log(data.data);
+      console.log(data.data,"pdetail onclick cartdata");
     } catch (error) {
       console.log(error);
     }
@@ -132,7 +134,7 @@ const ProductDetails = () => {
       {product ? (
         product.map((el) => {
           return (
-            <Container maxW={"7xl"} border="1px solid red" mt={"20px"}>
+            <Container maxW={"7xl"} border="0px solid red" mt={"20px"}>
               <Flex w={"100%"}>
                 <Box
                   className="Image"

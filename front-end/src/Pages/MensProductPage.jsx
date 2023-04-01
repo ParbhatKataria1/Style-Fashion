@@ -86,14 +86,12 @@ const MensProductPage = () => {
 
 }
 
+
+}
+
 export  {MensProductPage};
 
 
-
-
-
-
-  
 
 
 
