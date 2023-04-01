@@ -11,7 +11,7 @@ import ManageProduct from "../Pages/ManageProduct";
 import ProductDetails from "../Pages/ProductDetails";
 import TrackOrder from "../Pages/TrackOrder";
 import Payment from "./Payment";
-
+import AddProducts from "../Pages/AddProduct";
 
 const AllRoutes = () => {
   return (
@@ -19,13 +19,14 @@ const AllRoutes = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<DashBoard />} />
+        <Route path="/addProduct" element={<AddProducts />} />
         <Route path="/mensAllCloth" element={<MensProductPage />} />
         <Route path="/womensAllCloth" element={<WomensProductPage />} />
         <Route path="/manageProduct" element={<ManageProduct />} />
         <Route path="/trackOrder" element={<TrackOrder />} />
 
-        <Route path="/productDetails" element={<ProductDetails/>} />
-        <Route path="/help" element={<Payment/>} />
+        <Route path="/productDetails" element={<ProductDetails />} />
+        <Route path="/help" element={<Payment />} />
         <Route path="/cart" element={<Cart />} />
       </Routes>
     </div>
