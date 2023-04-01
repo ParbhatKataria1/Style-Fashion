@@ -1,13 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { ChakraProvider } from '@chakra-ui/react'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import { Auth0Provider } from "@auth0/auth0-react";
 import {Provider} from 'react-redux';
 import { store } from './Redux/ProductReducer.js/store';
+
+
+
+
+
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <>
@@ -20,12 +26,14 @@ root.render(
         }}>
        
         {/* <Provider> */}
+
+        <Provider store={store}>
           <BrowserRouter>
             <Provider store={store}>
-             <App />
+              <App />
             </Provider>
           </BrowserRouter>
-        {/* </Provider> */}
+        </Provider>
       </Auth0Provider>
     </ChakraProvider>
   </>

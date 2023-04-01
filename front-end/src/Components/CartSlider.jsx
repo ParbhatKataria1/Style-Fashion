@@ -21,20 +21,35 @@ import {
   SliderFilledTrack,
   SliderThumb,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import {Link} from "react-router-dom";
 
 const CartSlider = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
 
-  const [quantity, setQuantity] = useState(1);
+  const [cartData, setcartdata] = useState([]);
 
-  const handleQuantity = (val) => {
-    setQuantity((p) => p + val);
-  };
+  async function getdata() {
+    let data = await axios.get("https://vast-raincoat-lamb.cyclic.app/cart", {
+      headers: {
+        Authorization:
+        process.env.REACT_APP_TOKEN,
+      },
+    });
+    setcartdata(data.data);
+  }
 
+  useEffect(() => {
+    getdata();
+  }, []);
+  console.log(cartData);
+  const { qty, price } = cartData;
   return (
     <>
+    
+    
       <Button
         ref={btnRef}
         onClick={onOpen}
@@ -56,6 +71,7 @@ const CartSlider = () => {
       >
         ADD TO CART
       </Button>
+  
       <Drawer
         isOpen={isOpen}
         placement="right"
@@ -69,19 +85,18 @@ const CartSlider = () => {
           <DrawerHeader fontSize={"2xl"}>Shopping Cart</DrawerHeader>
 
           <DrawerBody>
-            
             <Slider
               aria-label="slider-ex-10"
               colorScheme="green"
               defaultValue={100}
             >
-              <StarIcon color={"green"} mb={1} ml={370}  fontSize={20} />
+              <StarIcon color={"green"} mb={1} ml={370} fontSize={20} />
               <SliderTrack>
                 <SliderFilledTrack />
               </SliderTrack>
               <SliderThumb />
             </Slider>
-            
+
             <Text>Congrats! You are eligible for FREE Shipping</Text>
             <Box
               overflowX="auto"
@@ -90,267 +105,24 @@ const CartSlider = () => {
               maxW="7xl"
               h={"400px"}
             >
-              <Flex gap={2} width={"100%"} border="0px solid black" h={"150px"}>
-                <Box w={"30%"}>
-                  <Image
-                    width={"94%"}
-                    src="https://cdn.shopify.com/s/files/1/0677/1464/6315/products/ritual3.jpg?v=1679580399&width=352"
-                  />
-                </Box>
-                <Box w="70%" border="0px solid black" lineHeight={6}>
-                  <Heading fontSize={14}>The Ritual T-shirt</Heading>
-                  <HStack>
-                    <Heading fontSize={14}>Size:</Heading>
-                    <Text fontWeight={500} fontSize={12}>
-                      S
-                    </Text>
-                  </HStack>
-                  <HStack>
-                    <Heading fontSize={14}>Color:</Heading>
-                    <Text fontWeight={500} fontSize={12}>
-                      Black
-                    </Text>
-                  </HStack>
-                  <Text fontWeight={400} fontSize={16}>
-                    Rs. 1,490.00
-                  </Text>
-
-                  <HStack mt={2}>
-                    <Button
-                      size={"sm"}
-                      isDisabled={quantity == 1}
-                      onClick={() => handleQuantity(-1)}
-                    >
-                      -
-                    </Button>
-                    <Button size={"sm"}>{quantity}</Button>
-                    <Button
-                      size={"sm"}
-                      isDisabled={quantity == 10}
-                      onClick={() => handleQuantity(1)}
-                    >
-                      +
-                    </Button>
-
-                    <Text
-                      fontSize={15}
-                      cursor="pointer"
-                      textDecoration={"underline"}
-                    >
-                      Remove
-                    </Text>
-                  </HStack>
-                </Box>
-              </Flex>
-
-              <Flex gap={2} width={"100%"} border="0px solid black" h={"150px"}>
-                <Box w={"30%"}>
-                  <Image
-                    width={"94%"}
-                    src="https://cdn.shopify.com/s/files/1/0677/1464/6315/products/ritual3.jpg?v=1679580399&width=352"
-                  />
-                </Box>
-                <Box w="70%" border="0px solid black" lineHeight={6}>
-                  <Heading fontSize={14}>The Ritual T-shirt</Heading>
-                  <HStack>
-                    <Heading fontSize={14}>Size:</Heading>
-                    <Text fontWeight={500} fontSize={12}>
-                      S
-                    </Text>
-                  </HStack>
-                  <HStack>
-                    <Heading fontSize={14}>Color:</Heading>
-                    <Text fontWeight={500} fontSize={12}>
-                      Black
-                    </Text>
-                  </HStack>
-                  <Text fontWeight={400} fontSize={16}>
-                    Rs. 1,490.00
-                  </Text>
-
-                  <HStack mt={2}>
-                    <Button
-                      size={"sm"}
-                      isDisabled={quantity == 1}
-                      onClick={() => handleQuantity(-1)}
-                    >
-                      -
-                    </Button>
-                    <Button size={"sm"}>{quantity}</Button>
-                    <Button
-                      size={"sm"}
-                      isDisabled={quantity == 10}
-                      onClick={() => handleQuantity(1)}
-                    >
-                      +
-                    </Button>
-
-                    <Text
-                      fontSize={15}
-                      cursor="pointer"
-                      textDecoration={"underline"}
-                    >
-                      Remove
-                    </Text>
-                  </HStack>
-                </Box>
-              </Flex>
-              <Flex gap={2} width={"100%"} border="0px solid black" h={"150px"}>
-                <Box w={"30%"}>
-                  <Image
-                    width={"94%"}
-                    src="https://cdn.shopify.com/s/files/1/0677/1464/6315/products/ritual3.jpg?v=1679580399&width=352"
-                  />
-                </Box>
-                <Box w="70%" border="0px solid black" lineHeight={6}>
-                  <Heading fontSize={14}>The Ritual T-shirt</Heading>
-                  <HStack>
-                    <Heading fontSize={14}>Size:</Heading>
-                    <Text fontWeight={500} fontSize={12}>
-                      S
-                    </Text>
-                  </HStack>
-                  <HStack>
-                    <Heading fontSize={14}>Color:</Heading>
-                    <Text fontWeight={500} fontSize={12}>
-                      Black
-                    </Text>
-                  </HStack>
-                  <Text fontWeight={400} fontSize={16}>
-                    Rs. 1,490.00
-                  </Text>
-
-                  <HStack mt={2}>
-                    <Button
-                      size={"sm"}
-                      isDisabled={quantity == 1}
-                      onClick={() => handleQuantity(-1)}
-                    >
-                      -
-                    </Button>
-                    <Button size={"sm"}>{quantity}</Button>
-                    <Button
-                      size={"sm"}
-                      isDisabled={quantity == 10}
-                      onClick={() => handleQuantity(1)}
-                    >
-                      +
-                    </Button>
-
-                    <Text
-                      fontSize={15}
-                      cursor="pointer"
-                      textDecoration={"underline"}
-                    >
-                      Remove
-                    </Text>
-                  </HStack>
-                </Box>
-              </Flex>
-              <Flex gap={2} width={"100%"} border="0px solid black" h={"150px"}>
-                <Box w={"30%"}>
-                  <Image
-                    width={"94%"}
-                    src="https://cdn.shopify.com/s/files/1/0677/1464/6315/products/ritual3.jpg?v=1679580399&width=352"
-                  />
-                </Box>
-                <Box w="70%" border="0px solid black" lineHeight={6}>
-                  <Heading fontSize={14}>The Ritual T-shirt</Heading>
-                  <HStack>
-                    <Heading fontSize={14}>Size:</Heading>
-                    <Text fontWeight={500} fontSize={12}>
-                      S
-                    </Text>
-                  </HStack>
-                  <HStack>
-                    <Heading fontSize={14}>Color:</Heading>
-                    <Text fontWeight={500} fontSize={12}>
-                      Black
-                    </Text>
-                  </HStack>
-                  <Text fontWeight={400} fontSize={16}>
-                    Rs. 1,490.00
-                  </Text>
-
-                  <HStack mt={2}>
-                    <Button
-                      size={"sm"}
-                      isDisabled={quantity == 1}
-                      onClick={() => handleQuantity(-1)}
-                    >
-                      -
-                    </Button>
-                    <Button size={"sm"}>{quantity}</Button>
-                    <Button
-                      size={"sm"}
-                      isDisabled={quantity == 10}
-                      onClick={() => handleQuantity(1)}
-                    >
-                      +
-                    </Button>
-
-                    <Text
-                      fontSize={15}
-                      cursor="pointer"
-                      textDecoration={"underline"}
-                    >
-                      Remove
-                    </Text>
-                  </HStack>
-                </Box>
-              </Flex>
-              <Flex gap={2} width={"100%"} border="0px solid black" h={"150px"}>
-                <Box w={"30%"}>
-                  <Image
-                    width={"94%"}
-                    src="https://cdn.shopify.com/s/files/1/0677/1464/6315/products/ritual3.jpg?v=1679580399&width=352"
-                  />
-                </Box>
-                <Box w="70%" border="0px solid black" lineHeight={6}>
-                  <Heading fontSize={14}>The Ritual T-shirt</Heading>
-                  <HStack>
-                    <Heading fontSize={14}>Size:</Heading>
-                    <Text fontWeight={500} fontSize={12}>
-                      S
-                    </Text>
-                  </HStack>
-                  <HStack>
-                    <Heading fontSize={14}>Color:</Heading>
-                    <Text fontWeight={500} fontSize={12}>
-                      Black
-                    </Text>
-                  </HStack>
-                  <Text fontWeight={400} fontSize={16}>
-                    Rs. 1,490.00
-                  </Text>
-
-                  <HStack mt={2}>
-                    <Button
-                      size={"sm"}
-                      isDisabled={quantity == 1}
-                      onClick={() => handleQuantity(-1)}
-                    >
-                      -
-                    </Button>
-                    <Button size={"sm"}>{quantity}</Button>
-                    <Button
-                      size={"sm"}
-                      isDisabled={quantity == 10}
-                      onClick={() => handleQuantity(1)}
-                    >
-                      +
-                    </Button>
-
-                    <Text
-                      fontSize={15}
-                      cursor="pointer"
-                      textDecoration={"underline"}
-                    >
-                      Remove
-                    </Text>
-                  </HStack>
-                </Box>
-              </Flex>
+              {/* component */}
+              {cartData &&
+                cartData.map((el) => {
+                  return (
+                    <Box key={el.id}>
+                      <SideCartItem
+                        image={el.images[0]}
+                        title={el.title}
+                        quantity={el.qty}
+                        price={el.price}
+                        size={el.sizes}
+                        color={el.color}
+                        getdata={getdata}
+    
+                      />
+                    </Box>
+                  );
+                })}
             </Box>
             <Flex mt={5} justifyContent="space-between">
               <VStack>
@@ -361,9 +133,11 @@ const CartSlider = () => {
               </VStack>
               <VStack>
                 <Text>FREE</Text>
-                <Text fontWeight={500}>Rs. 32,960.00</Text>
+                <Text fontWeight={500}> {qty * price}</Text>
               </VStack>
             </Flex>
+            <Link to="/cart">
+            
             <Button
               rounded={"none"}
               w={"full"}
@@ -378,16 +152,9 @@ const CartSlider = () => {
                 transform: "translateY(1px)",
               }}
             >
-              Place Order
-            </Button>
-            <Text
-              _hover={{ cursor: "pointer" }}
-              textAlign={"center"}
-              mt={5}
-              textDecoration="underline"
-            >
               View Cart
-            </Text>
+            </Button>
+            </Link>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
@@ -396,3 +163,112 @@ const CartSlider = () => {
 };
 
 export default CartSlider;
+
+function SideCartItem({
+  id,
+  image,
+  title,
+  quantity,
+  price,
+  size,
+  color,
+  getData
+}) {
+  const [qty, setQty] = useState(quantity);
+
+  const handleQuantity = (val) => {
+    setQty((p) => p + val);
+  };
+
+  const updateqty = async () => {
+    try {
+      await axios.patch(
+        `https://vast-raincoat-lamb.cyclic.app/cart/update/${id}`,
+        qty,
+        {
+          headers: {
+            Authorization:
+            process.env.REACT_APP_TOKEN,
+          },
+        }
+      );
+      getData();
+    } catch (error) {
+      console.log("error in update qty");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(
+        `https://vast-raincoat-lamb.cyclic.app/cart/delete/${id}`,
+        {
+          headers: {
+            Authorization:
+            process.env.REACT_APP_TOKEN,
+          },
+        }
+      );
+      getData();
+    } catch (error) {
+      console.log("error in delete");
+    }
+  };
+
+  useEffect(() => {
+    updateqty();
+  }, [qty]);
+
+  return (
+    <Flex gap={2} width={"100%"} border="0px solid black" h={"150px"}>
+      <Box w={"30%"}>
+        <Image width={"94%"} src={image} />
+      </Box>
+      <Box w="70%" border="0px solid black" lineHeight={6}>
+        <Heading fontSize={14}>{title}</Heading>
+        <HStack>
+          <Heading fontSize={14}>Size:</Heading>
+          <Text fontWeight={500} fontSize={12}>
+            {size}
+          </Text>
+        </HStack>
+        <HStack>
+          <Heading fontSize={14}>Color:</Heading>
+          <Text fontWeight={500} fontSize={12}>
+            {color}
+          </Text>
+        </HStack>
+        <Text fontWeight={400} fontSize={16}>
+          {price}
+        </Text>
+
+        <HStack mt={2}>
+          <Button
+            size={"sm"}
+            isDisabled={qty == 1}
+            onClick={() => handleQuantity(-1)}
+          >
+            -
+          </Button>
+          <Button size={"sm"}>{qty}</Button>
+          <Button
+            size={"sm"}
+            isDisabled={quantity == 10}
+            onClick={() => handleQuantity(1)}
+          >
+            +
+          </Button>
+
+          <Text
+            onClick={handleDelete}
+            fontSize={15}
+            cursor="pointer"
+            textDecoration={"underline"}
+          >
+            Remove
+          </Text>
+        </HStack>
+      </Box>
+    </Flex>
+  );
+}

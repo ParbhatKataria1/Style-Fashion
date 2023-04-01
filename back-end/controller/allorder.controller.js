@@ -14,18 +14,8 @@ const getPosts = async (req, res) => {
   let { page, limit } = req.query;
   limit = limit == undefined ? 8 : limit;
   try {
-    let { userId } = req.body;
-    let obj = { userId };
-    //    if(min){
-    //     obj.no_of_comments={$gte:min}
-    //    }
-    //    if(max){
-    //     if(min)obj.no_of_comments={$lte:max, $gte:min};
-    //     else obj.no_of_comments={$lte:max};
-    //    }
-    //    if(device){
-    //     obj.device = device;
-    //    }
+    // let { userId } = req.body;
+    let obj = {};
     let data;
     if (page) {
       data = await OrderModel.find(obj)
@@ -44,8 +34,8 @@ const updateData = async (req, res) => {
   try {
     let { _id } = req.params;
     let body = req.body;
-    let { userId } = req.body;
-    let data = await OrderModel.findOneAndUpdate({ _id, userId }, body, {
+    // let { userId } = req.body;
+    let data = await OrderModel.findOneAndUpdate({ _id }, body, {
       new: true,
     });
     console.log(data);
@@ -58,8 +48,7 @@ const updateData = async (req, res) => {
 const deleteData = async (req, res) => {
   try {
     let { _id } = req.params;
-    let { userId } = req.body;
-    let data = await OrderModel.findOneAndDelete({ _id, userId }, null, {
+    let data = await OrderModel.findOneAndDelete({ _id }, null, {
       new: true,
     });
     console.log(data);

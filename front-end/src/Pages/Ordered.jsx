@@ -1,60 +1,114 @@
 import {
-  Flex,
-  Circle,
   Box,
+  Flex,
+  Grid,
+  GridItem,
   Image,
-  Badge,
-  useColorModeValue,
-  Icon,
-  chakra,
-  Tooltip,
-  Text,
-  FormControl,
-  FormLabel,
+  Select,
   Switch,
+  Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
+import AdminSidePage from "../Components/AdminSidePage";
+import { ProductCard } from "../Components/ProductItemAdmin";
 import { useEffect, useState } from "react";
-import { BsStar, BsStarFill, BsStarHalf } from "react-icons/bs";
-import { FiShoppingCart } from "react-icons/fi";
 import axios from "axios";
 
-const data = {
-  isNew: true,
-  imageURL:
-    "https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=4600&q=80",
-  name: "Wayfarer Classic",
-  price: 4.5,
-  rating: 4.2,
-  numReviews: 34,
+const Ordered = () => {
+  return <AdminSidePage children={<Content />} page="DashBoard" />;
 };
 
-function Rating({ rating, numReviews }) {
+const Content = () => {
+  const [order, setorder] = useState([]);
+
+  async function getOrderData() {
+    try {
+      let data = await axios.get(
+        "https://vast-raincoat-lamb.cyclic.app/allorder",
+        {
+          headers: {
+            Authorization:
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI2YTNjMTQxMWI4ZTYxMGVhMzJmNTciLCJpYXQiOjE2ODAyNjcwMzB9.vBtu-FuZY6dLvnhM_moYg82aT8qiBZFKBysscF9ISUQ",
+          },
+        }
+      );
+      data = data.data;
+      data = data.filter((el) => {
+        return el.status;
+      });
+      console.log(data, "data");
+      setorder(data);
+    } catch (error) {
+      console.log("error in fetching the data");
+    }
+  }
+  useEffect(() => {
+    getOrderData();
+  }, []);
+  console.log(order, "order");
   return (
-    <Box d="flex" alignItems="center">
-      {Array(5)
-        .fill("")
-        .map((_, i) => {
-          const roundedRating = Math.round(rating * 2) / 2;
-          if (roundedRating - i >= 1) {
-            return (
-              <BsStarFill
-                key={i}
-                style={{ marginLeft: "1" }}
-                color={i < rating ? "teal.500" : "gray.300"}
-              />
-            );
-          }
-          if (roundedRating - i === 0.5) {
-            return <BsStarHalf key={i} style={{ marginLeft: "1" }} />;
-          }
-          return <BsStar key={i} style={{ marginLeft: "1" }} />;
-        })}
-      <Box as="span" ml="2" color="gray.600" fontSize="sm">
-        {numReviews} review{numReviews > 1 && "s"}
+    <Box>
+      <Box w="100%" bg="white" m="auto">
+        <Flex justifyContent={"space-between"}>
+          <Text
+            display={{ base: "none", md: "unset" }}
+            fontSize={"20px"}
+            fontWeight="bold"
+          >
+            Manage Item{" "}
+          </Text>
+          <Flex>
+            <Flex mr="20px">
+              <Select placeholder="Products Category">
+                <option value="option1">Mens</option>
+                <option value="option2">Womens</option>
+              </Select>
+            </Flex>
+
+            <Flex alignItems={"center"}>
+              <Select placeholder="Sort Items">
+                <option value="option1">Low To High</option>
+                <option value="option2">High To Low</option>
+              </Select>
+            </Flex>
+          </Flex>
+        </Flex>
+      </Box>
+      <Box>
+        <Grid
+          mt="10px"
+          gap="6"
+          templateColumns={{
+            base: "repeat(1, 1fr)",
+            md: "repeat(2, 1fr)",
+            lg: "repeat(3, 1fr)",
+          }}
+        >
+          {order.length &&
+            order.map((el) => {
+              return (
+                <GridItem>
+                  <ProductAddToCart
+                    img={el.images[0]}
+                    imgOnHover={el.images[1]}
+                    title={el.title}
+                    salePrice={el.price}
+                    regularPrice={Math.floor(+el.price * 0.9)}
+                    brand={el.brand}
+                    status={el.status}
+                    orderdate={el.date}
+                    id={el._id}
+                    type={el.type}
+                  />
+                </GridItem>
+              );
+            })}
+        </Grid>
       </Box>
     </Box>
   );
-}
+};
+export default Ordered;
 
 function ProductAddToCart({
   img,
@@ -93,7 +147,7 @@ function ProductAddToCart({
         shadow="lg"
         position="relative"
       >
-        {data.isNew && (
+        {/* {data.isNew && (
           <Box
             border={"1px solid red"}
             bg="red"
@@ -109,7 +163,7 @@ function ProductAddToCart({
           >
             - 50%
           </Box>
-        )}
+        )} */}
         {/* <Box h="370px"></Box> */}
         <Flex
           border={"1px solid red"}
@@ -179,8 +233,9 @@ function ProductAddToCart({
               w="150px"
               justifyContent={"space-between"}
               color={"white"}
-              fontSize="13px"
+              fontSize="16px"
               borderRadius={"10px"}
+              fontWeight={"bold"}
               p="8px"
             >
               {status ? "Delivered" : "Pending"}
@@ -189,12 +244,12 @@ function ProductAddToCart({
                   toggleStatus(id, status);
                 }}
               >
-                <Switch
+                {/* <Switch
                   ml="10px"
                   size="md"
                   isDisabled={status}
                   id="email-alerts"
-                />
+                /> */}
               </Box>
             </Flex>
           </Box>
@@ -220,5 +275,3 @@ function ProductAddToCart({
     </Flex>
   );
 }
-
-export default ProductAddToCart;

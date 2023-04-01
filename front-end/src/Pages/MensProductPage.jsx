@@ -155,6 +155,17 @@ const MensProductPage = () => {
             </HStack>
         </Box>
     </Box>
+
+}
+
+
 }
 
 export { MensProductPage }
+
+
+
+
+
+
+
