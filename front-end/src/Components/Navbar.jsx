@@ -50,7 +50,7 @@ const Navbar = () => {
   const btnRef = React.useRef();
 
   const [searchData,setSearchData]=useState([]);
-
+console.log(searchData,'searchData')
   function handleClickOutside(event) {
     
     if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -330,7 +330,7 @@ axios.get(`https://vast-raincoat-lamb.cyclic.app/men?title${e.target.value}`,{
                   src="unit6Logo.png"
                 ></Image>
               </Flex>
-              <Flex w={{ base: "100%", md: "40%" }}>
+              <Flex w={{ base: "100%", md: "40%" }} zIndex={9999999999} mt={80}>
                 <InputGroup>
                   <Input onInput={handleChange} type="text" placeholder="Search" />
                   <InputRightElement
@@ -432,10 +432,12 @@ axios.get(`https://vast-raincoat-lamb.cyclic.app/men?title${e.target.value}`,{
                   display: "none",
                 },
               }}
-            >
+            > 
+            {/* slider start */}
               <Carousel responsive={responsive}>
-                {Array(8)
-                  .fill(0)
+                {
+              
+                  searchData>0 && searchData
                   .map((el) => {
                     return (
                       <div key={`${Math.random() + Date.now()}`}>
@@ -443,14 +445,14 @@ axios.get(`https://vast-raincoat-lamb.cyclic.app/men?title${e.target.value}`,{
                           <Image
                             borderRadius={"8px"}
                             w="200px"
-                            src="https://cdn.shopify.com/s/files/1/0677/1464/6315/products/KOOVS_20OCT22-0187.jpg?v=1677062982&width=300"
+                            src={el.images[0]}
                           />
                           <Box
                             textAlign={"left"}
                             fontSize={"14px"}
                             fontWeight={"bold"}
                           >
-                            <Text mt="7px">Ned Joggers</Text>
+                            <Text mt="7px">{el.title}</Text>
                             <Text mt="7px">Rs. 1,490.00</Text>
                           </Box>
                         </Box>
