@@ -68,7 +68,7 @@ const MensProductPage = () => {
 
 
     return <Box>
-        <Text align='center' fontSize={'43px'} fontSize={{base:"30px",sm:"35px",md:'43px'}} margin={'2rem 0.5rem'}>
+        <Text align='center' fontSize={{base:"30px",sm:"35px",md:'43px'}} margin={'2rem 0.5rem'}>
             MEN ALL COTHING
         </Text>
         <Box maxWidth={'8xl'} margin='auto'>
@@ -159,7 +159,6 @@ const MensProductPage = () => {
 }
 
 
-}
 
 export { MensProductPage }
 
