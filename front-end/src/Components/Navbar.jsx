@@ -49,7 +49,7 @@ const Navbar = () => {
   const womenRef = useRef(null);
   const btnRef = React.useRef();
 
-  const [searchData,setSearchData]=useState([])
+  const [searchData,setSearchData]=useState([]);
 
   function handleClickOutside(event) {
     
