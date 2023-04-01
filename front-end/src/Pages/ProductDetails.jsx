@@ -175,7 +175,7 @@ const ProductDetails = () => {
       console.log(error);
     }
   };
-
+  // console.log(images, "this is the imamges");
   return (
     <div>
       {product ? (

@@ -76,8 +76,7 @@ const updateData = async (req, res) => {
   try {
     let { _id } = req.params;
     let body = req.body;
-    let { userId } = req.body;
-    let data = await PostModel.findOneAndUpdate({ _id, userId }, body, {
+    let data = await PostModel.findOneAndUpdate({ _id }, body, {
       new: true,
     });
     console.log(data);
@@ -90,8 +89,7 @@ const updateData = async (req, res) => {
 const deleteData = async (req, res) => {
   try {
     let { _id } = req.params;
-    let { userId } = req.body;
-    let data = await PostModel.findOneAndDelete({ _id, userId }, null, {
+    let data = await PostModel.findOneAndDelete({ _id }, null, {
       new: true,
     });
     console.log(data);
