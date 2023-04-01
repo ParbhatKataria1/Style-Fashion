@@ -1,3 +1,4 @@
+
 // import { Button, Container, SimpleGrid, Text, Tooltip ,Box,HStack,Stack, Image} from "@chakra-ui/react";
 import {
     Box,
@@ -22,6 +23,7 @@ import { getMensProduct } from "../Redux/ProductReducer.js/action";
 import FilterMensProduct from "../Components/FilterationMensProduct";
 
 const MensProductPage = () => {
+
     const [num, setNum] = useState(0);
     const dispatch = useDispatch();
     const [searchParams] = useSearchParams();
@@ -65,7 +67,9 @@ const MensProductPage = () => {
         }
     });
 
-
+  useEffect(() => {
+    dispatch(getMensProduct(allParamsObj));
+  }, [location.search]);
 
     return <Box>
         <Text align='center' fontSize={{base:"30px",sm:"35px",md:'43px'}} margin={'2rem 0.5rem'}>
@@ -161,10 +165,6 @@ const MensProductPage = () => {
 
 
 export { MensProductPage }
-
-
-
-
 
 
 

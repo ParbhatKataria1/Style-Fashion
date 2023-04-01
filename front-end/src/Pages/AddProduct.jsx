@@ -1,202 +1,206 @@
 import { useState } from "react";
 import {
-    Input,
-    Button,
-    FormControl,
-    FormLabel,
-    Select,
-    Flex,
-    Stack,
-    Heading,
-    Box,
+  Input,
+  Button,
+  FormControl,
+  FormLabel,
+  Select,
+  Flex,
+  Stack,
+  Heading,
+  Box,
 } from "@chakra-ui/react";
-// import axios from "axios";
+import axios from "axios";
+import AdminSidePage from "../Components/AdminSidePage";
 
 const AddProducts = () => {
-    const [title, setTitle] = useState("");
-    const [price, setPrice] = useState(null);
-    const [brand, setBrand] = useState("");
-    const [size, setSize] = useState([]);
-    const [images1, setImages1] = useState([]);
-    const [color, setColor] = useState([]);
-    const [type, setType] = useState("Mens");
-    const [category, setCategory] = useState("");
+  return <AdminSidePage children={<Content />} />;
+};
 
-    const product = {
-        title,
-        price,
-        size,
-        color,
-        images1,
-        brand,
-        type,
-        category
+const Content = ({}) => {
+  const [title, setTitle] = useState();
+  const [price, setPrice] = useState(0);
+  const [size, setSize] = useState([]);
+  const [color, setColor] = useState([]);
+  const [images1, setImages1] = useState();
+  const [images2, setImages2] = useState();
+  const [images3, setImages3] = useState();
+  const [category, setcategory] = useState();
+  const [brand, setBrand] = useState();
+  const [type, setType] = useState();
+  // console.log(images1, images2, images3, "this is the image");
+
+  // function
+  const handleSubmit = async (e) => {
+    let obj = {
+      title,
+      price,
+      size,
+      color,
+      images: [images1, images2, images3],
+      category,
+      brand,
+      type,
     };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(product);
-        if (type === "Mens") {
-            fetch("https://vast-raincoat-lamb.cyclic.app/men/", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json",
-                    "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI3ZDEzOTQzNDdkY2NmZWIyOTM3MDIiLCJpYXQiOjE2ODAzNDQ1OTN9.DFuJQIGx9ghUIFyKUz3hikJyffdDB3SA9JLlOzXP2HY"
-                },
-                body: JSON.stringify(product)
-            }).then(res => res.json())
-                .then(res => {
-                    console.log(res);
-                    
-                    alert(res.msg)
-                })
-                .catch(err => console.log(err.message))
+    console.log(obj);
+    e.preventDefault();
+    try {
+      await axios.post(
+        `https://vast-raincoat-lamb.cyclic.app/${type}/add`,
+        obj,
+        {
+          headers: {
+            Authorization:
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0ODgxZDg3MWRiODU3OTRhMDRkM2IiLCJpYXQiOjE2ODAyOTQ3Njh9.LIvUk9OHcPtD4ghNFfeujJAp5Cjsv3zmK-a9IeHNmMs",
+          },
         }
-        else if (type === "Womens") {
-            fetch("https://vast-raincoat-lamb.cyclic.app/women/", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json",
-                    "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI3ZDEzOTQzNDdkY2NmZWIyOTM3MDIiLCJpYXQiOjE2ODAzNDQ1OTN9.DFuJQIGx9ghUIFyKUz3hikJyffdDB3SA9JLlOzXP2HY"
-                },
-                body: JSON.stringify(product)
-            }).then(res => res.json())
-                .then(res => {
-                    console.log(res);
-                    alert(res.msg)
-                })
-                .catch(err => console.log(err.message))
-        }
+      );
+      console.log("done");
+    } catch (error) {
+      console.log("error in updating the data");
     }
+  };
 
+  return (
+    <Box m="20px">
+      <Heading mb="20px">Add Product</Heading>
+      <Box>
+        <Flex direction={"column"}>
+          <form onSubmit={handleSubmit}>
+            <Flex
+              alignItems={"center"}
+              justifyContent={"space-between"}
+              direction={"row"}
+            >
+              <FormControl>
+                <FormLabel>Title</FormLabel>
+                <Input
+                  type="text"
+                  value={title}
+                  onChange={(event) => setTitle(event.target.value)}
+                  required
+                />
+              </FormControl>
 
+              <FormControl ml="20px">
+                <FormLabel>Price</FormLabel>
+                <Input
+                  type="text"
+                  //   value={}
+                  onChange={(event) => setPrice(+event.target.value)}
+                  required
+                />
+              </FormControl>
+            </Flex>
+            <Flex justifyContent={"space-between"}>
+              <FormControl>
+                <FormLabel>Size</FormLabel>
+                <Select
+                  value={size}
+                  onChange={(event) => setSize([event.target.value])}
+                >
+                  <option value="xs">extra small</option>
+                  <option value="s">small</option>
+                  <option value="m">medium</option>
+                  <option value="l">large</option>
+                </Select>
+              </FormControl>
 
-    return (
-        <Box style={{ marginLeft: "120px", width: "1000px" }}>
-            <Heading fontWeight={"thiner"} as="h2" size="xl" mb={"30px"}>
-                Add products
-            </Heading>
-            <Box>
-                <Flex direction={"column"} h="100vh">
-                    <form onSubmit={handleSubmit}>
-                        <FormControl>
-                            <FormLabel>Title</FormLabel>
-                            <Input
-                                type="text"
-                                value={title}
-                                onChange={(event) => setTitle(event.target.value)}
-                                required
-                            />
-                        </FormControl>
+              <FormControl ml={"20px"}>
+                <FormLabel>Color</FormLabel>
+                <Select
+                  value={color}
+                  onChange={(event) => setColor([event.target.value])}
+                >
+                  <option value="white">white</option>
+                  <option value="blue">blue</option>
+                  <option value="red">red</option>
+                  <option value="yellow">yellow</option>
+                </Select>
+              </FormControl>
+            </Flex>
 
-                        <FormControl mt={4}>
-                            <FormLabel>Price</FormLabel>
-                            <Input
-                                type="text"
-                                value={price}
-                                onChange={(event) => setPrice(+event.target.value)}
-                                required
-                            />
-                        </FormControl>
+            <FormControl>
+              <FormLabel>Image 1</FormLabel>
+              <Input
+                type="url"
+                value={images1}
+                onChange={(event) => setImages1(event.target.value)}
+                isRequired
+              />
+            </FormControl>
 
-                        <FormControl mt={4}>
-                            <FormLabel>Brand</FormLabel>
-                            <Input
-                                type="text"
-                                value={brand}
-                                onChange={(event) => setBrand(event.target.value)}
-                            />
-                        </FormControl>
+            <FormControl>
+              <FormLabel>Image 2</FormLabel>
+              <Input
+                type="url"
+                value={images2}
+                onChange={(event) => setImages2(event.target.value)}
+                isRequired
+              />
+            </FormControl>
 
-                        <FormControl mt={4}>
-                            <FormLabel>Size</FormLabel>
-                            <Select
-                                multiple={false}
-                                value={size}
-                                onChange={(event) => setSize([event.target.value])}
-                            >
-                                <option value="xs">extra small</option>
-                                <option value="s">small</option>
-                                <option value="m">medium</option>
-                                <option value="l">large</option>
-                            </Select>
-                        </FormControl>
+            <FormControl>
+              <FormLabel>Image 3</FormLabel>
+              <Input
+                type="url"
+                value={images3}
+                onChange={(event) => setImages3(event.target.value)}
+                isRequired
+              />
+            </FormControl>
+            <Flex>
+              <FormControl>
+                <FormLabel>type</FormLabel>
+                <Select
+                  value={type}
+                  onChange={(event) => setType(event.target.value)}
+                >
+                  <option value="men">Men</option>
+                  <option value="women">Women</option>
+                </Select>
+              </FormControl>
 
-                        <FormControl>
-                            <FormLabel>Image 1</FormLabel>
-                            <Input
-                                type="url"
-                                value={images1[0]}
-                                onChange={(event) => setImages1([event.target.value])}
-                                isRequired
-                            />
-                        </FormControl>
+              <FormControl ml={4}>
+                <FormLabel>Brand</FormLabel>
+                <Select
+                  value={brand}
+                  onChange={(event) => setBrand(event.target.value)}
+                >
+                  <option value="Koovs">Koovs</option>
+                  <option value="Nike">Nike</option>
+                  <option value="5ive">5ive</option>
+                  <option value="The Coutour club">The Coutour club</option>
+                </Select>
+              </FormControl>
+            </Flex>
 
-                        {/* <FormControl>
-                            <FormLabel>Image 2</FormLabel>
-                            <Input
-                                type="url"
-                                value={images1[1]}
-                                onChange={(event) => setImages1([event.target.value])}
-                                isRequired
-                            />
-                        </FormControl>
-
-                        <FormControl>
-                            <FormLabel>Image 3</FormLabel>
-                            <Input
-                                type="url"
-                                value={images1[2]}
-                                onChange={(event) => setImages1([event.target.value])}
-                                isRequired
-                            />
-                        </FormControl> */}
-
-                        <FormControl>
-                            <FormLabel>Color</FormLabel>
-                            <Select
-                                multiple={false}
-                                value={color}
-                                onChange={(event) => setColor([event.target.value])}
-                            >
-                                <option value="white">white</option>
-                                <option value="blue">blue</option>
-                                <option value="red">red</option>
-                                <option value="yellow">yellow</option>
-                            </Select>
-                        </FormControl>
-
-                        <FormControl mt={4}>
-                            <FormLabel>type</FormLabel>
-                            <Select
-                                multiple={false}
-                                value={type}
-                                onChange={(event) => setType(event.target.value)}
-                            >
-                                <option value="Mens">Men</option>
-                                <option value="Womens">Women</option>
-                            </Select>
-                        </FormControl>
-
-                        <FormControl mt={4}>
-                            <FormLabel>Category</FormLabel>
-                            <Input
-                                type="text"
-                                value={category}
-                                onChange={(event) => setCategory(event.target.value)}
-                            />
-                        </FormControl>
-
-                        <Stack mt={4} spacing={4}>
-                            <Button type="submit" colorScheme="green">
-                                + Add Product
-                            </Button>
-                        </Stack>
-                    </form>
-                </Flex>
-            </Box>
-        </Box>
-    );
+            <FormControl>
+              <FormLabel>Category</FormLabel>
+              <Select
+                value={category}
+                onChange={(event) => setcategory(event.target.value)}
+              >
+                <option value="shirt">Shirt</option>
+                <option value="pants">Pants</option>
+                <option value="track pants">Track Pants</option>
+                <option value="t-shirt">T-Shirt</option>
+                <option value="hoodies">Hoodies</option>
+                <option value="Palazzo">Palazzo</option>
+                <option value="Kurta">Kurta</option>
+                <option value="jeans">Jeans</option>
+              </Select>
+            </FormControl>
+            <Stack mt={4} spacing={4}>
+              <Button type="submit" colorScheme="green">
+                + Add Product
+              </Button>
+            </Stack>
+          </form>
+        </Flex>
+      </Box>
+    </Box>
+  );
 };
 
 export default AddProducts;

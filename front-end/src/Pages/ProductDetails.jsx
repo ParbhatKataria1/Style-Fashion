@@ -119,7 +119,6 @@ const ProductDetails = () => {
             Authorization:
 
             process.env.REACT_APP_TOKEN,
-
           },
         }
       );
