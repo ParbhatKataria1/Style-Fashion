@@ -27,9 +27,12 @@ import Carousel from "../Components/Carousel";
 import CartSlider from "../Components/CartSlider";
 import "../ProductDetails..css";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import PaymentModal from "../Components/PaymentModal";
 import { shopMens } from "../homePagedb";
 import { Link } from "react-router-dom";
 import { BiRightArrowAlt } from "react-icons/bi";
+
+const token = process.env.TOKEN;
 
 const ProductDetails = () => {
   const responsive = {
@@ -63,11 +66,10 @@ const ProductDetails = () => {
   const getData = async () => {
     try {
       let data = await axios.get(
-        `https://vast-raincoat-lamb.cyclic.app/men/64249b6bdd26ce4c8c7e83b1`,
+        `https://vast-raincoat-lamb.cyclic.app/men/6426bc39288ec9a23983d27b`,
         {
           headers: {
-            Authorization:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0ODgxZDg3MWRiODU3OTRhMDRkM2IiLCJpYXQiOjE2ODAxODU4Mjh9.ZStaoEyCnTJ89Et2eNzqKNnAFKNYaqp85IIyMgMPhwE",
+            Authorization:token,
           },
         }
       );
@@ -97,6 +99,7 @@ const ProductDetails = () => {
   const handleClick = async () => {
     let { brand, images, price, title, type } = product[0];
     let cartData = {
+<<<<<<< HEAD
       brand,
       images,
       price,
@@ -108,6 +111,49 @@ const ProductDetails = () => {
     };
     // console.log(cartData, "cartdata");
 
+=======
+
+      ...product[0],
+      quantity: "qty",
+      size: "size",
+      color: "size",
+    };
+    console.log(cartData, "cartdata");
+
+    try {
+      let crt = {
+        title: "Brack this is me Cotton Bralettes",
+        price: "633",
+        brand: "koko",
+        images: [
+          "https://cdn.shopify.com/s/files/1/0677/1464/6315/products/koovs-3234.jpg?v=1671078617&width=600",
+          "https://cdn.shopify.com/s/files/1/0677/1464/6315/products/koovs-3287.jpg?v=1677136742&width=600",
+          "https://cdn.shopify.com/s/files/1/0677/1464/6315/products/koovs-3272.jpg?v=1677136742&width=600",
+        ],
+        color: "blue",
+        type: "men",
+      };
+
+      let data = await axios.post(
+        "https://vast-raincoat-lamb.cyclic.app/cart/add",
+        crt,
+        {
+          headers: {
+            Authorization:
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI1NDVmZTg5NWFiZjk3MWRlOTM0NTUiLCJpYXQiOjE2ODAxOTU1MjN9.FhjXqCaiiXGa7oeVEXm8ABi-VdNdVCmFPY1j0nsnqPQ",
+
+      brand,
+      images,
+      price,
+      title,
+      type,
+      qty: quantity,
+      sizes: size,
+      color,
+    };
+    // console.log(cartData, "cartdata");
+
+>>>>>>> be73ced75ec55ac4fafe5d98f5f275ef3c27cc44
     try {
       let data = await axios.post(
         "https://vast-raincoat-lamb.cyclic.app/cart/add",
@@ -115,7 +161,12 @@ const ProductDetails = () => {
         {
           headers: {
             Authorization:
+<<<<<<< HEAD
+            process.env.TOKEN,
+=======
               "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0ODgxZDg3MWRiODU3OTRhMDRkM2IiLCJpYXQiOjE2ODAxODU4Mjh9.ZStaoEyCnTJ89Et2eNzqKNnAFKNYaqp85IIyMgMPhwE",
+
+>>>>>>> be73ced75ec55ac4fafe5d98f5f275ef3c27cc44
           },
         }
       );
@@ -130,7 +181,7 @@ const ProductDetails = () => {
       {product ? (
         product.map((el) => {
           return (
-            <Container maxW={"7xl"} border="0px solid red" mt={"20px"}>
+            <Container maxW={"7xl"} border="1px solid red" mt={"20px"}>
               <Flex w={"100%"}>
                 <Box
                   className="Image"
@@ -220,7 +271,7 @@ const ProductDetails = () => {
                           w="30px"
                           border={"1px solid black"}
                           rounded="full"
-                          bgColor={"black"}
+                          bgColor={color}
                           margin="auto"
                           alignItems={"center"}
                         ></Box>
@@ -252,25 +303,7 @@ const ProductDetails = () => {
                     </Flex>
                     {/* Add to cart button */}
 
-                    <Button
-                      rounded={"none"}
-                      w={"full"}
-                      mt={8}
-                      size={"lg"}
-                      py={"7"}
-                      bg={"black"}
-                      color={"white"}
-                      border="1px solid black"
-                      textTransform={"uppercase"}
-                      _hover={{
-                        transform: "translateY(1px)",
-                        boxShadow: "lg",
-                        bg: "black",
-                        color: "white",
-                      }}
-                    >
-                      BUY IT NOW
-                    </Button>
+                    <PaymentModal />
                   </Stack>
                 </Box>
               </Flex>

@@ -15,6 +15,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import axios from "axios";
+import PaymentModal from "../Components/PaymentModal";
 
 import React, { useEffect, useState } from "react";
 
@@ -26,10 +27,16 @@ let init = {
   tax: 0,
 };
 
-const PaymentOption = ({ tem }) => {
+const PaymentOption = ({ cartData }) => {
   const subtotal = 30;
   const tax = 44;
-  const totalPrice = 0;
+  let totalPrice = 0;
+  console.log(cartData,"payment")
+  cartData.forEach((el)=>{
+    return totalPrice =totalPrice + el.qty*el.price;
+  })
+  console.log(totalPrice)
+
   return (
     <>
       <Box w={"25%"}>
@@ -40,7 +47,7 @@ const PaymentOption = ({ tem }) => {
           <Flex direction="column">
             <Flex mb={"12px"} justifyContent={"space-between"}>
               <Text>SubTotal</Text>
-              <Text>${subtotal}</Text>
+              <Text>{subtotal}</Text>
             </Flex>
             <Divider mb={"12px"} />
             <Flex mb={"12px"} justifyContent={"space-between"}>
@@ -58,7 +65,7 @@ const PaymentOption = ({ tem }) => {
               <Text>${totalPrice}</Text>
             </Flex>
             <Divider mb={"12px"} />
-            <Button
+            {/* <Button
               borderRadius="0px"
               fontWeight="normal"
               mb={"20px"}
@@ -73,8 +80,10 @@ const PaymentOption = ({ tem }) => {
               //   onClick={submit}
             >
               PROCEED TO CHECKOUT{" "}
-            </Button>
+            </Button> */}
+            <PaymentModal/>
             <Button
+            mt={2}
               borderRadius="5px"
               fontWeight="normal"
               mb={"20px"}
@@ -141,25 +150,64 @@ const Cart = () => {
   const [cartData, setcartdata] = useState([]);
 
   async function getdata() {
-    let data = await axios.get("https://vast-raincoat-lamb.cyclic.app/cart", {
+    try {
+      let data = await axios.get("https://vast-raincoat-lamb.cyclic.app/cart", {
+        headers: {
+          Authorization:process.env.TOKEN
+            ,
+        },
+      });
+      setcartdata(data.data);
+    } catch (error) {
+      console.log("error in fetching cart data");
+    }
+  }
+console.log(cartData,"cart data");
+
+
+const updateQty = async(id,qty)=>{
+  try {
+    await axios.patch(`https://vast-raincoat-lamb.cyclic.app/cart/update/${id}`,qty,{
       headers: {
         Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0ODgxZDg3MWRiODU3OTRhMDRkM2IiLCJpYXQiOjE2ODAxODU4Mjh9.ZStaoEyCnTJ89Et2eNzqKNnAFKNYaqp85IIyMgMPhwE",
+        process.env.TOKEN,
       },
-    });
-    console.log(data.data, "thiangid");
+    })
+    getdata();
+    console.log("update fun",id,qty);
+  } catch (error) {
+    console.log("error in update qty");
   }
+}
+
+const handleDelete = async(id)=>{
+  try {
+    await axios.delete(`https://vast-raincoat-lamb.cyclic.app/cart/delete/${id}`,{
+      headers: {
+        Authorization:
+        process.env.TOKEN,
+      },
+    })
+    getdata();
+    
+  } catch (error) {
+    console.log("error in delete");
+  }
+}
+
+
 
   useEffect(() => {
     getdata();
   }, []);
+
   return (
     <>
       <Box pt={"20px"} w="95%" m="auto">
         <Flex justifyContent={"space-between"}>
           <Box w={"70%"}>
             <Box p={"10px"} mt="20px">
-              <Flex
+              {/* <Flex
                 justifyContent={"space-between"}
                 borderTop={"1px solid lightgray"}
                 borderBottom={"1px solid lightgray"}
@@ -183,18 +231,18 @@ const Cart = () => {
                   <Text>Total Price</Text>
                 </Box>
                 <Box></Box>
-              </Flex>
-              {/* {cartData?.cartData.map((item) => {
+              </Flex> */}
+              {cartData?.map((item) => {
                 return (
                   <Box key={item.id}>
-                    <CartItem cartItem={item} handleDelete={handleDelete} />
+                    <CartItem cartItem={item} updateQty={updateQty} handleDelete={handleDelete}/>
                   </Box>
                 );
-              })} */}
+              })}
             </Box>
           </Box>
           <PaymentOption
-          //    cartData={cartData}
+             cartData={cartData}
           />
         </Flex>
       </Box>
@@ -204,22 +252,21 @@ const Cart = () => {
 
 export default Cart;
 
-const CartItem = ({ cartItem, handleDelete }) => {
+const CartItem = ({ cartItem, updateQty,handleDelete }) => {
   // console.log(cartItem)
-  // console.log('cartItem')
-  const [item, setitem] = useState({ ...cartItem, qty: 1 });
-  function changeTheData(qty) {
-    let newdata = {
-      ...cartItem,
-      qty: +qty,
-    };
-    delete newdata.id;
-    // dispatch(updateCartData(cartItem.id, newdata)).then(() => {
-    //   // console.log('gdafdagda')
-    //   setitem(newdata);
-    // });
+  
+
+const [qty,setQty] = useState(cartItem.qty)
+  const changeTheData = (e)=>{
+    setQty(e.target.value);
+    updateQty(cartItem._id,qty);
   }
-  // console.log(cartItem, 'comone');
+console.log((qty));
+
+
+
+
+
   return (
     <Box mb={"10px"} border="1px solid lightgray" borderRadius={"5px"}>
       <Flex
@@ -245,8 +292,8 @@ const CartItem = ({ cartItem, handleDelete }) => {
             <Image
               h={"100%"}
               objectFit="cover"
-              //   src={cartItem.image.furl}
-              //   alt={cartItem.title}
+                src={cartItem.images[0]}
+                alt={cartItem.title}
             ></Image>
           </Flex>
         </Box>
@@ -257,25 +304,23 @@ const CartItem = ({ cartItem, handleDelete }) => {
           orientation="vertical"
         />
         <Box mr="40px" w={"20%"}>
-          <Text fontWeight={500}>{/* {cartItem.title} */}</Text>
+          <Text fontWeight={500}>{cartItem.title}</Text>
           <Text>
             style:
             {/* {cartItem.productdetails.styleno} */}
           </Text>
-          <Text>Color : BLUE MOTIF</Text>
-          <Text>Size Set of 4</Text>
+          <Text>Color : {cartItem.color}</Text>
+          <Text>Size :{cartItem.sizes}</Text>
         </Box>
         <Box mr="60px">
           {/* <Text>Item Price</Text> */}
-          <Text>${/* {cartItem.price} */}</Text>
+          <Text>${cartItem.price}</Text>
         </Box>
         <Box mr="30px">
           {/* <Text>Quanitity</Text> */}
           <Select
-            placeholder={cartItem.qty}
-            // onChange={(e) => {
-            //   changeTheData(e.target.value);
-            // }}
+            placeholder={qty}
+            onChange={changeTheData}
           >
             <option value="1">1</option>
             <option value="2">2</option>
@@ -302,11 +347,11 @@ const CartItem = ({ cartItem, handleDelete }) => {
 
         <Box mr="70px">
           {/* <Text>Total Price</Text> */}
-          <Text>${/* {parseInt(item.price) * +item.qty} */}</Text>
+          <Text>${parseInt(cartItem.price) * +cartItem.qty}</Text>
         </Box>
         <Box
           cursor={"pointer"}
-          //   onClick={() => handleDelete(cartItem.id)}
+           onClick={() => handleDelete(cartItem._id)}
           w="5%"
         >
           <svg
