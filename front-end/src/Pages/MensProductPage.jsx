@@ -83,10 +83,17 @@ const MensProductPage = () => {
             </Container>
         </Box>
     </Box>
+
 }
 
 
+}
+
+export  {MensProductPage};
 
 
-export { MensProductPage };
+
+
+
+
 

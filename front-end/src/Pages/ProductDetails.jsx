@@ -117,7 +117,9 @@ const ProductDetails = () => {
         {
           headers: {
             Authorization:
+
             process.env.REACT_APP_TOKEN,
+
           },
         }
       );
@@ -126,7 +128,7 @@ const ProductDetails = () => {
       console.log(error);
     }
   };
-
+  // console.log(images, "this is the imamges");
   return (
     <div>
       {product ? (

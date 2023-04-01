@@ -74,7 +74,10 @@ const Content = () => {
         params: {
           limit: 100,
         },
+        method: "no-cors",
         headers: {
+          "Content-type": "application/json",
+          "Access-Control-Allow-Origin": "*",
           Authorization:
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI2YTNjMTQxMWI4ZTYxMGVhMzJmNTciLCJpYXQiOjE2ODAyNjM5Njh9.C_59KLK7uaLeOhjmfsCx4MvAI7lDUPm_rFjqMHVospw",
         },
@@ -92,7 +95,10 @@ const Content = () => {
         params: {
           limit: 100,
         },
+        method: "no-cors",
         headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-type": "application/json",
           Authorization:
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI2YTNjMTQxMWI4ZTYxMGVhMzJmNTciLCJpYXQiOjE2ODAyNjM5Njh9.C_59KLK7uaLeOhjmfsCx4MvAI7lDUPm_rFjqMHVospw",
         },
