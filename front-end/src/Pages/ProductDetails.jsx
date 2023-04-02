@@ -29,7 +29,7 @@ import "../ProductDetails..css";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import PaymentModal from "../Components/PaymentModal";
 import { shopMens } from "../homePagedb";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { BiRightArrowAlt } from "react-icons/bi";
 
 const token = process.env.TOKEN;
@@ -63,18 +63,21 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState([]);
   const [color, setColor] = useState("");
+  const params = useParams();
+  const id = params.id;
+
   const getData = async () => {
     try {
       let data = await axios.get(
-        `https://vast-raincoat-lamb.cyclic.app/men/6426bc39288ec9a23983d27d`,
+        `https://vast-raincoat-lamb.cyclic.app/men/${id}`,
         {
           headers: {
-            Authorization:process.env.REACT_APP_TOKEN,
+            Authorization: process.env.REACT_APP_TOKEN,
           },
         }
       );
 
-      setProduct(data.data);
+      setProduct(data.data, "this is the data we want");
     } catch (error) {
       console.log("there is an error in fetching data");
     }
@@ -116,13 +119,12 @@ const ProductDetails = () => {
         cartData,
         {
           headers: {
-            Authorization:
-
-            process.env.REACT_APP_TOKEN,
+            Authorization: process.env.REACT_APP_TOKEN,
           },
         }
       );
-      console.log(data.data,"pdetail onclick cartdata");
+      console.log(data.data, "pdetail onclick cartdata");
+      alert("Item added to cart")
     } catch (error) {
       console.log(error);
     }
@@ -244,18 +246,18 @@ const ProductDetails = () => {
                       >
                         +
                       </Button>
-                      <Box
+                      <Button
                         onClick={handleClick}
                         w={"7xl"}
                         border="0px solid red"
-                        mt={-10}
+                        
                       >
-                        <CartSlider />
-                      </Box>
+                        Add To Cart
+                      </Button>
                     </Flex>
                     {/* Add to cart button */}
 
-                    <PaymentModal />
+                    <CartSlider />
                   </Stack>
                 </Box>
               </Flex>

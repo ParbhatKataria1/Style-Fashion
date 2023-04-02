@@ -13,6 +13,9 @@ import {
   Image,
   Accordion,
   Heading,
+  useColorModeValue,
+  Stack,
+  Avatar,
 } from "@chakra-ui/react";
 import axios from "axios";
 import PaymentModal from "../Components/PaymentModal";
@@ -20,6 +23,7 @@ import PaymentModal from "../Components/PaymentModal";
 import React, { useEffect, useState } from "react";
 
 import { Select, TagLabel } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 let init = {
   totalPrice: 0,
@@ -28,14 +32,14 @@ let init = {
 };
 
 const PaymentOption = ({ cartData }) => {
-  const subtotal = 30;
-  const tax = 44;
+  const subtotal = 0;
   let totalPrice = 0;
-  console.log(cartData,"payment")
-  cartData.forEach((el)=>{
-    return totalPrice =totalPrice + el.qty*el.price;
-  })
-  console.log(totalPrice)
+  console.log(cartData, "payment");
+  cartData.forEach((el) => {
+    return (totalPrice = totalPrice + el.qty * el.price);
+  });
+  console.log(totalPrice);
+  const tax = totalPrice * 0.2;
 
   return (
     <>
@@ -62,13 +66,15 @@ const PaymentOption = ({ cartData }) => {
             <Divider mb={"12px"} />
             <Flex mb={"12px"} justifyContent={"space-between"}>
               <Text>Total</Text>
-              <Text>${totalPrice+44}</Text>
+              <Text>${totalPrice + tax}</Text>
             </Flex>
             <Divider mb={"12px"} />
-          
-            <PaymentModal/>
-           
-           
+
+            <PaymentModal
+              subtotal={subtotal}
+              tax={tax}
+              totalPrice={totalPrice + tax}
+            />
           </Flex>
         </Box>
       </Box>
@@ -83,8 +89,7 @@ const Cart = () => {
     try {
       let data = await axios.get("https://vast-raincoat-lamb.cyclic.app/cart", {
         headers: {
-          Authorization:process.env.REACT_APP_TOKEN
-            ,
+          Authorization: process.env.REACT_APP_TOKEN,
         },
       });
       setcartdata(data.data);
@@ -92,40 +97,43 @@ const Cart = () => {
       console.log("error in fetching cart data");
     }
   }
-console.log(cartData,"cart data");
+  console.log(cartData, "cart data");
 
+  const updateQty = async (id, qty) => {
+    console.log(id, qty, "update");
+    try {
+      let data = await axios.patch(
+        `https://vast-raincoat-lamb.cyclic.app/cart/update/${id}`,
+        { qty: +qty },
+        {
+          headers: {
+            Authorization: process.env.REACT_APP_TOKEN,
+          },
+        }
+      );
+      console.log(data, "this is teh data");
+      getdata();
+    } catch (error) {
+      console.log("error in update qty");
+    }
+  };
 
-const updateQty = async(id,qty)=>{
-  try {
-    await axios.patch(`https://vast-raincoat-lamb.cyclic.app/cart/update/${id}`,qty,{
-      headers: {
-        Authorization:
-        process.env.REACT_APP_TOKEN,
-      },
-    })
-    getdata();
-    console.log("update fun",id,qty);
-  } catch (error) {
-    console.log("error in update qty");
-  }
-}
-
-const handleDelete = async(id)=>{
-  try {
-    await axios.delete(`https://vast-raincoat-lamb.cyclic.app/cart/delete/${id}`,{
-      headers: {
-        Authorization:
-        process.env.REACT_APP_TOKEN,
-      },
-    })
-    getdata();
-    
-  } catch (error) {
-    console.log("error in delete");
-  }
-}
-
-
+  const handleDelete = async (id) => {
+    console.log("handleId", id);
+    try {
+      await axios.delete(
+        `https://vast-raincoat-lamb.cyclic.app/cart/delete/${id}`,
+        {
+          headers: {
+            Authorization: process.env.REACT_APP_TOKEN,
+          },
+        }
+      );
+      getdata();
+    } catch (error) {
+      console.log("error in delete");
+    }
+  };
 
   useEffect(() => {
     getdata();
@@ -162,6 +170,7 @@ const handleDelete = async(id)=>{
                 </Box>
                 <Box></Box>
               </Flex> */}
+              {cartData.length == 0 && <EmptyCart />}
               {cartData?.map((item) => {
                 return (
                   <Box key={item.id} rounded={"md"} boxShadow={"rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px"}>
@@ -171,9 +180,7 @@ const handleDelete = async(id)=>{
               })}
             </Box>
           </Box>
-          <PaymentOption
-             cartData={cartData}
-          />
+          <PaymentOption cartData={cartData} />
         </Flex>
       </Box>
     </>
@@ -181,21 +188,107 @@ const handleDelete = async(id)=>{
 };
 
 export default Cart;
+// 642892b914f08283594d2c4e
 
-const CartItem = ({ cartItem, updateQty,handleDelete }) => {
+const EmptyCart = () => {
+  return (
+    <Flex justifyContent={"center"} alignItems={"center"} h="70vh" w="100%">
+      <Testimonial>
+        <TestimonialContent>
+          <Heading>Cart is Empty</Heading>
+          <TestimonialText w="100%">
+            <Image w="300px" src="cart.png" />
+
+            <Flex justifyContent={"center"}>
+              <Link to="/">
+                <Button w="200px">Go To Home</Button>
+              </Link>
+            </Flex>
+          </TestimonialText>
+        </TestimonialContent>
+      </Testimonial>
+    </Flex>
+  );
+};
+
+const Testimonial = ({ children }) => {
+  return <Box w="100%">{children}</Box>;
+};
+
+const TestimonialContent = ({ children }) => {
+  return (
+    <Stack
+      bg={useColorModeValue("white", "gray.800")}
+      boxShadow={"lg"}
+      p={8}
+      rounded={"xl"}
+      align={"center"}
+      pos={"relative"}
+      _after={{
+        content: `""`,
+        w: 0,
+        h: 0,
+        borderLeft: "solid transparent",
+        borderLeftWidth: 16,
+        borderRight: "solid transparent",
+        borderRightWidth: 16,
+        borderTop: "solid",
+        borderTopWidth: 16,
+        borderTopColor: useColorModeValue("white", "gray.800"),
+        pos: "absolute",
+        bottom: "-16px",
+        left: "50%",
+        transform: "translateX(-50%)",
+      }}
+    >
+      {children}
+    </Stack>
+  );
+};
+
+const TestimonialHeading = ({ children }) => {
+  return (
+    <Heading as={"h3"} fontSize={"xl"}>
+      {children}
+    </Heading>
+  );
+};
+
+const TestimonialText = ({ children }) => {
+  return (
+    <Text
+      textAlign={"center"}
+      color={useColorModeValue("gray.600", "gray.400")}
+      fontSize={"sm"}
+    >
+      {children}
+    </Text>
+  );
+};
+
+const TestimonialAvatar = ({ src, name, title }) => {
+  return (
+    <Flex align={"center"} mt={8} direction={"column"}>
+      <Avatar src={src} alt={name} mb={2} />
+      <Stack spacing={-1} align={"center"}>
+        <Text fontWeight={600}>{name}</Text>
+        <Text fontSize={"sm"} color={useColorModeValue("gray.600", "gray.400")}>
+          {title}
+        </Text>
+      </Stack>
+    </Flex>
+  );
+};
+
+const CartItem = ({ cartItem, updateQty, handleDelete }) => {
   // console.log(cartItem)
-  
 
-const [qty,setQty] = useState(cartItem.qty)
-  const changeTheData = (e)=>{
+  const [qty, setQty] = useState(cartItem.qty);
+  const changeTheData = (e) => {
     setQty(e.target.value);
-    updateQty(cartItem._id,qty);
-  }
-console.log((qty));
-
-
-
-
+    updateQty(cartItem._id, +e.target.value);
+  };
+  console.log(qty);
 
   return (
     <Box mb={"10px"} border="1px solid lightgray" borderRadius={"5px"}>
@@ -222,8 +315,8 @@ console.log((qty));
             <Image
               h={"100%"}
               objectFit="cover"
-                src={cartItem.images[0]}
-                alt={cartItem.title}
+              src={cartItem.images[0]}
+              alt={cartItem.title}
             ></Image>
           </Flex>
         </Box>
@@ -248,10 +341,7 @@ console.log((qty));
         </Box>
         <Box mr="30px">
           {/* <Text>Quanitity</Text> */}
-          <Select
-            placeholder={qty}
-            onChange={changeTheData}
-          >
+          <Select placeholder={qty} onChange={changeTheData}>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -281,7 +371,7 @@ console.log((qty));
         </Box>
         <Box
           cursor={"pointer"}
-           onClick={() => handleDelete(cartItem._id)}
+          onClick={() => handleDelete(cartItem._id)}
           w="5%"
         >
           <svg

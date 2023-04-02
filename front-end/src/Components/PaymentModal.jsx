@@ -30,8 +30,9 @@ import {
 import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
+import Payment from "./Payment";
 
-const PaymentModal = () => {
+const PaymentModal = ({ subtotal, tax, totalPrice }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [mobile, setMobile] = useState("");
@@ -49,7 +50,7 @@ const PaymentModal = () => {
   const dateFormatted = today.toLocaleString("en-US", options);
   const dateFinal = dateFormatted.toString();
 
-  // console.log(dateFinal);
+  console.log(text, "text");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,8 +64,7 @@ const PaymentModal = () => {
     try {
       let data = await axios.get("https://vast-raincoat-lamb.cyclic.app/cart", {
         headers: {
-          Authorization:
-          process.env.REACT_APP_TOKEN,
+          Authorization: process.env.REACT_APP_TOKEN,
         },
       });
       setcartdata(data.data);
@@ -79,37 +79,39 @@ const PaymentModal = () => {
   }, []);
 
   //-------------adding cartdata and address-----------------//
-
   const handleClick = async (e) => {
     const newData = cartData.map((e) => {
-      return {
+      let obj = {
+        status: false,
         ...e,
         ...text,
       };
+      return obj;
     });
     console.log(newData, "newData");
     for (let i = 0; i < newData.length; i++) {
+      let obj = { ...newData[i] };
+      delete obj._id;
+      delete obj.userId;
       let data = await axios.post(
         "https://vast-raincoat-lamb.cyclic.app/order/add",
-        newData[i],
+        obj,
         {
           headers: {
-            Authorization:
-            process.env.REACT_APP_TOKEN,
+            Authorization: process.env.REACT_APP_TOKEN,
           },
         }
       );
       console.log(data.data, "sent data");
+      await axios.delete(
+        `https://vast-raincoat-lamb.cyclic.app/cart/delete/${newData[i]._id}`,
+        {
+          headers: {
+            Authorization: process.env.REACT_APP_TOKEN,
+          },
+        }
+      );
     }
-    // setText("");
-    await axios.delete(`https://vast-raincoat-lamb.cyclic.app/cart`, {
-      headers: {
-        Authorization:
-        process.env.REACT_APP_TOKEN,
-      },
-    });
-
-    // console.log(data);
   };
 
   console.log(text);
@@ -255,7 +257,7 @@ const PaymentModal = () => {
                             border="2px solid gray"
                             onChange={handleChange}
                           />
-                          {/* <Input placeholder="Email Address" type="email" name="email" onChange={handleChange}/> */}
+                          
                         </HStack>
                         <Input
                         boxShadow={"#e344b0 0px 2px 2px"}
@@ -279,13 +281,22 @@ const PaymentModal = () => {
                             bg: "black",
                             color: "white",
                           }}
-                          onClick={handleClick}
+                        
                         >
                           Submit
                         </Button>
                       </Box>
                     </TabPanel>
-                    <TabPanel></TabPanel>
+                    {/* payment thing */}
+                    <TabPanel>
+                      <Payment
+                        subtotal={subtotal}
+                        tax={tax}
+                        totalPrice={totalPrice}
+                        cartData={cartData}
+                        text={text}
+                      />
+                    </TabPanel>
                   </TabPanels>
                 </Tabs>
               </Box>
@@ -301,7 +312,7 @@ const PaymentModal = () => {
                   <Flex direction="column">
                     <Flex mb={"12px"} justifyContent={"space-between"}>
                       <Text>SubTotal</Text>
-                      <Text></Text>
+                      <Text>{subtotal}</Text>
                     </Flex>
                     <Divider mb={"12px"} border={"1px solid #e344b0"} />
                     <Flex mb={"12px"} justifyContent={"space-between"}>
@@ -311,12 +322,12 @@ const PaymentModal = () => {
                     <Divider mb={"12px"} border={"1px solid #e344b0"} />
                     <Flex mb={"12px"} justifyContent={"space-between"}>
                       <Text>Estimated Tax</Text>
-                      <Text></Text>
+                      <Text>{tax}</Text>
                     </Flex>
                     <Divider mb={"12px"} border={"1px solid #e344b0"} />
                     <Flex mb={"12px"} justifyContent={"space-between"}>
                       <Text>Total</Text>
-                      <Text></Text>
+                      <Text>{totalPrice}</Text>
                     </Flex>
                     <Divider mb={"12px"} border={"1px solid #e344b0"} />
                   </Flex>

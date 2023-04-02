@@ -126,9 +126,7 @@ function ProductAddToCart({
               w="100%"
               objectFit={"cover"}
               transition="opacity 0.5s ease-in-out"
-              src={
-                "https://cdn.shopify.com/s/files/1/0677/1464/6315/products/koovs-3234.jpg?v=1671078617&width=600"
-              }
+              src={img}
               className="image"
               opacity={hover ? "0" : "1"}
               alt="normal"
