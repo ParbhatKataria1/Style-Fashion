@@ -102,23 +102,23 @@ export default function FilterWomensProduct({page}) {
                   <AccordionIcon />
                 </AccordionButton>
                 <AccordionPanel pb={4}>
-                  <RangeSlider
-                    aria-label={['min', 'max']}
-                    defaultValue={[selectedMin||0,selectedMax||5000]}
-                    min={0}
-                    max={5000}
-                    step={1}
-                    onChange={handlePriceRangeChange}>
-                    <RangeSliderTrack>
+                <RangeSlider
+                      aria-label={['min', 'max']}
+                      defaultValue={[priceRange[0]===0&&selectedMin.length===0?0:selectedMin,priceRange[1]===5000&&selectedMax.length===0?5000:selectedMax]}
+                      min={0}
+                      max={5000}
+                      step={1}
+                      onChange={handlePriceRangeChange}>
+                      <RangeSliderTrack>
                       <RangeSliderFilledTrack />
-                    </RangeSliderTrack>
-                    <RangeSliderThumb index={0} />
-                    <RangeSliderThumb index={1} />
+                      </RangeSliderTrack>
+                      <RangeSliderThumb index={0}/>
+                      <RangeSliderThumb index={1} />
                   </RangeSlider>
                   <HStack>
-                    <Input type='text' value={selectedMin} disabled color={'blackAlpha.900'} />
-                    <BsDash />
-                    <Input type='text' value={selectedMax} disabled />
+                      <Input type='Number' value={priceRange[0]===0&&selectedMin.length===0?0:selectedMin} disabled color={'blackAlpha.900'}/> 
+                      <BsDash/>
+                      <Input type='Number' value={priceRange[1]===5000&&selectedMax.length===0?5000:selectedMax} disabled/> 
                   </HStack>
                 </AccordionPanel>
               </AccordionItem>
