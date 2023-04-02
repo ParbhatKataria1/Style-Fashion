@@ -30,6 +30,7 @@ const CartSlider = () => {
   const btnRef = React.useRef();
 
   const [cartData, setcartdata] = useState([]);
+  const [state,setState] = useState(false);
 
   async function getdata() {
     let data = await axios.get("https://vast-raincoat-lamb.cyclic.app/cart", {
@@ -42,8 +43,9 @@ const CartSlider = () => {
   }
 
   useEffect(() => {
+    setState((prev)=>!prev);
     getdata();
-  }, []);
+  }, [state]);
   console.log(cartData);
   const { qty, price } = cartData;
   return (
@@ -69,7 +71,7 @@ const CartSlider = () => {
           color: "white",
         }}
       >
-        ADD TO CART
+        View Cart Summery
       </Button>
   
       <Drawer

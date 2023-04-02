@@ -124,6 +124,7 @@ const ProductDetails = () => {
         }
       );
       console.log(data.data, "pdetail onclick cartdata");
+      alert("Item added to cart")
     } catch (error) {
       console.log(error);
     }
@@ -245,18 +246,18 @@ const ProductDetails = () => {
                       >
                         +
                       </Button>
-                      <Box
+                      <Button
                         onClick={handleClick}
                         w={"7xl"}
                         border="0px solid red"
-                        mt={-10}
+                        
                       >
-                        <CartSlider />
-                      </Box>
+                        Add To Cart
+                      </Button>
                     </Flex>
                     {/* Add to cart button */}
 
-                    <PaymentModal />
+                    <CartSlider />
                   </Stack>
                 </Box>
               </Flex>
