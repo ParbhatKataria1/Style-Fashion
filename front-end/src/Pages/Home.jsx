@@ -38,7 +38,7 @@ const Home = () => {
     return <Box>
         {/* top div */}
         <Container as={Stack} maxW={'6xl'} py={10} gap={'2rem'}>
-            <Image src="https://cdn.shopify.com/s/files/1/0677/1464/6315/files/10_ARTIST_DESKTOP5.jpg?v=1676618119&width=100% " alt="1" display={{ base: 'none', sm: 'none', md: 'block' }} />
+            <Image src="https://cdn.shopify.com/s/files/1/0677/1464/6315/files/10_ARTIST_DESKTOP5.jpg?v=1676618119&width=100% " alt="1" display={{ base: 'none', sm: 'none', md: 'block' }} width="full"/>
             <Image src="https://cdn.shopify.com/s/files/1/0677/1464/6315/files/George_thomas_artworks4.jpg?v=1676617973 " alt="1" display={{ md: 'none' }} />
         </Container>
 

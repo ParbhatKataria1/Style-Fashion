@@ -123,7 +123,7 @@ const WomensProductPage = () => {
                     className="grid-container" >
                     {
                         sortedWomensProduct?.map((el) => {
-                            return <ProductCard key={el._id} {...el} />
+                            return <ProductCard key={el._id} {...el} num={num}  />
                         })
                     }
 

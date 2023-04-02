@@ -31,8 +31,8 @@ export default function FilterMensProduct({page}) {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef();
+  
   const [priceRange, setPriceRange] = useState([0,5000]);
-
   const [searchParams,setSearchParams] = useSearchParams();
 
   const initialStateBrand =  searchParams.getAll("brand");
@@ -42,9 +42,13 @@ export default function FilterMensProduct({page}) {
 
   const [selectedCategory, setSelectedCategory] = useState(initialStateCategory||[]);
   const [selectedBrand, setSelectedBrand] = useState(initialStateBrand||[]);
-  const [selectedMax, setSelectedMax] = useState(initialStateMax||Number);
   const [selectedMin, setSelectedMin] = useState(initialStateMin||Number);
+  const [selectedMax, setSelectedMax] = useState(initialStateMax||Number);
   
+
+  console.log(selectedMax,"max")
+  console.log(selectedMin,"min")
+
   const handlePriceRangeChange = (newRange) => {
     setPriceRange(newRange);
     setSelectedMax(priceRange[1])
@@ -103,7 +107,7 @@ export default function FilterMensProduct({page}) {
                   <AccordionPanel pb={4}>
                   <RangeSlider
                       aria-label={['min', 'max']}
-                      defaultValue={[selectedMin||0,selectedMax||5000]}
+                      defaultValue={[priceRange[0]===0&&selectedMin.length===0?0:selectedMin,priceRange[1]===5000&&selectedMax.length===0?5000:selectedMax]}
                       min={0}
                       max={5000}
                       step={1}
@@ -115,9 +119,9 @@ export default function FilterMensProduct({page}) {
                       <RangeSliderThumb index={1} />
                   </RangeSlider>
                   <HStack>
-                      <Input type='text' value={selectedMin} disabled color={'blackAlpha.900'}/> 
+                      <Input type='Number' value={priceRange[0]===0&&selectedMin.length===0?0:selectedMin} disabled color={'blackAlpha.900'}/> 
                       <BsDash/>
-                      <Input type='text' value={selectedMin} disabled/> 
+                      <Input type='Number' value={priceRange[1]===5000&&selectedMax.length===0?5000:selectedMax} disabled/> 
                   </HStack>
                   </AccordionPanel>
               </AccordionItem>

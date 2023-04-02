@@ -118,7 +118,7 @@ const MensProductPage = () => {
                     className="grid-container" >
                     {
                         sortedMensProduct?.map((el) => {
-                            return <ProductCard key={el._id} {...el} />
+                            return <ProductCard key={el._id} {...el} num={num} />
                         })
                     }
                 </SimpleGrid>
