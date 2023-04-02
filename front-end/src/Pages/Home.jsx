@@ -63,7 +63,7 @@ const Home = () => {
           display={{ md: "none" }}
         />
       </Container>
-
+      
       {/* //shop women's */}
       <Container as={Stack} maxW={"full"} py={10} gap={"2rem"}>
         <Text align={"flex-start"} ml={3} fontWeight={"600"} fontSize={"35px"}>
