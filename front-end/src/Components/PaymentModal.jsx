@@ -30,8 +30,9 @@ import {
 import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
+import Payment from "./Payment";
 
-const PaymentModal = () => {
+const PaymentModal = ({ subtotal, tax, totalPrice }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [mobile, setMobile] = useState("");
@@ -49,7 +50,7 @@ const PaymentModal = () => {
   const dateFormatted = today.toLocaleString("en-US", options);
   const dateFinal = dateFormatted.toString();
 
-  // console.log(dateFinal);
+  console.log(text, "text");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,8 +64,7 @@ const PaymentModal = () => {
     try {
       let data = await axios.get("https://vast-raincoat-lamb.cyclic.app/cart", {
         headers: {
-          Authorization:
-          process.env.REACT_APP_TOKEN,
+          Authorization: process.env.REACT_APP_TOKEN,
         },
       });
       setcartdata(data.data);
@@ -79,37 +79,39 @@ const PaymentModal = () => {
   }, []);
 
   //-------------adding cartdata and address-----------------//
-
   const handleClick = async (e) => {
     const newData = cartData.map((e) => {
-      return {
+      let obj = {
+        status: false,
         ...e,
         ...text,
       };
+      return obj;
     });
     console.log(newData, "newData");
     for (let i = 0; i < newData.length; i++) {
+      let obj = { ...newData[i] };
+      delete obj._id;
+      delete obj.userId;
       let data = await axios.post(
         "https://vast-raincoat-lamb.cyclic.app/order/add",
-        newData[i],
+        obj,
         {
           headers: {
-            Authorization:
-            process.env.REACT_APP_TOKEN,
+            Authorization: process.env.REACT_APP_TOKEN,
           },
         }
       );
       console.log(data.data, "sent data");
+      await axios.delete(
+        `https://vast-raincoat-lamb.cyclic.app/cart/delete/${newData[i]._id}`,
+        {
+          headers: {
+            Authorization: process.env.REACT_APP_TOKEN,
+          },
+        }
+      );
     }
-    // setText("");
-    await axios.delete(`https://vast-raincoat-lamb.cyclic.app/cart`, {
-      headers: {
-        Authorization:
-        process.env.REACT_APP_TOKEN,
-      },
-    });
-
-    // console.log(data);
   };
 
   console.log(text);
@@ -136,21 +138,23 @@ const PaymentModal = () => {
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} size={"4xl"} autoFocus={false}>
-        <ModalOverlay />
-        <ModalContent>
+        <ModalOverlay  />
+        <ModalContent boxShadow={"rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;"} rounded={"2xl"}>
           <ModalHeader>
             <Heading>Koovs</Heading>
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody >
             <Flex>
               <Box>
-                <Tabs m="auto">
+                <Tabs m="auto" >
                   <TabList
+                  boxShadow={"#e344b0 0px 1px 0px"}
                     justifyContent={"space-between"}
                     p="0px 200px 0px 200px"
+                    
                   >
-                    <Tab>Mobile</Tab>
+                    <Tab >Mobile</Tab>
                     <Tab>Address</Tab>
                     <Tab>Pay</Tab>
                   </TabList>
@@ -158,6 +162,7 @@ const PaymentModal = () => {
                   <TabPanels textAlign={"left"} fontSize="13px">
                     <TabPanel>
                       <Box
+                      boxShadow={"#e344b0 0px 5px 15px"}
                         lineHeight={"100px"}
                         textAlign={"center"}
                         border={"0px solid red"}
@@ -166,6 +171,7 @@ const PaymentModal = () => {
                         mt={18}
                       >
                         <Text
+                        
                           fontSize="2xl"
                           fontWeight={500}
                           textAlign={"center"}
@@ -176,8 +182,10 @@ const PaymentModal = () => {
                           <InputLeftAddon
                             children="+91"
                             border="2px solid gray"
+                            
                           />
                           <Input
+                          boxShadow={"#e344b0 2px 2px 2px"}
                             border="2px solid gray"
                             type="tel"
                             value={mobile}
@@ -186,6 +194,7 @@ const PaymentModal = () => {
                           />
                         </InputGroup>
                         <Button
+                        
                           isDisabled={mobile.length < 10}
                           w={"xs"}
                           size={"lg"}
@@ -222,6 +231,7 @@ const PaymentModal = () => {
                         </Text>
                         <HStack>
                           <Input
+                          boxShadow={"#e344b0 0px 2px 2px"}
                             isDisabled={text.full_name == ""}
                             placeholder="City"
                             type="text"
@@ -230,6 +240,7 @@ const PaymentModal = () => {
                             onChange={handleChange}
                           />
                           <Input
+                          boxShadow={"#e344b0 0px 2px 2px"}
                             placeholder="State"
                             type="text"
                             name="state"
@@ -239,15 +250,17 @@ const PaymentModal = () => {
                         </HStack>
                         <HStack mt={3}>
                           <Input
+                          boxShadow={"#e344b0 0px 2px 2px"}
                             placeholder="Pincode"
                             type="number"
                             name="pincode"
                             border="2px solid gray"
                             onChange={handleChange}
                           />
-                          {/* <Input placeholder="Email Address" type="email" name="email" onChange={handleChange}/> */}
+                          
                         </HStack>
                         <Input
+                        boxShadow={"#e344b0 0px 2px 2px"}
                           placeholder="Full Address"
                           type="text"
                           name="address"
@@ -255,6 +268,7 @@ const PaymentModal = () => {
                           onChange={handleChange}
                         />
                         <Button
+                        boxShadow={"#e344b0 0px 5px 15px"}
                           w={"xs"}
                           size={"lg"}
                           py={"7"}
@@ -267,13 +281,22 @@ const PaymentModal = () => {
                             bg: "black",
                             color: "white",
                           }}
-                          onClick={handleClick}
+                        
                         >
                           Submit
                         </Button>
                       </Box>
                     </TabPanel>
-                    <TabPanel></TabPanel>
+                    {/* payment thing */}
+                    <TabPanel>
+                      <Payment
+                        subtotal={subtotal}
+                        tax={tax}
+                        totalPrice={totalPrice}
+                        cartData={cartData}
+                        text={text}
+                      />
+                    </TabPanel>
                   </TabPanels>
                 </Tabs>
               </Box>
@@ -282,31 +305,31 @@ const PaymentModal = () => {
                   Order Summary
                 </Heading>
                 <Box
-                  boxShadow={"rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"}
+                  boxShadow={"#e344b0 0px 5px 15px"}
                   borderRadius="5px"
                   p={"15px"}
                 >
                   <Flex direction="column">
                     <Flex mb={"12px"} justifyContent={"space-between"}>
                       <Text>SubTotal</Text>
-                      <Text></Text>
+                      <Text>{subtotal}</Text>
                     </Flex>
-                    <Divider mb={"12px"} border={"1px solid grey"} />
+                    <Divider mb={"12px"} border={"1px solid #e344b0"} />
                     <Flex mb={"12px"} justifyContent={"space-between"}>
                       <Text>Shipping</Text>
                       <Text>TBD</Text>
                     </Flex>
-                    <Divider mb={"12px"} border={"1px solid grey"} />
+                    <Divider mb={"12px"} border={"1px solid #e344b0"} />
                     <Flex mb={"12px"} justifyContent={"space-between"}>
                       <Text>Estimated Tax</Text>
-                      <Text></Text>
+                      <Text>{tax}</Text>
                     </Flex>
-                    <Divider mb={"12px"} border={"1px solid grey"} />
+                    <Divider mb={"12px"} border={"1px solid #e344b0"} />
                     <Flex mb={"12px"} justifyContent={"space-between"}>
                       <Text>Total</Text>
-                      <Text></Text>
+                      <Text>{totalPrice}</Text>
                     </Flex>
-                    <Divider mb={"12px"} border={"1px solid grey"} />
+                    <Divider mb={"12px"} border={"1px solid #e344b0"} />
                   </Flex>
                 </Box>
               </Box>
@@ -315,6 +338,7 @@ const PaymentModal = () => {
 
           <ModalFooter>
             <Button
+            boxShadow={"#e344b0 0px 5px 15px"}
               colorScheme="blue"
               mr={3}
               onClick={onClose}

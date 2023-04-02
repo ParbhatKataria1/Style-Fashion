@@ -36,9 +36,13 @@ import "react-multi-carousel/lib/styles.css";
 
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
+import { Link, Navigate } from "react-router-dom";
+import Cart from "../Pages/Cart";
+import { MyContext } from "../context/AuthUseContext";
 
 const Navbar = () => {
-  const { user, loginWithRedirect, isAuthenticated, logout } = useAuth0();
+  const { user, loginWithRedirect, isAuthenticated, logout } =
+    React.useContext(MyContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode("light");
   const [searchPage, setSearchPage] = useState(false);
@@ -48,14 +52,14 @@ const Navbar = () => {
   const menRef = useRef(null);
   const womenRef = useRef(null);
   const btnRef = React.useRef();
+  const [cartlength, setcartlength] = useState(0);
 
-  const [searchData,setSearchData]=useState([]);
-console.log(searchData,'searchData')
+  const [searchData, setSearchData] = useState([]);
+  console.log(searchData, "searchData");
   function handleClickOutside(event) {
-    
+    console.log(event.target.innerText);
     if (searchRef.current && !searchRef.current.contains(event.target)) {
       console.log("Clicked outside container");
-      // Handle the click outside the container here
       setSearchPage(false);
     } else {
       console.log("Clicked inside container");
@@ -65,6 +69,7 @@ console.log(searchData,'searchData')
       !menRef.current.contains(event.target) &&
       event.target.name != "men"
     ) {
+      console.log(event.target.innerText);
       setMenPage(false);
       console.log("none");
     }
@@ -97,23 +102,43 @@ console.log(searchData,'searchData')
     };
   }, []);
   console.log(user, "this");
-  
+
   // https://vast-raincoat-lamb.cyclic.app/men?title=ravi
-  
-const handleChange = (e) => {
+
+  const handleChange = (e) => {
     // document.querySelector("#searchBox").style.display="block"
-axios.get(`https://vast-raincoat-lamb.cyclic.app/men?title${e.target.value}`,{
-  headers:{
-    Authorization:`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAzNDA4NTV9.R4pvDG4y_6mMweYjUCpaHLJ8n3JDc5TnUB0d8aSPNKI`
-}
-}).then((res)=>{
-  console.log(res.data)
-  setSearchData(res.data)
-})
-.catch((err)=>{
-  console.log(err)
-})
-};
+    axios
+      .get(`https://vast-raincoat-lamb.cyclic.app/men?title${e.target.value}`, {
+        headers: {
+          Authorization: process.env.REACT_APP_TOKEN,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setSearchData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    axios
+      .get(`https://vast-raincoat-lamb.cyclic.app/cart`, {
+        headers: {
+          Authorization: process.env.REACT_APP_TOKEN,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setcartlength(res.data.length);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  console.log(searchData, "searchggggData");
 
   return (
     <Box borderBottom="2px solid black">
@@ -163,6 +188,20 @@ axios.get(`https://vast-raincoat-lamb.cyclic.app/men?title${e.target.value}`,{
               border="1px solid red"
               w="37%"
             >
+              {isAuthenticated && (
+                <Flex
+                  h="40px"
+                  px={4}
+                  justifyContent="space-between"
+                  cursor="pointer"
+                  alignItems="center"
+                  transition="all 0.2s"
+                >
+                  <Link to="dashboard">
+                    <Button colorScheme="red">Admin</Button>
+                  </Link>
+                </Flex>
+              )}
               <Flex
                 h="40px"
                 px={4}
@@ -229,23 +268,6 @@ axios.get(`https://vast-raincoat-lamb.cyclic.app/men?title${e.target.value}`,{
                 </Text>
                 <ChevronDownIcon />
               </Flex>
-
-              <Flex
-                h="40px"
-                px={4}
-                justifyContent="space-between"
-                cursor="pointer"
-                alignItems="center"
-                transition="all 0.2s"
-                borderRadius="md"
-                borderWidth="1px"
-                _hover={{ borderColor: "gray.100" }}
-                _expanded={{ bg: "blue.400" }}
-                _focus={{ boxShadow: "outline" }}
-              >
-                <Text>Collections</Text>
-                <ChevronDownIcon />
-              </Flex>
             </Flex>
             <Flex
               justifyContent={{ base: "end", md: "center" }}
@@ -253,14 +275,16 @@ axios.get(`https://vast-raincoat-lamb.cyclic.app/men?title${e.target.value}`,{
               border="1px solid red"
               w={{ base: "60%", md: "20%" }}
             >
-              <Image
-                id="1"
-                border="1px solid red"
-                mb={{ base: "0px", md: "-35px" }}
-                pb="0px"
-                w="130px"
-                src="unit6Logo.png"
-              ></Image>
+              <Link to="/">
+                <Image
+                  id="1"
+                  border="1px solid red"
+                  mb={{ base: "0px", md: "-35px" }}
+                  pb="0px"
+                  w="130px"
+                  src="unit6Logo.png"
+                ></Image>
+              </Link>
             </Flex>
             <Flex
               alignItems={"center"}
@@ -270,6 +294,7 @@ axios.get(`https://vast-raincoat-lamb.cyclic.app/men?title${e.target.value}`,{
               justifyContent={{ lg: "space-between", xl: "end" }}
             >
               <RightOption
+                cartlength={cartlength}
                 setSearchPage={setSearchPage}
                 isAuthenticated={isAuthenticated}
                 loginWithRedirect={loginWithRedirect}
@@ -301,17 +326,18 @@ axios.get(`https://vast-raincoat-lamb.cyclic.app/men?title${e.target.value}`,{
         </Flex>
       </Box>
 
-      <Box>
+      <Box position="relative">
         {searchPage && (
           <Box
             opacity="3"
             pt="15px"
             ref={searchRef}
+            border={"5px solid red"}
             bg="white"
             w="100%"
             position={"fixed"}
             top="0px"
-            zIndex={"10"}
+            zIndex={"100"}
           >
             <Flex
               w="90%"
@@ -330,9 +356,13 @@ axios.get(`https://vast-raincoat-lamb.cyclic.app/men?title${e.target.value}`,{
                   src="unit6Logo.png"
                 ></Image>
               </Flex>
-              <Flex w={{ base: "100%", md: "40%" }} zIndex={9999999999} mt={80}>
+              <Flex w={{ base: "100%", md: "40%" }}>
                 <InputGroup>
-                  <Input onInput={handleChange} type="text" placeholder="Search" />
+                  <Input
+                    onInput={handleChange}
+                    type="text"
+                    placeholder="Search"
+                  />
                   <InputRightElement
                     pointerEvents="none"
                     children={<BsSearch color="gray.300" />}
@@ -356,17 +386,31 @@ axios.get(`https://vast-raincoat-lamb.cyclic.app/men?title${e.target.value}`,{
                   </svg>
                   <Text ml="5px">WishList</Text>
                 </Flex>
-                <Flex mx="10px">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M10 20.5c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5zm3.5-1.5c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5zm6.304-17l-3.431 14h-2.102l2.541-11h-16.812l4.615 13h13.239l3.474-14h2.178l.494-2h-4.196z" />
-                  </svg>
-                  <Text ml="5px">Cart</Text>
-                </Flex>
+                <Link to="cart">
+                  <Flex mx="10px" position={"relative"}>
+                    <Box
+                      borderRadius={"50px"}
+                      left="5px"
+                      top="-10px"
+                      color={"white"}
+                      px="5px"
+                      fontSize={"12px"}
+                      bg="red"
+                      position="absolute"
+                    >
+                      {cartlength}
+                    </Box>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M10 20.5c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5zm3.5-1.5c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5zm6.304-17l-3.431 14h-2.102l2.541-11h-16.812l4.615 13h13.239l3.474-14h2.178l.494-2h-4.196z" />
+                    </svg>
+                    <Text ml="5px">Cart</Text>
+                  </Flex>
+                </Link>
                 <Flex mx="10px">
                   {!isAuthenticated && (
                     <Button size="sm" onClick={() => loginWithRedirect()}>
@@ -409,14 +453,6 @@ axios.get(`https://vast-raincoat-lamb.cyclic.app/men?title${e.target.value}`,{
                       </Flex>
                     </Flex>
                   )}
-                  {/* <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 22c-3.123 0-5.914-1.441-7.749-3.69.259-.588.783-.995 1.867-1.246 2.244-.518 4.459-.981 3.393-2.945-3.155-5.82-.899-9.119 2.489-9.119 3.322 0 5.634 3.177 2.489 9.119-1.035 1.952 1.1 2.416 3.393 2.945 1.082.25 1.61.655 1.871 1.241-1.836 2.253-4.628 3.695-7.753 3.695z" />
-                  </svg> */}
                 </Flex>
               </Flex>
             </Flex>
@@ -432,30 +468,32 @@ axios.get(`https://vast-raincoat-lamb.cyclic.app/men?title${e.target.value}`,{
                   display: "none",
                 },
               }}
-            > 
-            {/* slider start */}
+            >
               <Carousel responsive={responsive}>
-                {
-              
-                  searchData>0 && searchData
-                  .map((el) => {
+                {searchData.length > 0 &&
+                  searchData.map((el) => {
                     return (
                       <div key={`${Math.random() + Date.now()}`}>
-                        <Box w="400px">
-                          <Image
-                            borderRadius={"8px"}
-                            w="200px"
-                            src={el.images[0]}
-                          />
-                          <Box
-                            textAlign={"left"}
-                            fontSize={"14px"}
-                            fontWeight={"bold"}
-                          >
-                            <Text mt="7px">{el.title}</Text>
-                            <Text mt="7px">Rs. 1,490.00</Text>
+                        <Link
+                          onClick={() => setSearchPage(false)}
+                          to={`productDetails/${el._id}`}
+                        >
+                          <Box mb="20px" w="400px">
+                            <Image
+                              borderRadius={"8px"}
+                              w="200px"
+                              src={el.images[0]}
+                            />
+                            <Box
+                              textAlign={"left"}
+                              fontSize={"14px"}
+                              fontWeight={"bold"}
+                            >
+                              <Text mt="7px">{el.title}</Text>
+                              <Text mt="7px">Rs. {el.price}</Text>
+                            </Box>
                           </Box>
-                        </Box>
+                        </Link>
                       </div>
                     );
                   })}
@@ -464,7 +502,9 @@ axios.get(`https://vast-raincoat-lamb.cyclic.app/men?title${e.target.value}`,{
           </Box>
         )}
         <Box
-          h={`${searchPage ? "100vh" : "0vh"}`}
+          position={"absolute"}
+          w="100%"
+          h={`${searchPage ? "1000px" : "0vh"}`}
           bg={`${searchPage ? "black" : "none"}`}
           opacity=".25"
         ></Box>
@@ -482,7 +522,7 @@ axios.get(`https://vast-raincoat-lamb.cyclic.app/men?title${e.target.value}`,{
             handleOption("men", e);
           }}
         >
-          <MensOption />
+          <MensOption setMenPage={setMenPage} />
         </Box>
       )}
       {womenPage && (
@@ -498,7 +538,7 @@ axios.get(`https://vast-raincoat-lamb.cyclic.app/men?title${e.target.value}`,{
             handleOption("women", e);
           }}
         >
-          <WomensOption />
+          <WomensOption setWomenPage={setWomenPage} />
         </Box>
       )}
     </Box>
@@ -509,6 +549,7 @@ const RightOption = ({
   setSearchPage,
   isAuthenticated,
   loginWithRedirect,
+  cartlength,
   user,
   logout,
 }) => {
@@ -548,17 +589,33 @@ const RightOption = ({
         </svg>
         <Text ml="5px">WishList</Text>
       </Flex>
-      <Flex mx="10px">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-        >
-          <path d="M10 20.5c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5zm3.5-1.5c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5zm6.304-17l-3.431 14h-2.102l2.541-11h-16.812l4.615 13h13.239l3.474-14h2.178l.494-2h-4.196z" />
-        </svg>
-        <Text ml="5px">Cart</Text>
-      </Flex>
+      <Link to="cart">
+        <Flex mx="10px" alignItems={"center"} position={"relative"}>
+          <Box
+            borderRadius={"50px"}
+            left="5px"
+            top="-10px"
+            color={"white"}
+            px="5px"
+            fontSize={"12px"}
+            bg="red"
+            position="absolute"
+          >
+            {cartlength}
+          </Box>
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+          >
+            <path d="M10 20.5c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5zm3.5-1.5c-.828 0-1.5.671-1.5 1.5s.672 1.5 1.5 1.5 1.5-.671 1.5-1.5c0-.828-.672-1.5-1.5-1.5zm6.304-17l-3.431 14h-2.102l2.541-11h-16.812l4.615 13h13.239l3.474-14h2.178l.494-2h-4.196z" />
+          </svg>
+
+          <Text ml="5px">Cart</Text>
+        </Flex>
+      </Link>
       <Flex mx="10px">
         {!isAuthenticated && (
           <Button size="sm" onClick={() => loginWithRedirect()}>
@@ -704,7 +761,7 @@ function DrawerExample({ isOpen, onOpen, onClose, btnRef }) {
   );
 }
 
-const MensOption = () => {
+const MensOption = ({ setMenPage }) => {
   return (
     //     Jackets & Coats
     // Hoodies & Sweatshirts
@@ -715,7 +772,14 @@ const MensOption = () => {
       <Box w="90%" m="auto">
         <Flex pt="20px" justifyContent={"space-between"} textAlign={"left"}>
           <Box>
-            <Text fontWeight={"bold"}>Clothing</Text>
+            <Link
+              onClick={() => {
+                setMenPage(false);
+              }}
+              to="mensAllCloth"
+            >
+              <Text fontWeight={"bold"}>Clothing</Text>
+            </Link>
             <Text
               pt="5px"
               borderRadius={"4px"}
@@ -795,7 +859,7 @@ const MensOption = () => {
               transition={"all .2s ease"}
               fontWeight={"bold"}
             >
-              Footers
+              <Link to="mensAllCloth">Footers</Link>
             </Text>
             <Text
               p="5px"
@@ -837,7 +901,7 @@ const MensOption = () => {
               mt="8px"
               fontWeight={"bold"}
             >
-              Accessories
+              <Link to="mensAllCloth">Accessories</Link>
             </Text>
             <Text
               p="5px"
@@ -879,7 +943,7 @@ const MensOption = () => {
               mt="8px"
               fontWeight={"bold"}
             >
-              Brands
+              <Link to="mensAllCloth">Brands</Link>
             </Text>
             <Text
               p="5px"

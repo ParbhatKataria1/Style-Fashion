@@ -27,8 +27,7 @@ const Content = () => {
         "https://vast-raincoat-lamb.cyclic.app/allorder",
         {
           headers: {
-            Authorization:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI2YTNjMTQxMWI4ZTYxMGVhMzJmNTciLCJpYXQiOjE2ODAyNjcwMzB9.vBtu-FuZY6dLvnhM_moYg82aT8qiBZFKBysscF9ISUQ",
+            Authorization: process.env.REACT_APP_TOKEN,
           },
         }
       );

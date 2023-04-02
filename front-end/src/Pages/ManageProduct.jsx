@@ -18,7 +18,6 @@ import { easeOut } from "framer-motion";
 const ManageProduct = () => {
   return <AdminSidePage children={<Content />} page="DashBoard" />;
 };
-
 const Content = () => {
   const [category, setcategory] = useState("men");
   const [data, setdata] = useState([]);
