@@ -19,7 +19,7 @@ const TrackOrder = () => {
 };
 
 const Content = () => {
-  const [order, setorder] = useState([]);
+  let [order, setorder] = useState([]);
 
   const [searchParams, setSearchParams] = useSearchParams({});
   const sortParam = searchParams.get("sort");
