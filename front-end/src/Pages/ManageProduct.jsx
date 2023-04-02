@@ -19,18 +19,22 @@ const ManageProduct = () => {
   return <AdminSidePage children={<Content />} page="DashBoard" />;
 };
 const Content = () => {
-  const [category, setcategory] = useState("men");
-  const [data, setdata] = useState([]);
+  let [data, setdata] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams({});
   const [reload, setreload] = useState(false);
-  const [page, setpage] = useState(1);
   const qpage = searchParams.get("page");
-  console.log(searchParams, "search", page);
-  console.log(reload, qpage, "reload");
+  const [page, setpage] = useState(qpage || 1);
+
+  const sortParam = searchParams.get("sort");
+  const [sort, setsort] = useState(sortParam);
+
+  const typeParam = searchParams.get("type");
+  const [type, settype] = useState("men");
+
   async function getData() {
     try {
       let data = await axios.get(
-        `https://vast-raincoat-lamb.cyclic.app/${category}`,
+        `https://vast-raincoat-lamb.cyclic.app/${type}`,
         {
           params: {
             page: qpage == undefined ? 1 : qpage,
@@ -61,8 +65,26 @@ const Content = () => {
   }
 
   useEffect(() => {
+    let obj = {};
+    if (sort) obj.sort = sort;
+    if (type) obj.type = type;
+    if (page) obj.page = page;
+    setSearchParams(obj);
     getData();
-  }, [category, page, reload, page]);
+  }, [page, reload, sort, type]);
+
+  if (sort) {
+    let temp;
+    if (sort == "asc")
+      temp = data.sort(function (a, b) {
+        return +a.price - +b.price;
+      });
+    if (sort == "desc")
+      temp = data.sort(function (a, b) {
+        return +b.price - +a.price;
+      });
+    data = temp;
+  }
 
   return (
     <Box>
@@ -77,16 +99,28 @@ const Content = () => {
           </Text>
           <Flex>
             <Flex mr="20px">
-              <Select placeholder="Products Category">
-                <option value="option1">Mens</option>
-                <option value="option2">Womens</option>
+              <Select
+                cursor={"pointer"}
+                onChange={(e) => {
+                  settype(e.target.value);
+                }}
+                placeholder="Products Category"
+              >
+                <option value="men">Mens</option>
+                <option value="women">Womens</option>
               </Select>
             </Flex>
 
             <Flex alignItems={"center"}>
-              <Select placeholder="Sort Items">
-                <option value="option1">Low To High</option>
-                <option value="option2">High To Low</option>
+              <Select
+                cursor={"pointer"}
+                onChange={(e) => {
+                  setsort(e.target.value);
+                }}
+                placeholder="Sort Items"
+              >
+                <option value="asc">Low To High</option>
+                <option value="desc">High To Low</option>
               </Select>
             </Flex>
           </Flex>

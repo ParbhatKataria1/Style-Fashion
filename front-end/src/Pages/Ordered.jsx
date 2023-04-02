@@ -13,13 +13,20 @@ import AdminSidePage from "../Components/AdminSidePage";
 import { ProductCard } from "../Components/ProductItemAdmin";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useSearchParams } from "react-router-dom";
 
 const Ordered = () => {
   return <AdminSidePage children={<Content />} page="DashBoard" />;
 };
 
 const Content = () => {
-  const [order, setorder] = useState([]);
+  let [order, setorder] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams({});
+  const sortParam = searchParams.get("sort");
+  const [sort, setsort] = useState(sortParam);
+
+  const typeParam = searchParams.get("type");
+  const [type, settype] = useState(typeParam);
 
   async function getOrderData() {
     try {
@@ -42,9 +49,32 @@ const Content = () => {
     }
   }
   useEffect(() => {
+    let obj = {};
+    if (sort) obj.sort = sort;
+    if (type) obj.type = type;
+    setSearchParams(obj);
     getOrderData();
-  }, []);
+  }, [sort, type]);
   console.log(order, "order");
+
+  if (sort) {
+    let data;
+    if (sort == "asc")
+      data = order.sort(function (a, b) {
+        return +a.price - +b.price;
+      });
+    if (sort == "desc")
+      data = order.sort(function (a, b) {
+        return +b.price - +a.price;
+      });
+    order = data;
+  }
+  if (type) {
+    let data = order.filter((el) => {
+      return el.type == type;
+    });
+    order = data;
+  }
   return (
     <Box>
       <Box w="100%" bg="white" m="auto">
@@ -54,20 +84,32 @@ const Content = () => {
             fontSize={"20px"}
             fontWeight="bold"
           >
-            Manage Item{" "}
+            Delivered Items
           </Text>
           <Flex>
             <Flex mr="20px">
-              <Select placeholder="Products Category">
-                <option value="option1">Mens</option>
-                <option value="option2">Womens</option>
+              <Select
+                placeholder="Products Category"
+                cursor={"pointer"}
+                onChange={(e) => {
+                  settype(e.target.value);
+                }}
+              >
+                <option value="men">Mens</option>
+                <option value="women">Womens</option>
               </Select>
             </Flex>
 
             <Flex alignItems={"center"}>
-              <Select placeholder="Sort Items">
-                <option value="option1">Low To High</option>
-                <option value="option2">High To Low</option>
+              <Select
+                cursor={"pointer"}
+                placeholder="Sort Items"
+                onChange={(e) => {
+                  setsort(e.target.value);
+                }}
+              >
+                <option value="asc">Low To High</option>
+                <option value="desc">High To Low</option>
               </Select>
             </Flex>
           </Flex>
@@ -179,9 +221,7 @@ function ProductAddToCart({
               w="100%"
               objectFit={"cover"}
               transition="opacity 0.5s ease-in-out"
-              src={
-                "https://cdn.shopify.com/s/files/1/0677/1464/6315/products/koovs-3234.jpg?v=1671078617&width=600"
-              }
+              src={img}
               className="image"
               opacity={hover ? "0" : "1"}
               alt="normal"

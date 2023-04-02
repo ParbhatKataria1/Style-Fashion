@@ -12,6 +12,7 @@ import AdminSidePage from "../Components/AdminSidePage";
 import ProductAddToCart from "../Components/OrderItem";
 import { ProductCard } from "../Components/ProductItemAdmin";
 import axios from "axios";
+import { useSearchParams } from "react-router-dom";
 
 const TrackOrder = () => {
   return <AdminSidePage children={<Content />} page="DashBoard" />;
@@ -19,6 +20,13 @@ const TrackOrder = () => {
 
 const Content = () => {
   const [order, setorder] = useState([]);
+
+  const [searchParams, setSearchParams] = useSearchParams({});
+  const sortParam = searchParams.get("sort");
+  const [sort, setsort] = useState(sortParam);
+
+  const typeParam = searchParams.get("type");
+  const [type, settype] = useState(typeParam);
 
   async function toggleStatus(id, status) {
     console.log(id, "dga");
@@ -52,9 +60,33 @@ const Content = () => {
     }
   }
   console.log(order);
+
   useEffect(() => {
+    let obj = {};
+    if (sort) obj.sort = sort;
+    if (type) obj.type = type;
+    setSearchParams(obj);
     getOrderData();
-  }, []);
+  }, [sort, type]);
+
+  if (sort) {
+    let data;
+    if (sort == "asc")
+      data = order.sort(function (a, b) {
+        return +a.price - +b.price;
+      });
+    if (sort == "desc")
+      data = order.sort(function (a, b) {
+        return +b.price - +a.price;
+      });
+    order = data;
+  }
+  if (type) {
+    let data = order.filter((el) => {
+      return el.type == type;
+    });
+    order = data;
+  }
   return (
     <Box>
       <Box w="100%" bg="white" m="auto">
@@ -64,20 +96,32 @@ const Content = () => {
             fontSize={"20px"}
             fontWeight="bold"
           >
-            Manage Item{" "}
+            Track Order
           </Text>
           <Flex>
             <Flex mr="20px">
-              <Select placeholder="Products Category">
-                <option value="option1">Mens</option>
-                <option value="option2">Womens</option>
+              <Select
+                cursor={"pointer"}
+                onChange={(e) => {
+                  settype(e.target.value);
+                }}
+                placeholder="Products Category"
+              >
+                <option value="men">Mens</option>
+                <option value="women">Womens</option>
               </Select>
             </Flex>
 
             <Flex alignItems={"center"}>
-              <Select placeholder="Sort Items">
-                <option value="option1">Low To High</option>
-                <option value="option2">High To Low</option>
+              <Select
+                cursor={"pointer"}
+                onChange={(e) => {
+                  setsort(e.target.value);
+                }}
+                placeholder="Sort Items"
+              >
+                <option value="asc">Low To High</option>
+                <option value="desc">High To Low</option>
               </Select>
             </Flex>
           </Flex>
