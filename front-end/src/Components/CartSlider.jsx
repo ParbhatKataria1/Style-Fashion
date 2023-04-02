@@ -23,38 +23,37 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const CartSlider = () => {
+const CartSlider = ({ changeState }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
 
   const [cartData, setcartdata] = useState([]);
-  const [state,setState] = useState(false);
+  const [state, setState] = useState(false);
 
   async function getdata() {
     let data = await axios.get("https://vast-raincoat-lamb.cyclic.app/cart", {
       headers: {
-        Authorization:
-        process.env.REACT_APP_TOKEN,
+        Authorization: process.env.REACT_APP_TOKEN,
       },
     });
     setcartdata(data.data);
   }
 
   useEffect(() => {
-    setState((prev)=>!prev);
     getdata();
-  }, [state]);
+  }, []);
   console.log(cartData);
   const { qty, price } = cartData;
   return (
     <>
-    
-    
       <Button
         ref={btnRef}
-        onClick={onOpen}
+        onClick={() => {
+          onOpen();
+          changeState();
+        }}
         rounded={"none"}
         w={"full"}
         mt={8}
@@ -73,7 +72,7 @@ const CartSlider = () => {
       >
         View Cart Summery
       </Button>
-  
+
       <Drawer
         isOpen={isOpen}
         placement="right"
@@ -120,7 +119,6 @@ const CartSlider = () => {
                         size={el.sizes}
                         color={el.color}
                         getdata={getdata}
-    
                       />
                     </Box>
                   );
@@ -139,23 +137,22 @@ const CartSlider = () => {
               </VStack>
             </Flex>
             <Link to="/cart">
-            
-            <Button
-              rounded={"none"}
-              w={"full"}
-              mt={4}
-              size={"md"}
-              py={"7"}
-              bg={"black"}
-              color={"white"}
-              border="1px solid black"
-              textTransform={"uppercase"}
-              _hover={{
-                transform: "translateY(1px)",
-              }}
-            >
-              View Cart
-            </Button>
+              <Button
+                rounded={"none"}
+                w={"full"}
+                mt={4}
+                size={"md"}
+                py={"7"}
+                bg={"black"}
+                color={"white"}
+                border="1px solid black"
+                textTransform={"uppercase"}
+                _hover={{
+                  transform: "translateY(1px)",
+                }}
+              >
+                View Cart
+              </Button>
             </Link>
           </DrawerBody>
         </DrawerContent>
@@ -174,7 +171,7 @@ function SideCartItem({
   price,
   size,
   color,
-  getData
+  getData,
 }) {
   const [qty, setQty] = useState(quantity);
 
@@ -189,8 +186,7 @@ function SideCartItem({
         qty,
         {
           headers: {
-            Authorization:
-            process.env.REACT_APP_TOKEN,
+            Authorization: process.env.REACT_APP_TOKEN,
           },
         }
       );
@@ -206,8 +202,7 @@ function SideCartItem({
         `https://vast-raincoat-lamb.cyclic.app/cart/delete/${id}`,
         {
           headers: {
-            Authorization:
-            process.env.REACT_APP_TOKEN,
+            Authorization: process.env.REACT_APP_TOKEN,
           },
         }
       );

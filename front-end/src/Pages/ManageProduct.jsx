@@ -40,8 +40,7 @@ const Content = () => {
             page: qpage == undefined ? 1 : qpage,
           },
           headers: {
-            Authorization:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDI0YTg3YmQwM2ZiYThkMTdjZGNlYTIiLCJpYXQiOjE2ODAzNDA4NTV9.R4pvDG4y_6mMweYjUCpaHLJ8n3JDc5TnUB0d8aSPNKI",
+            Authorization: process.env.REACT_APP_TOKEN,
           },
         }
       );
@@ -137,7 +136,7 @@ const Content = () => {
         >
           {data.map((el) => {
             return (
-              <GridItem>
+              <GridItem mt="30px">
                 <ProductCard
                   img={el.images[0]}
                   imgOnHover={el.images[1]}

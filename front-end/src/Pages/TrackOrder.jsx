@@ -87,6 +87,7 @@ const Content = () => {
     });
     order = data;
   }
+  console.log(order);
   return (
     <Box>
       <Box w="100%" bg="white" m="auto">
@@ -139,7 +140,7 @@ const Content = () => {
           {order.length &&
             order.map((el) => {
               return (
-                <GridItem>
+                <GridItem mt="30px">
                   <ProductAddToCart
                     img={el.images[0]}
                     imgOnHover={el.images[1]}
@@ -151,6 +152,7 @@ const Content = () => {
                     orderdate={el.date}
                     id={el._id}
                     type={el.type}
+                    discount={el.discount}
                     toggleStatus={toggleStatus}
                   />
                 </GridItem>

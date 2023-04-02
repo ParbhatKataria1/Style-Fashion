@@ -98,10 +98,8 @@ const ProductCard = ({
         position="relative"
         onMouseEnter={() => sethover(true)}
         onMouseLeave={() => sethover(false)}
-        border={"3px solid green"}
       >
         <Box
-          border={"1px solid red"}
           bg="red"
           color={"white"}
           position={"absolute"}
@@ -115,12 +113,7 @@ const ProductCard = ({
         >
           - 50%
         </Box>
-        <Box
-          border={"4px solid pink"}
-          position="relative"
-          w=""
-          class="image-wrapper profile-pic"
-        >
+        <Box position="relative" w="" class="image-wrapper profile-pic">
           <Image
             // border={"1px solid red"}
             top="0px"
@@ -147,7 +140,7 @@ const ProductCard = ({
           />
         </Box>
 
-        <Stack w="100%" border={"1px solid red"}>
+        <Stack w="100%">
           <CardBody>
             <Heading textAlign="left" size="md">
               Brand - {brand}

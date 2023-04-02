@@ -174,7 +174,6 @@ function ProductAddToCart({
       onMouseEnter={() => sethover(true)}
       onMouseLeave={() => sethover(false)}
       //   p={50}
-      border="1px solid red"
       //   w="full"
       alignItems="center"
       justifyContent="center"
@@ -206,15 +205,10 @@ function ProductAddToCart({
           </Box>
         )} */}
         {/* <Box h="370px"></Box> */}
-        <Flex
-          border={"1px solid red"}
-          position="relative"
-          class="image-wrapper profile-pic"
-        >
+        <Flex position="relative" class="image-wrapper profile-pic">
           {
             <Image
               textAlign={"center"}
-              border={"1px solid red"}
               top="0px"
               // position={"absolute"}
               h="370px"

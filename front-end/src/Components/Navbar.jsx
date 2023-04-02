@@ -141,12 +141,11 @@ const Navbar = () => {
   console.log(searchData, "searchggggData");
 
   return (
-    <Box borderBottom="2px solid black">
+    <Box>
       {/* <Button onClick={toggleColorMode}></Button> */}
       <Box
         boxShadow={"rgba(149, 157, 165, 0.2) 0px 8px 24px;"}
         h={{ base: "130px", md: "90px" }}
-        border="1px solid red"
       >
         <Flex
           position={"fixed"}
@@ -185,10 +184,9 @@ const Navbar = () => {
             <Flex
               display={{ base: "none", xl: "flex" }}
               justifyContent={"space-between"}
-              border="1px solid red"
               w="37%"
             >
-              {isAuthenticated && (
+              {sessionStorage.getItem("auth") && (
                 <Flex
                   h="40px"
                   px={4}
@@ -263,22 +261,18 @@ const Navbar = () => {
                 _expanded={{ bg: "blue.400" }}
                 _focus={{ boxShadow: "outline" }}
               >
-                <Text border={"1px solid green"} w="100px">
-                  Artist Collab
-                </Text>
+                <Text w="100px">Artist Collab</Text>
                 <ChevronDownIcon />
               </Flex>
             </Flex>
             <Flex
               justifyContent={{ base: "end", md: "center" }}
               alignItems="end"
-              border="1px solid red"
               w={{ base: "60%", md: "20%" }}
             >
               <Link to="/">
                 <Image
                   id="1"
-                  border="1px solid red"
                   mb={{ base: "0px", md: "-35px" }}
                   pb="0px"
                   w="130px"
@@ -288,7 +282,6 @@ const Navbar = () => {
             </Flex>
             <Flex
               alignItems={"center"}
-              border="1px solid red"
               display={{ base: "none", md: "flex" }}
               w="37%"
               justifyContent={{ lg: "space-between", xl: "end" }}
@@ -310,7 +303,6 @@ const Navbar = () => {
               alignItems={"center"}
               zIndex="200"
               display={{ base: "flex", md: "none" }}
-              border="1px solid red"
               // w="37%"
               justifyContent="space-around"
             >
@@ -332,7 +324,6 @@ const Navbar = () => {
             opacity="3"
             pt="15px"
             ref={searchRef}
-            border={"5px solid red"}
             bg="white"
             w="100%"
             position={"fixed"}
@@ -349,7 +340,6 @@ const Navbar = () => {
             >
               <Flex>
                 <Image
-                  border="1px solid red"
                   mb="-25px"
                   pb="0px"
                   w="130px"
@@ -389,7 +379,6 @@ const Navbar = () => {
                 <Link to="cart">
                   <Flex mx="10px" position={"relative"}>
                     <Box
-                      borderRadius={"50px"}
                       left="5px"
                       top="-10px"
                       color={"white"}
@@ -397,6 +386,7 @@ const Navbar = () => {
                       fontSize={"12px"}
                       bg="red"
                       position="absolute"
+                      borderRadius={"50%"}
                     >
                       {cartlength}
                     </Box>
@@ -412,7 +402,7 @@ const Navbar = () => {
                   </Flex>
                 </Link>
                 <Flex mx="10px">
-                  {!isAuthenticated && (
+                  {!sessionStorage.getItem("auth") && (
                     <Button size="sm" onClick={() => loginWithRedirect()}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -426,15 +416,15 @@ const Navbar = () => {
                     </Button>
                   )}
 
-                  {isAuthenticated && (
+                  {sessionStorage.getItem("auth") && (
                     <Flex p="9px">
                       <Image
                         borderRadius={"50%"}
                         w="25px"
-                        src={user.picture}
+                        src={sessionStorage.getItem("picture")}
                       ></Image>
                       <Text fontWeight={"bold"} ml="8px">
-                        {user.given_name}
+                        {sessionStorage.getItem("name")}
                       </Text>
                       <Flex
                         cursor={"pointer"}
@@ -560,7 +550,6 @@ const RightOption = ({
       justifyContent="space-around"
     >
       <Flex
-        border={"1px solid red"}
         cursor="pointer"
         onClick={() => {
           setSearchPage(true);
@@ -617,7 +606,7 @@ const RightOption = ({
         </Flex>
       </Link>
       <Flex mx="10px">
-        {!isAuthenticated && (
+        {!sessionStorage.getItem("auth") && (
           <Button size="sm" onClick={() => loginWithRedirect()}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -630,11 +619,15 @@ const RightOption = ({
             <Text ml="10px">Sign In</Text>
           </Button>
         )}
-        {isAuthenticated && (
+        {sessionStorage.getItem("auth") && (
           <Flex p="9px">
-            <Image borderRadius={"50%"} w="25px" src={user.picture}></Image>
+            <Image
+              borderRadius={"50%"}
+              w="25px"
+              src={sessionStorage.getItem("picture")}
+            ></Image>
             <Text fontWeight={"bold"} ml="8px">
-              {user.given_name}
+              {sessionStorage.getItem("name")}
             </Text>
             <Flex
               cursor={"pointer"}
@@ -724,9 +717,7 @@ function DrawerExample({ isOpen, onOpen, onClose, btnRef }) {
               _expanded={{ bg: "blue.400" }}
               _focus={{ boxShadow: "outline" }}
             >
-              <Text border={"1px solid green"} w="100px">
-                Artist Collab
-              </Text>
+              <Text w="100px">Artist Collab</Text>
               <ChevronRightIcon />
             </Flex>
 

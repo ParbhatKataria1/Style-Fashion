@@ -43,11 +43,18 @@ const PaymentOption = ({ cartData }) => {
 
   return (
     <>
-      <Box w={"25%"} >
+      <Box w={"25%"}>
         <Heading mb={"20px"} fontSize="18px" fontWeight={500}>
           Order Summary
         </Heading>
-        <Box border={"1px solid lightgray"} borderRadius="5px" p={"15px"} boxShadow={"rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px"}>
+        <Box
+          border={"1px solid lightgray"}
+          borderRadius="5px"
+          p={"15px"}
+          boxShadow={
+            "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px"
+          }
+        >
           <Flex direction="column">
             <Flex mb={"12px"} justifyContent={"space-between"}>
               <Text>SubTotal</Text>
@@ -61,7 +68,7 @@ const PaymentOption = ({ cartData }) => {
             <Divider mb={"12px"} />
             <Flex mb={"12px"} justifyContent={"space-between"}>
               <Text>Estimated Tax</Text>
-              <Text>${tax}</Text>
+              <Text>${Math.floor(tax)}</Text>
             </Flex>
             <Divider mb={"12px"} />
             <Flex mb={"12px"} justifyContent={"space-between"}>
@@ -141,10 +148,10 @@ const Cart = () => {
 
   return (
     <>
-      <Box pt={"20px"} w="95%" m="auto" >
+      <Box pt={"20px"} w="95%" m="auto">
         <Flex justifyContent={"space-between"}>
-          <Box w={"70%"} >
-            <Box p={"10px"} mt="20px" >
+          <Box w={"70%"}>
+            <Box p={"10px"} mt="20px">
               {/* <Flex
                 justifyContent={"space-between"}
                 borderTop={"1px solid lightgray"}
@@ -173,8 +180,18 @@ const Cart = () => {
               {cartData.length == 0 && <EmptyCart />}
               {cartData?.map((item) => {
                 return (
-                  <Box key={item.id} rounded={"md"} boxShadow={"rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px"}>
-                    <CartItem cartItem={item} updateQty={updateQty} handleDelete={handleDelete}/>
+                  <Box
+                    key={item.id}
+                    rounded={"md"}
+                    boxShadow={
+                      "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px"
+                    }
+                  >
+                    <CartItem
+                      cartItem={item}
+                      updateQty={updateQty}
+                      handleDelete={handleDelete}
+                    />
                   </Box>
                 );
               })}

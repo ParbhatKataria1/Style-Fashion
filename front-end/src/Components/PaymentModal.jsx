@@ -117,250 +117,53 @@ const PaymentModal = ({ subtotal, tax, totalPrice }) => {
   console.log(text);
   return (
     <>
-      <Button
-        onClick={onOpen}
-        rounded={"none"}
-        w={"full"}
-        size={"lg"}
-        py={"7"}
-        bg={"black"}
-        color={"white"}
-        border="0px solid black"
-        textTransform={"uppercase"}
-        _hover={{
-          transform: "translateY(1px)",
-          boxShadow: "lg",
-          bg: "black",
-          color: "white",
-        }}
+      <Box
+        border={"0px solid red"}
+        w="100%"
+        m="auto"
+        lineHeight={"60px"}
+        textAlign={"center"}
       >
-        BUY IT NOW
-      </Button>
-
-      <Modal isOpen={isOpen} onClose={onClose} size={"4xl"} autoFocus={false}>
-        <ModalOverlay  />
-        <ModalContent  rounded={"2xl"} >
-          <ModalHeader>
-            <Heading>Koovs</Heading>
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody >
-            <Flex justifyContent={"space-around"}  >
-              <Box>
-                <Tabs m="auto" >
-                  <TabList
-                  boxShadow={"#e344b0 0px 1px 0px"}
-                    justifyContent={"space-between"}
-                    p="0px 100px 0px 100px"
-                    
-                  >
-                    <Tab >Mobile</Tab>
-                    <Tab>Address</Tab>
-                    <Tab>Pay</Tab>
-                  </TabList>
-
-                  <TabPanels textAlign={"left"} fontSize="13px">
-                    <TabPanel>
-                      <Box
-                      boxShadow={"#e344b0 0px 5px 15px"}
-                        lineHeight={"100px"}
-                        textAlign={"center"}
-                        border={"0px solid red"}
-                        width={"100%"}
-                        m={"auto"}
-                        mt={18}
-
-                      >
-                        <Text
-                        
-                          fontSize="2xl"
-                          fontWeight={500}
-                          textAlign={"center"}
-                        >
-                          Enter Mobile Number
-                        </Text>
-                        <InputGroup w={"70%"} m={"auto"}>
-                          <InputLeftAddon
-                            children="+91"
-                            border="2px solid gray"
-                            
-                          />
-                          <Input
-                          boxShadow={"#e344b0 2px 2px 2px"}
-                            border="2px solid gray"
-                            type="tel"
-                            value={mobile}
-                            fontSize={"xl"}
-                            onChange={(e) => setMobile(e.target.value)}
-                          />
-                        </InputGroup>
-                        <Button
-                        
-                          isDisabled={mobile.length < 10}
-                          w={"xs"}
-                          size={"lg"}
-                          py={"7"}
-                          bg={"black"}
-                          color={"white"}
-                          border="0px solid black"
-                          _hover={{
-                            transform: "translateY(2px)",
-                            boxShadow: "lg",
-                            bg: "black",
-                            color: "white",
-                          }}
-                        >
-                          Continue
-                          <ArrowForwardIcon />{" "}
-                        </Button>
-                      </Box>
-                    </TabPanel>
-                    <TabPanel>
-                      <Box
-                        border={"0px solid red"}
-                        w="70%"
-                        m="auto"
-                        lineHeight={"60px"}
-                        textAlign={"center"}
-                      >
-                        <Text
-                          fontSize="2xl"
-                          fontWeight={500}
-                          textAlign={"left"}
-                        >
-                          Add New Address
-                        </Text>
-                        <HStack>
-                          <Input
-                          boxShadow={"#e344b0 0px 2px 2px"}
-                            isDisabled={text.full_name == ""}
-                            placeholder="City"
-                            type="text"
-                            name="city"
-                            border="2px solid gray"
-                            onChange={handleChange}
-                          />
-                          <Input
-                          boxShadow={"#e344b0 0px 2px 2px"}
-                            placeholder="State"
-                            type="text"
-                            name="state"
-                            border="2px solid gray"
-                            onChange={handleChange}
-                          />
-                        </HStack>
-                        <HStack mt={3}>
-                          <Input
-                          boxShadow={"#e344b0 0px 2px 2px"}
-                            placeholder="Pincode"
-                            type="number"
-                            name="pincode"
-                            border="2px solid gray"
-                            onChange={handleChange}
-                          />
-                          
-                        </HStack>
-                        <Input
-                        boxShadow={"#e344b0 0px 2px 2px"}
-                          placeholder="Full Address"
-                          type="text"
-                          name="address"
-                          border="2px solid gray"
-                          onChange={handleChange}
-                        />
-                        <Button
-                        boxShadow={"#e344b0 0px 5px 15px"}
-                          w={"xs"}
-                          size={"lg"}
-                          py={"7"}
-                          bg={"black"}
-                          color={"white"}
-                          border="0px solid black"
-                          _hover={{
-                            transform: "translateY(2px)",
-                            boxShadow: "lg",
-                            bg: "black",
-                            color: "white",
-                          }}
-                        
-                        >
-                          Submit
-                        </Button>
-                      </Box>
-                    </TabPanel>
-                    {/* payment thing */}
-                    <TabPanel>
-                      <Payment
-                        subtotal={subtotal}
-                        tax={tax}
-                        totalPrice={totalPrice}
-                        cartData={cartData}
-                        text={text}
-                      />
-                    </TabPanel>
-                  </TabPanels>
-                </Tabs>
-              </Box>
-
-              <Box border={"0px solid black"}>
-               
-                <Box
-                  boxShadow={"#e344b0 0px 5px 15px"}
-                  borderRadius="5px"
-                  p={"15px"}
-                  mt={14}
-                >
-                   <Heading mb={"20px"} fontSize="18px" fontWeight={500}>
-                  Order Summary
-                </Heading>
-                  <Flex direction="column">
-                    <Flex mb={"12px"} justifyContent={"space-between"}>
-                      <Text>SubTotal</Text>
-                      <Text>{subtotal}</Text>
-                    </Flex>
-                    <Divider mb={"12px"} border={"1px solid #e344b0"} />
-                    <Flex mb={"12px"} justifyContent={"space-between"}>
-                      <Text>Shipping</Text>
-                      <Text>TBD</Text>
-                    </Flex>
-                    <Divider mb={"12px"} border={"1px solid #e344b0"} />
-                    <Flex mb={"12px"} justifyContent={"space-between"}>
-                      <Text>Estimated Tax</Text>
-                      <Text>{tax}</Text>
-                    </Flex>
-                    <Divider mb={"12px"} border={"1px solid #e344b0"} />
-                    <Flex mb={"12px"} justifyContent={"space-between"}>
-                      <Text>Total</Text>
-                      <Text>{totalPrice}</Text>
-                    </Flex>
-                    <Divider mb={"12px"} border={"1px solid #e344b0"} />
-                  </Flex>
-                </Box>
-              </Box>
-            </Flex>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button
-            boxShadow={"#e344b0 0px 5px 15px"}
-              colorScheme="blue"
-              mr={3}
-              onClick={onClose}
-              bg={"black"}
-              color={"white"}
-              border="0px solid black"
-              _hover={{
-                transform: "translateY(2px)",
-                boxShadow: "lg",
-                bg: "black",
-                color: "white",
-              }}
-            >
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+        <Text fontSize="2xl" fontWeight={500} textAlign={"left"}>
+          Add New Address
+        </Text>
+        <HStack w={"100%"}>
+          <Input
+            isDisabled={text.full_name == ""}
+            placeholder="City"
+            type="text"
+            name="city"
+            border="2px solid gray"
+            onChange={handleChange}
+          />
+          <Input
+            placeholder="State"
+            type="text"
+            name="state"
+            border="2px solid gray"
+            onChange={handleChange}
+          />
+        </HStack>
+        <HStack mt={3}>
+          <Input
+            placeholder="Pincode"
+            type="number"
+            name="pincode"
+            border="2px solid gray"
+            onChange={handleChange}
+          />
+        </HStack>
+        <Input
+          placeholder="Full Address"
+          type="text"
+          name="address"
+          border="2px solid gray"
+          onChange={handleChange}
+        />
+      </Box>
+      <Box w="100%" onClick={handleClick}>
+        <Payment />
+      </Box>
     </>
   );
 };

@@ -63,6 +63,7 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState([]);
   const [color, setColor] = useState("");
+  const [state, setState] = useState(false);
   const params = useParams();
   const id = params.id;
 
@@ -87,9 +88,13 @@ const ProductDetails = () => {
   // const {title,price,brand} = product;
   // console.log(title,price,brand);
 
+  function changeState() {
+    setState((prev) => !prev);
+  }
+
   useEffect(() => {
     getData();
-  }, []);
+  }, [state]);
 
   const handleSizeClick = (val) => {
     setSize(val);
@@ -124,7 +129,7 @@ const ProductDetails = () => {
         }
       );
       console.log(data.data, "pdetail onclick cartdata");
-      alert("Item added to cart")
+      alert("Item added to cart");
     } catch (error) {
       console.log(error);
     }
@@ -250,14 +255,13 @@ const ProductDetails = () => {
                         onClick={handleClick}
                         w={"7xl"}
                         border="0px solid red"
-                        
                       >
                         Add To Cart
                       </Button>
                     </Flex>
                     {/* Add to cart button */}
 
-                    <CartSlider />
+                    <CartSlider changeState={changeState} />
                   </Stack>
                 </Box>
               </Flex>

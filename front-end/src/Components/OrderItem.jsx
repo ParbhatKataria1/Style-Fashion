@@ -67,6 +67,7 @@ function ProductAddToCart({
   orderdate,
   id,
   type,
+  discount,
   toggleStatus,
 }) {
   const [hover, sethover] = useState(false);
@@ -78,8 +79,6 @@ function ProductAddToCart({
       w="100%"
       onMouseEnter={() => sethover(true)}
       onMouseLeave={() => sethover(false)}
-      //   p={50}
-      border="1px solid red"
       //   w="full"
       alignItems="center"
       justifyContent="center"
@@ -95,7 +94,6 @@ function ProductAddToCart({
       >
         {data.isNew && (
           <Box
-            border={"1px solid red"}
             bg="red"
             color={"white"}
             position={"absolute"}
@@ -107,19 +105,14 @@ function ProductAddToCart({
             left="10px"
             zIndex={10}
           >
-            - 50%
+            -50% OFF
           </Box>
         )}
         {/* <Box h="370px"></Box> */}
-        <Flex
-          border={"1px solid red"}
-          position="relative"
-          class="image-wrapper profile-pic"
-        >
+        <Flex position="relative" class="image-wrapper profile-pic">
           {
             <Image
               textAlign={"center"}
-              border={"1px solid red"}
               top="0px"
               // position={"absolute"}
               h="370px"
