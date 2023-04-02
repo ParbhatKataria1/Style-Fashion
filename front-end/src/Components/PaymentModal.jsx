@@ -139,19 +139,19 @@ const PaymentModal = ({ subtotal, tax, totalPrice }) => {
 
       <Modal isOpen={isOpen} onClose={onClose} size={"4xl"} autoFocus={false}>
         <ModalOverlay  />
-        <ModalContent boxShadow={"rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;"} rounded={"2xl"}>
+        <ModalContent  rounded={"2xl"} >
           <ModalHeader>
             <Heading>Koovs</Heading>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody >
-            <Flex>
+            <Flex justifyContent={"space-around"}  >
               <Box>
                 <Tabs m="auto" >
                   <TabList
                   boxShadow={"#e344b0 0px 1px 0px"}
                     justifyContent={"space-between"}
-                    p="0px 200px 0px 200px"
+                    p="0px 100px 0px 100px"
                     
                   >
                     <Tab >Mobile</Tab>
@@ -166,9 +166,10 @@ const PaymentModal = ({ subtotal, tax, totalPrice }) => {
                         lineHeight={"100px"}
                         textAlign={"center"}
                         border={"0px solid red"}
-                        width={"60%"}
+                        width={"100%"}
                         m={"auto"}
                         mt={18}
+
                       >
                         <Text
                         
@@ -300,15 +301,18 @@ const PaymentModal = ({ subtotal, tax, totalPrice }) => {
                   </TabPanels>
                 </Tabs>
               </Box>
-              <Box w={"30%"}>
-                <Heading mb={"20px"} fontSize="18px" fontWeight={500}>
-                  Order Summary
-                </Heading>
+
+              <Box border={"0px solid black"}>
+               
                 <Box
                   boxShadow={"#e344b0 0px 5px 15px"}
                   borderRadius="5px"
                   p={"15px"}
+                  mt={14}
                 >
+                   <Heading mb={"20px"} fontSize="18px" fontWeight={500}>
+                  Order Summary
+                </Heading>
                   <Flex direction="column">
                     <Flex mb={"12px"} justifyContent={"space-between"}>
                       <Text>SubTotal</Text>
