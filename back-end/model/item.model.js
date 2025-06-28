@@ -5,12 +5,12 @@ const postSchema = mongoose.Schema(
   {
     title: String,
     price: Number,
-    brand: String,
+    brand: String, // Koovs, Nike, 5ive, TheCoutourclub
     size: Array, // [xs, s, m, l]
-    images: Array,
-    color: Array, // [white, blue, yellow, black]
+    images: Array, // according to sizes
+    color: Array, // ["white", "blue", "yellow", "black"]
     type: String, // men or women
-    category: String,
+    category: String, // jeans, track pants, pants, shirt, t-shirt, hoodies (for men), Kurta, Palazzo, KurtaTrouser, PattiKurta, Suit, jeans, saree (for women)
   },
   {
     versionKey: false,

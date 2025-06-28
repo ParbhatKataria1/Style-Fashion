@@ -12,7 +12,7 @@ const addPost = async (req, res) => {
   }
 };
 
-const getPosts = async (r, res) => {
+const getPosts = async (req, res) => {
   let { page, limit, min, max, brand, category, color } = req.query;
   limit = limit == undefined ? 8 : limit;
   try {
