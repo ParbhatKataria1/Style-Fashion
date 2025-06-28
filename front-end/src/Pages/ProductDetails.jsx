@@ -1,41 +1,17 @@
-import { Box, Button, Center, Container, Flex, Heading, HStack, IconButton, Image, Input, Select, Stack, StackDivider, Tab, TabList, TabPanel, TabPanels, Tabs, Text, useColorModeValue, VStack } from "@chakra-ui/react";
+import { Box, Button, Container, Flex, Heading,  Select, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, Text,  } from "@chakra-ui/react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import Carousel from "../Components/Carousel";
 import CartSlider from "../Components/CartSlider";
 import "../ProductDetails..css";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import PaymentModal from "../Components/PaymentModal";
-import { shopMens } from "../homePagedb";
-import { Link, useParams } from "react-router-dom";
-import { BiRightArrowAlt } from "react-icons/bi";
-import { useDispatch, useSelector } from "react-redux";
+import {  useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { cartItem } from "../Redux/ProductReducer.js/action";
 
-const token = process.env.TOKEN;
 
 const ProductDetails = () => {
-    const responsive = {
-        superLargeDesktop: {
-            breakpoint: { max: 4000, min: 3000 },
-            items: 5,
-            slidesToSlide: 2,
-        },
-        desktop: {
-            breakpoint: { max: 3000, min: 1024 },
-            items: 4,
-            slidesToSlide: 2,
-        },
-        tablet: {
-            breakpoint: { max: 1024, min: 464 },
-            items: 2,
-            slidesToSlide: 2,
-        },
-        mobile: {
-            breakpoint: { max: 464, min: 0 },
-            items: 1,
-        },
-    };
+    
 
     // const {id} = useParams();
 

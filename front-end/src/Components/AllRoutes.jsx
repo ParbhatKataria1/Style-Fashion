@@ -9,8 +9,6 @@ import ManageProduct from "../Pages/ManageProduct";
 import ProductDetails from "../Pages/ProductDetails";
 import TrackOrder from "../Pages/TrackOrder";
 import AddProducts from "../Pages/AddProduct";
-import Payment from "../Components/Payment";
-import PrivateRoute from "./PrivateRoutes";
 import Ordered from "../Pages/Ordered";
 const AllRoutes = () => {
   return (

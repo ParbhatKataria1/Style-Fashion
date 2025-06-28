@@ -1,9 +1,7 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import AdminSidePage from "../Components/AdminSidePage";
-import ProductItem from "../Components/ProductItemAdmin";
 import axios from "axios";
-import { Doughnut } from "react-chartjs-2";
 
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from "chart.js";
 import { Bar, Pie } from "react-chartjs-2";

@@ -1,6 +1,5 @@
-import { Box, Flex, Grid, GridItem, Image, Select, Switch, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Image, Select, Text, useColorModeValue } from "@chakra-ui/react";
 import AdminSidePage from "../Components/AdminSidePage";
-import { ProductCard } from "../Components/ProductItemAdmin";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
@@ -125,8 +124,6 @@ export default Ordered;
 
 function ProductAddToCart({ img, imgOnHover, title, salePrice, regularPrice, brand, status, orderdate, id, type, toggleStatus }) {
     const [hover, sethover] = useState(false);
-    const [orders, setorders] = useState([]);
-    console.log("img", status);
 
     return (
         <Flex

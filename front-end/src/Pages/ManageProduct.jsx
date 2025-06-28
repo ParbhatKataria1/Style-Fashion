@@ -1,10 +1,9 @@
-import { Heading, Box, Select, Flex, Text, Grid, GridItem, Button } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import {  Box, Select, Flex, Text, Grid, GridItem, Button } from "@chakra-ui/react";
+import  { useEffect, useState } from "react";
 import AdminSidePage from "../Components/AdminSidePage";
 import { ProductCard } from "../Components/ProductItemAdmin";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
-import { easeOut } from "framer-motion";
 
 const ManageProduct = () => {
     return <AdminSidePage children={<Content />} page="DashBoard" />;
@@ -19,7 +18,6 @@ const Content = () => {
     const sortParam = searchParams.get("sort");
     const [sort, setsort] = useState(sortParam);
 
-    const typeParam = searchParams.get("type");
     const [type, settype] = useState("men");
 
     async function getData() {

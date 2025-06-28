@@ -1,8 +1,7 @@
-import { Heading, Box, Select, Flex, Text, Grid, GridItem } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import {  Box, Select, Flex, Text, Grid, GridItem } from "@chakra-ui/react";
+import  { useEffect, useState } from "react";
 import AdminSidePage from "../Components/AdminSidePage";
 import ProductAddToCart from "../Components/OrderItem";
-import { ProductCard } from "../Components/ProductItemAdmin";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 

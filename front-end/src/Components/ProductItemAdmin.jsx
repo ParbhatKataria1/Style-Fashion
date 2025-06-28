@@ -1,16 +1,11 @@
-import { Box, Button, Card, CardBody, CardFooter, Divider, Flex, FormControl, FormLabel, Heading, HStack, IconButton, Image, Input, Link, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Stack, Text, useDisclosure, VStack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { BsHeart } from "react-icons/bs";
-import { Tooltip } from "@chakra-ui/react";
+import { Box, Button, Card, CardBody, Divider, Flex, FormControl, FormLabel, Heading, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Select, Stack, Text, useDisclosure } from "@chakra-ui/react";
+import {  useState } from "react";
 import axios from "axios";
 const ProductCard = ({ img, brand, setreload, imgOnHover, title, salePrice, type, size, color, images, category, id, regularPrice }) => {
-    const [isWishlisted, setIsWishlisted] = useState(false);
     const [hover, sethover] = useState(false);
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const handleWishlistClick = () => {
-        setIsWishlisted(!isWishlisted);
-    };
+
 
     const handleDelete = () => {
         console.log("deleting");
@@ -137,7 +132,6 @@ const AddProducts = ({ brand1, title1, price1, type1, color1, setreload, size1, 
             brand,
             type,
         };
-        console.log(id);
         e.preventDefault();
         setreload((prev) => !prev);
         try {

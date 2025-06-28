@@ -9,10 +9,8 @@ import { cartItem } from "../Redux/ProductReducer.js/action";
 const CartSlider = ({ changeState }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const btnRef = React.useRef();
-    const dispatch = useDispatch();
 
     const [cartData, setcartdata] = useState([]);
-    const [state, setState] = useState(false);
 
       const cartItem = useSelector((store) => {
             // console.log("MENS PRODUCT", store.productReducer);

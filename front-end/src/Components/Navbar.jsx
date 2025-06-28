@@ -1,4 +1,4 @@
-import { Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, Heading, Image, Input, InputGroup, InputRightElement, Text, useColorMode, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, Image, Input, InputGroup, InputRightElement, Text, useColorMode, useDisclosure } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { ChevronDownIcon, HamburgerIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import "./../";
@@ -11,17 +11,14 @@ import "react-multi-carousel/lib/styles.css";
 
 // google
 
-import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
-import { Link, Navigate } from "react-router-dom";
-import Cart from "../Pages/Cart";
+import { Link } from "react-router-dom";
 import { MyContext } from "../context/AuthUseContext";
 import { useSelector } from "react-redux";
 
 const Navbar = () => {
     const { user, loginWithRedirect, isAuthenticated, logout } = React.useContext(MyContext);
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { colorMode, toggleColorMode } = useColorMode("light");
     const [searchPage, setSearchPage] = useState(false);
     const [menPage, setMenPage] = useState(false);
     const [womenPage, setWomenPage] = useState(false);
@@ -116,7 +113,6 @@ const Navbar = () => {
 
     return (
         <Box>
-            {/* <Button onClick={toggleColorMode}></Button> */}
             <Box boxShadow={"rgba(149, 157, 165, 0.2) 0px 8px 24px;"} h={{ base: "130px", md: "90px" }}>
                 <Flex position={"fixed"} bg="white" top="0px" zIndex={"50"} h={{ base: "130px", md: "90px" }} left="50%" w="100%" justifyContent={"center"} transform="translate(-50%)">
                     <Flex bg="white" w="95%" justifyContent={"space-between"} mt="20px" pb="15px">

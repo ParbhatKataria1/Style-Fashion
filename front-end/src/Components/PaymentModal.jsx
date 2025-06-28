@@ -1,18 +1,11 @@
-import { Button } from "@chakra-ui/button";
-import { useDisclosure } from "@chakra-ui/hooks";
-import { ArrowForwardIcon } from "@chakra-ui/icons";
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/modal";
-import { Box, Divider, Flex, HStack, Heading, Input, InputGroup, InputLeftAddon, SimpleGrid, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
+import { Box, HStack, Input,  Text } from "@chakra-ui/react";
 import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
 import Payment from "./Payment";
 
 const PaymentModal = ({ subtotal, tax, totalPrice }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const [mobile, setMobile] = useState("");
-    console.log(mobile);
 
     const [text, setText] = useState("");
 
@@ -26,7 +19,6 @@ const PaymentModal = ({ subtotal, tax, totalPrice }) => {
     const dateFormatted = today.toLocaleString("en-US", options);
     const dateFinal = dateFormatted.toString();
 
-    console.log(text, "text");
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -48,7 +40,6 @@ const PaymentModal = ({ subtotal, tax, totalPrice }) => {
             console.log("error in fetching cart data");
         }
     };
-    console.log(cartData, "pmodel cart");
 
     useEffect(() => {
         getdata();
@@ -64,7 +55,6 @@ const PaymentModal = ({ subtotal, tax, totalPrice }) => {
             };
             return obj;
         });
-        console.log(newData, "newData");
         for (let i = 0; i < newData.length; i++) {
             let obj = { ...newData[i] };
             delete obj._id;
@@ -74,7 +64,6 @@ const PaymentModal = ({ subtotal, tax, totalPrice }) => {
                     Authorization: process.env.REACT_APP_TOKEN,
                 },
             });
-            console.log(data.data, "sent data");
             await axios.delete(`${process.env.REACT_APP_BACKEND_API}/cart/delete/${newData[i]._id}`, {
                 headers: {
                     Authorization: process.env.REACT_APP_TOKEN,
@@ -83,7 +72,6 @@ const PaymentModal = ({ subtotal, tax, totalPrice }) => {
         }
     };
 
-    console.log(text);
     return (
         <>
             <Box border={"0px solid red"} w="100%" m="auto" lineHeight={"60px"} textAlign={"center"}>

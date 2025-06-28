@@ -1,22 +1,10 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { loadScript, getRazorpayOptions } from "../Utils/razorpay";
 import {
   Button,
-  ButtonGroup,
-  Card,
-  CardBody,
-  CardFooter,
-  Divider,
-  Flex,
-  Heading,
-  Image,
-  Stack,
-  Text,
 } from "@chakra-ui/react";
-import axios from "axios";
 
 const Payment = ({ subtotal, tax, totalPrice, cartData, text }) => {
-  const [payment, setPayment] = useState(null);
   const [error, setError] = useState(null);
 
   const handleClick = async () => {
@@ -58,7 +46,6 @@ const Payment = ({ subtotal, tax, totalPrice, cartData, text }) => {
       const options = getRazorpayOptions();
       const razorpayInstance = new Razorpay(options);
       razorpayInstance.open();
-      setPayment(razorpayInstance);
     } catch (err) {
       setError(err);
     }

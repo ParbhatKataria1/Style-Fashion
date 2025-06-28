@@ -6,24 +6,18 @@ import {
   Flex,
   Icon,
   useColorModeValue,
-  Link,
   Drawer,
   DrawerContent,
   Text,
   useDisclosure,
-  BoxProps,
-  FlexProps,
 } from "@chakra-ui/react";
 import {
   FiHome,
   FiTrendingUp,
   FiCompass,
   FiStar,
-  FiSettings,
   FiMenu,
 } from "react-icons/fi";
-import { IconType } from "react-icons";
-import { ReactText } from "react";
 import { NavLink } from "react-router-dom";
 
 const LinkItems = [

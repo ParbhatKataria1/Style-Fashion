@@ -1,23 +1,17 @@
-import { AddIcon, MinusIcon } from "@chakra-ui/icons";
-import { AccordionButton, AccordionItem, AccordionPanel, Box, Flex, Divider, Button, HStack, Input, Text, Image, Accordion, Heading, useColorModeValue, Stack, Avatar } from "@chakra-ui/react";
+import {  Box, Flex, Divider, Button,  Text, Image, Heading, useColorModeValue, Stack, Avatar } from "@chakra-ui/react";
 import axios from "axios";
 import PaymentModal from "../Components/PaymentModal";
 
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 
-import { Select, TagLabel } from "@chakra-ui/react";
+import { Select } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
-let init = {
-    totalPrice: 0,
-    subtotal: 0,
-    tax: 0,
-};
+
 
 const PaymentOption = ({ cartData }) => {
     const subtotal = 0;
     let totalPrice = 0;
-    console.log(cartData, "payment");
     cartData.forEach((el) => {
         return (totalPrice = totalPrice + el.qty * el.price);
     });
@@ -224,13 +218,7 @@ const TestimonialContent = ({ children }) => {
     );
 };
 
-const TestimonialHeading = ({ children }) => {
-    return (
-        <Heading as={"h3"} fontSize={"xl"}>
-            {children}
-        </Heading>
-    );
-};
+
 
 const TestimonialText = ({ children }) => {
     return (
@@ -240,19 +228,7 @@ const TestimonialText = ({ children }) => {
     );
 };
 
-const TestimonialAvatar = ({ src, name, title }) => {
-    return (
-        <Flex align={"center"} mt={8} direction={"column"}>
-            <Avatar src={src} alt={name} mb={2} />
-            <Stack spacing={-1} align={"center"}>
-                <Text fontWeight={600}>{name}</Text>
-                <Text fontSize={"sm"} color={useColorModeValue("gray.600", "gray.400")}>
-                    {title}
-                </Text>
-            </Stack>
-        </Flex>
-    );
-};
+
 
 const CartItem = ({ cartItem, updateQty, handleDelete }) => {
     // console.log(cartItem)
