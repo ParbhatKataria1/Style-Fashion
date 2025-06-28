@@ -31,7 +31,7 @@ const Content = () => {
             });
             console.log(data, "data");
             setorder(data);
-        } catch (error) {
+        } catch (error) { 
             console.log("error in fetching the data");
         }
     }
